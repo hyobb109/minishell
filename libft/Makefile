@@ -6,7 +6,7 @@
 #    By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/09 17:43:15 by hyobicho          #+#    #+#              #
-#    Updated: 2022/11/23 19:57:56 by hyobicho         ###   ########.fr        #
+#    Updated: 2023/04/15 21:18:56 by hyobicho         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,6 +14,7 @@ NAME = libft.a
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
 SRCS = \
+ft_error.c \
 ft_isalpha.c \
 ft_isdigit.c \
 ft_isalnum.c \
@@ -31,6 +32,7 @@ ft_tolower.c \
 ft_strchr.c \
 ft_strrchr.c \
 ft_strncmp.c \
+ft_strcmp.c \
 ft_memchr.c \
 ft_memcmp.c \
 ft_strnstr.c \
