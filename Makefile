@@ -6,12 +6,12 @@
 #    By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/18 19:16:02 by yunjcho           #+#    #+#              #
-#    Updated: 2023/04/16 20:02:30 by hyobicho         ###   ########.fr        #
+#    Updated: 2023/04/16 22:27:35 by hyobicho         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
-CC = cc
+CC = cc #-g
 CFLAGS = -Wall -Wextra -Werror
 R_FLAG =  -lreadline -L${HOME}/.brew/opt/readline/lib
 R_INC = -I${HOME}/.brew/opt/readline/include
@@ -26,6 +26,10 @@ pipex/process_parents.c \
 pipex/builtins.c \
 pipex/find_paths.c
 M_OBJ = $(SRCS:.c=.o)
+
+ifdef SANITIZE
+	CFLAGS += -fsanitize=address
+endif
 
 all: $(NAME)
 
@@ -48,4 +52,7 @@ re:
 	make fclean
 	make all
 
-.PHONY: all re clean fclean
+sanitize:
+	make SANITIZE=1 re
+
+.PHONY: all re clean fclean sanitize

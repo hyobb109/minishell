@@ -6,7 +6,7 @@
 /*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 14:12:04 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/04/16 20:00:32 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/04/16 22:20:40 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ void	make_cmdlst(char *str, t_deque *cmd_deque)
 	}
 	// free_strs(parsed);
 	// free_strs(strs);
-	// print_deque(cmd_deque);
+	print_deque(cmd_deque);
 }
 
 // void	exec_cmds(t_deque *cmd_deque)
@@ -113,12 +113,17 @@ void	make_cmdlst(char *str, t_deque *cmd_deque)
 // 	}
 // }
 
+void	leack_check(void)
+{
+	system("leaks $PPID");
+}
+
 int	main(void)
 {
 	char	*str;
 	t_deque	cmd_deque;
 	t_file	file;
-
+	atexit(leack_check);
 	while (1)
 	{
 		init_deque(&cmd_deque);
