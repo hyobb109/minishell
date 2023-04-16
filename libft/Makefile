@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+         #
+#    By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/09 17:43:15 by hyobicho          #+#    #+#              #
-#    Updated: 2023/04/15 21:18:56 by hyobicho         ###   ########.fr        #
+#    Updated: 2023/04/16 16:05:07 by yunjcho          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,6 +15,7 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror
 SRCS = \
 ft_error.c \
+ft_freestrs.c \
 ft_isalpha.c \
 ft_isdigit.c \
 ft_isalnum.c \

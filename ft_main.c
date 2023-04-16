@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_main.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 14:12:04 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/04/15 21:31:52 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/04/16 18:22:50 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,6 @@ void	syntax_check(char *str)
 	empty_check(str);
 }
 
-
-
 void	exec_builtin(t_token *token)
 {
 	// 디렉토리 최대 길이(나중에 제대로 확인)
@@ -84,11 +82,13 @@ void	exec_builtin(t_token *token)
 	printf("%s\n", cwd_name);
 }
 
-void	make_cmdlst(char *str)
+
+
+void	make_cmdlst(char *str, t_deque *cmd_deque)
 {
 	char		**strs;
-	char		**token;
-	t_token		*new;
+	char		**parsed;
+	t_token		*token;
 	int			i;
 
 	strs = ft_split(str, '|');
@@ -97,23 +97,26 @@ void	make_cmdlst(char *str)
 	{
 		// printf("%s\n", strs[i]);
 		// 다시 공백으로 스플릿! [0] : cmd [1]: echo면 옵션 아니면 others,
-		token = ft_split(strs[i], ' ');
-		new = malloc(sizeof(t_token));
-		if(!new)
+		parsed = ft_split(strs[i], ' ');
+		token = malloc(sizeof(t_token));
+		if(!token)
 			ft_error();
-		init_element(new, token);
-		exec_builtin(new);
-		// make_comdeque(token);
+		init_element(token, parsed);
+		append_back(cmd_deque, token);
+		exec_builtin(token); // 테스트용 위치
 		i++;
 	}
+	free_strs(parsed);
+	free_strs(strs);
+	print_deque(cmd_deque);
 }
 
 int	main(void)
 {
 	char	*str;
-	// t_deque	cmd_deque;
+	t_deque	cmd_deque;
 
-	// init_deque(&cmd_deque);
+	init_deque(&cmd_deque);
 	while (1)
 	{
 		str = readline("minishell-0.0$ ");
@@ -122,7 +125,7 @@ int	main(void)
 		syntax_check(str);
 		// printf("%s\n", str);
 		// 받은 문자열 | 로 스플릿 echo -n sdfjlskdjf | dsfcajkkle fdsfklj 
-		make_cmdlst(str);
+		make_cmdlst(str, &cmd_deque);
 		add_history(str);
 		free(str);
 	}

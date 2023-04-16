@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+         #
+#    By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/18 19:16:02 by yunjcho           #+#    #+#              #
-#    Updated: 2023/04/15 21:26:29 by hyobicho         ###   ########.fr        #
+#    Updated: 2023/04/16 18:18:28 by yunjcho          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,11 +19,11 @@ LIBFT_FLAG = -Llibft -lft
 LIBFT_DIR = ./libft/
 SRCS = \
 ft_main.c \
-pipex/deque_utils.c
+pipex/deque_utils.c \
+pipex/deque.c 
 # pipex/find_paths.c
 # pipex/process_children.c
 # pipex/process_parents.c
-# pipex/deque.c 
 M_OBJ = $(SRCS:.c=.o)
 
 all: $(NAME)
