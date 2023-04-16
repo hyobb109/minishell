@@ -6,7 +6,7 @@
 /*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 23:22:57 by hyobicho          #+#    #+#             */
-/*   Updated: 2022/11/15 22:53:59 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/04/16 21:17:19 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,15 @@
 
 void	ft_putstr_fd(char *s, int fd)
 {
-	size_t	len;
+	size_t	i;
 
-	len = ft_strlen(s);
-	write(fd, s, len);
+	if (!s)
+		return ;
+	i = 0;
+	while (s[i])
+	{
+		if (s[i] != -1)
+			write(fd, &s[i], 1);
+		i++;
+	}
 }
