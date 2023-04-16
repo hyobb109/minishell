@@ -6,7 +6,7 @@
 /*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 16:33:30 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/16 19:50:51 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/04/16 21:27:22 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	make_pipefork(t_deque *com_deque, t_file *file)
 	int		len;
 	pid_t	pid;
 
-	len = com_deque->cnt - 2;
+	len = com_deque->cnt;
 	file->cur_com = com_deque->head;
 	file->pre_fds[READ] = -1;
 	file->pre_fds[WRITE] = -1;
@@ -28,12 +28,12 @@ void	make_pipefork(t_deque *com_deque, t_file *file)
 			child_proc(file);
 		prefds_proc(file);
 		if (file->cur_com->prev == NULL)
-			file->cur_com = file->cur_com->next->next;
+			file->cur_com = file->cur_com->next;
 		len--;
 	}
 	close(file->new_fds[READ]);
 	close(file->new_fds[WRITE]);
-	wait_processes(com_deque->cnt - 2);
+	wait_processes(com_deque->cnt);
 }
 
 void	parents_proc(t_file *file, pid_t *pid)

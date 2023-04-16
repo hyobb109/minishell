@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   find_paths.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 19:10:14 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/03/10 21:40:26 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/16 22:29:01 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
+// leak 체크!!
 void	find_execpath(t_file *file, char **arr)
 {
 	int		i;
@@ -54,7 +55,9 @@ char	*matching_path(char **path_str, char **arr)
 		exec_path = ft_strjoin(path_str[i], command_path);
 		if (access(exec_path, F_OK | X_OK) == 0)
 			return (exec_path);
+		// free(exec_path);
 		i++;
 	}
+	// free(command_path);
 	return (arr[0]);
 }

@@ -6,7 +6,7 @@
 /*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 14:32:42 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/16 19:17:54 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/04/16 21:12:51 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,8 @@ char	*join_all(char **strs, int idx)
 int	check_option(char **parsed)
 {
 	int	idx;
-
+	if (!parsed[1])
+		return (1);
 	if (!strncmp(parsed[1], "-n", 2))
 	{
 		idx = 2;
