@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_children.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 19:37:29 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/03/10 22:12:05 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/16 20:03:10 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,15 @@ void	child_proc(t_file *file)
 	int		open_fd;
 	char	**arr;
 
+	open_fd = 0;
 	arr = NULL;
-	if (file->cur_com->prev == NULL)
-		firchild_proc(file, arr, &open_fd);
-	else
-		secchild_proc(file, arr, &open_fd);
+	if (!exec_builtins(file->cur_com))
+	{
+		if (file->cur_com->prev == NULL)
+			firchild_proc(file, arr, &open_fd);
+		else
+			secchild_proc(file, arr, &open_fd);
+	}
 	close(open_fd);
 	exit(EXIT_FAILURE);
 }

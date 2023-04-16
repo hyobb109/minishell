@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+         #
+#    By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/09 17:43:15 by hyobicho          #+#    #+#              #
-#    Updated: 2023/04/16 16:05:07 by yunjcho          ###   ########.fr        #
+#    Updated: 2023/04/16 19:14:26 by hyobicho         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,6 +14,7 @@ NAME = libft.a
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
 SRCS = \
+ft_strlowcase.c \
 ft_error.c \
 ft_freestrs.c \
 ft_isalpha.c \

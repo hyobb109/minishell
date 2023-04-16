@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   deque.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 14:23:22 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/16 18:23:21 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/16 18:56:13 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,26 +72,26 @@ void	append_back(t_deque *deque, t_token *token)
 // 	return (0);
 // }
 
-// t_token	*pop_back(t_deque *deque)
-// {
-// 	t_token	*tmp;
+t_token	*pop_back(t_deque *deque)
+{
+	t_token	*tmp;
 
-// 	if (deque->cnt)
-// 	{
-// 		tmp = deque->tail;
-// 		deque->tail = tmp->prev;
-// 		if (deque->tail)
-// 			deque->tail->next = 0;
-// 		tmp->prev = 0;
-// 		deque->cnt--;
-// 		if (deque->cnt == 0)
-// 		{
-// 			deque->head = 0;
-// 			deque->tail = 0;
-// 		}
-// 		return (tmp);
-// 	}
-// 	return (0);
-// }
+	if (deque->cnt)
+	{
+		tmp = deque->tail;
+		deque->tail = tmp->prev;
+		if (deque->tail)
+			deque->tail->next = 0;
+		tmp->prev = 0;
+		deque->cnt--;
+		if (deque->cnt == 0)
+		{
+			deque->head = 0;
+			deque->tail = 0;
+		}
+		return (tmp);
+	}
+	return (0);
+}
 
 

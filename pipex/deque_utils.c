@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   deque_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 14:32:42 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/16 18:20:37 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/16 19:17:54 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,15 @@ char	*join_all(char **strs, int idx)
 	while (strs[idx])
 	{
 		result = ft_strjoin(result, strs[idx]);
+		if (strs[idx + 1])
+			result = ft_strjoin(result, " ");
 		idx++;
+	}
+
+	if (result[0] == '\0')
+	{
+		free(result);
+		return (0);
 	}
 	return (result);
 }
@@ -58,7 +66,7 @@ void	init_element(t_token *element, char **parsed)
 	args_idx = 1;
 	//옵션 추후 필요하면 분리
 	element->command = parsed[0];
-	if (!strcmp(parsed[0], "echo"))
+	if (!strcmp(ft_strlowcase(parsed[0]), "echo"))
 		args_idx = check_option(parsed);
 	if (args_idx == 2)
 		element->option = parsed[1];
@@ -69,17 +77,17 @@ void	init_element(t_token *element, char **parsed)
 	element->next = NULL;
 }
 
-// void	free_deque(t_deque *deque)
-// {
-// 	t_argv	*popped;
+void	free_deque(t_deque *deque)
+{
+	t_token	*popped;
 
-// 	popped = NULL;
-// 	while (deque->cnt)
-// 	{
-// 		popped = pop_back(deque);
-// 		free(popped);
-// 	}
-// }
+	popped = NULL;
+	while (deque->cnt)
+	{
+		popped = pop_back(deque);
+		free(popped);
+	}
+}
 
 // void	make_comdeque(char *token)
 // {

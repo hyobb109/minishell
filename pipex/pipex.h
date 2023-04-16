@@ -6,7 +6,7 @@
 /*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 22:10:59 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/15 21:24:21 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/04/16 19:57:52 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,5 +43,5 @@ void	prefds_proc(t_file *file);
 void	wait_processes(int len);
 void	find_execpath(t_file *file, char **arr);
 char	*matching_path(char **path_str, char **arr);
-
+int		exec_builtins(t_token *token);
 #endif

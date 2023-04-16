@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   ft_main.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 14:12:04 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/04/16 18:22:50 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/16 20:00:32 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
 
 void	quote_check(char *str)
 {
@@ -72,53 +73,55 @@ void	syntax_check(char *str)
 	empty_check(str);
 }
 
-void	exec_builtin(t_token *token)
-{
-	// 디렉토리 최대 길이(나중에 제대로 확인)
-	char	cwd_name[256];
-	// printf("token->command: %s\n", token->command);
-	if (ft_strcmp(token->command, "pwd") == 0)
-		getcwd(cwd_name, sizeof(cwd_name));
-	printf("%s\n", cwd_name);
-}
-
-
-
 void	make_cmdlst(char *str, t_deque *cmd_deque)
 {
+	char		*tmp;
 	char		**strs;
 	char		**parsed;
 	t_token		*token;
 	int			i;
 
-	strs = ft_split(str, '|');
 	i = 0;
+	strs = ft_split(str, '|');
 	while (strs[i])
 	{
-		// printf("%s\n", strs[i]);
+		tmp = ft_strtrim(strs[i], " ");
 		// 다시 공백으로 스플릿! [0] : cmd [1]: echo면 옵션 아니면 others,
-		parsed = ft_split(strs[i], ' ');
+		parsed = ft_split(tmp, ' ');
 		token = malloc(sizeof(t_token));
 		if(!token)
 			ft_error();
 		init_element(token, parsed);
 		append_back(cmd_deque, token);
-		exec_builtin(token); // 테스트용 위치
 		i++;
 	}
-	free_strs(parsed);
-	free_strs(strs);
-	print_deque(cmd_deque);
+	// free_strs(parsed);
+	// free_strs(strs);
+	// print_deque(cmd_deque);
 }
+
+// void	exec_cmds(t_deque *cmd_deque)
+// {
+// 	t_token	*token;
+
+// 	token = cmd_deque->head;
+// 	while (token)
+// 	{
+// 		if (!exec_builtins(token))
+// 			exec_pipe();
+// 		token = token->next;
+// 	}
+// }
 
 int	main(void)
 {
 	char	*str;
 	t_deque	cmd_deque;
+	t_file	file;
 
-	init_deque(&cmd_deque);
 	while (1)
 	{
+		init_deque(&cmd_deque);
 		str = readline("minishell-0.0$ ");
 		if (!str)
 			break;
@@ -126,8 +129,11 @@ int	main(void)
 		// printf("%s\n", str);
 		// 받은 문자열 | 로 스플릿 echo -n sdfjlskdjf | dsfcajkkle fdsfklj 
 		make_cmdlst(str, &cmd_deque);
+		make_pipefork(&cmd_deque, &file);
+		// exec_cmds(&cmd_deque);
 		add_history(str);
 		free(str);
+		free_deque(&cmd_deque);
 	}
 	return (0);
 }
