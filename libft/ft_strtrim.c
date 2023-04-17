@@ -6,7 +6,7 @@
 /*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 19:45:08 by hyobicho          #+#    #+#             */
-/*   Updated: 2022/11/16 21:16:00 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/04/17 14:46:48 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,19 +47,18 @@ char	*ft_strtrim(char const *s1, char const *set)
 	char	*res;
 	size_t	size;
 	size_t	i;
+	size_t	j;
 
-	while (incharset(*s1, set) && *s1)
-		s1++;
-	size = check_size(s1, set);
+	i = 0;
+	while (incharset(s1[i], set) && s1[i])
+		i++;
+	size = check_size(&s1[i], set);
 	res = (char *)malloc(sizeof(char) * size + 1);
 	if (res == NULL)
-		return (0);
-	i = 0;
-	while (i < size)
-	{
-		res[i] = s1[i];
-		i++;
-	}
-	res[i] = '\0';
+		ft_error();
+	j = 0;
+	while (j < size)
+		res[j++] = s1[i++];
+	res[j] = '\0';
 	return (res);
 }

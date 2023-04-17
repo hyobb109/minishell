@@ -6,7 +6,7 @@
 /*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/09 20:02:31 by hyobicho          #+#    #+#             */
-/*   Updated: 2022/11/15 22:58:46 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/04/17 16:17:11 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,19 +15,18 @@
 char	*ft_strrchr(const char *s, int c)
 {
 	char	c1;
-	size_t	len;
+	size_t	i;
 
 	c1 = (char)c;
-	len = ft_strlen(s);
-	while (*s)
-		s++;
+	i = 0;
+	while (s[i])
+		i++;
 	if (c1 == '\0')
-		return ((char *)s);
-	while (len-- > 0)
+		return ((char *)(s + i));
+	while (--i >= 0)
 	{
-		s--;
-		if (c1 == *s)
-			return ((char *)s);
+		if (c1 == s[i])
+			return ((char *)(s + i));
 	}
 	return (0);
 }
