@@ -6,7 +6,7 @@
 /*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/09 20:25:03 by hyobicho          #+#    #+#             */
-/*   Updated: 2022/11/15 22:52:03 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/04/17 16:43:40 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,9 @@ void	*ft_memchr(const void *s, int c, size_t n)
 	i = 0;
 	while (i < n)
 	{
-		if (c1 == *s1)
-			return (s1);
+		if (c1 == s1[i])
+			return (&s1[i]);
 		i++;
-		s1++;
 	}
 	return (0);
 }
