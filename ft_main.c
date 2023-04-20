@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_main.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 14:12:04 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/04/16 22:20:40 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/04/20 18:31:43 by yunjcho          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+extern char **environ;
 
 void	quote_check(char *str)
 {
@@ -86,7 +87,7 @@ void	make_cmdlst(char *str, t_deque *cmd_deque)
 	while (strs[i])
 	{
 		tmp = ft_strtrim(strs[i], " ");
-		// 다시 공백으로 스플릿! [0] : cmd [1]: echo면 옵션 아니면 others,
+		// 다시 공백으로 스플릿! [0] : cmd [1]: echo면 옵션 아니면 args,
 		parsed = ft_split(tmp, ' ');
 		token = malloc(sizeof(t_token));
 		if(!token)
@@ -123,7 +124,7 @@ int	main(void)
 	char	*str;
 	t_deque	cmd_deque;
 	t_file	file;
-	atexit(leack_check);
+	// atexit(leack_check);
 	while (1)
 	{
 		init_deque(&cmd_deque);
@@ -134,7 +135,7 @@ int	main(void)
 		// printf("%s\n", str);
 		// 받은 문자열 | 로 스플릿 echo -n sdfjlskdjf | dsfcajkkle fdsfklj 
 		make_cmdlst(str, &cmd_deque);
-		make_pipefork(&cmd_deque, &file);
+		make_pipefork(&cmd_deque, &file, environ);
 		// exec_cmds(&cmd_deque);
 		add_history(str);
 		free(str);

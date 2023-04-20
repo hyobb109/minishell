@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 16:51:52 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/04/16 19:13:40 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/04/20 16:43:52 by yunjcho          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,5 +71,6 @@ int		ft_strcmp(const char *s1, const char *s2);
 void	free_strs(char **strs);
 int		whitespace(char a);
 char	*ft_strlowcase(char *str);
+char    *ft_strjoin_three(char *s1, char *s2, char *s3);
 
 #endif

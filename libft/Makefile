@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+         #
+#    By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/09 17:43:15 by hyobicho          #+#    #+#              #
-#    Updated: 2023/04/16 19:14:26 by hyobicho         ###   ########.fr        #
+#    Updated: 2023/04/20 16:44:57 by yunjcho          ###   ########seoul.kr   #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,6 +17,7 @@ SRCS = \
 ft_strlowcase.c \
 ft_error.c \
 ft_freestrs.c \
+ft_strjoin_three.c \
 ft_isalpha.c \
 ft_isdigit.c \
 ft_isalnum.c \

@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 12:30:29 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/04/16 18:25:28 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/20 18:46:52 by yunjcho          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,6 @@ char	*ft_strjoin(char *s1, char *s2)
 	while (s2[j])
 		res[i++] = s2[j++];
 	res[i] = '\0';
-	free(s1);
+	// free(s1);
 	return (res);
 }

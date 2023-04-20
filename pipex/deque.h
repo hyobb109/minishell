@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   deque.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 14:20:52 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/16 19:48:24 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/04/20 15:33:56 by yunjcho          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,10 @@ typedef struct s_token
 	int				new_fds[2];
 	struct s_token	*prev;
 	struct s_token	*next;
+
+	//TODO - infile/outfile
+	char			*infile;
+	char			*outfile;
 }	t_token;
 
 typedef struct s_deque
