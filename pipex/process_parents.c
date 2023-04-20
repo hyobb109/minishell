@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   process_parents.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 16:33:30 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/16 21:27:22 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/04/20 18:17:57 by yunjcho          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-void	make_pipefork(t_deque *com_deque, t_file *file)
+void	make_pipefork(t_deque *com_deque, t_file *file, char **environ)
 {
 	int		len;
 	pid_t	pid;
@@ -21,6 +21,7 @@ void	make_pipefork(t_deque *com_deque, t_file *file)
 	file->cur_com = com_deque->head;
 	file->pre_fds[READ] = -1;
 	file->pre_fds[WRITE] = -1;
+	file->env = environ;
 	while (len)
 	{
 		parents_proc(file, &pid);

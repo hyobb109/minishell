@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   deque_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 14:32:42 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/16 21:12:51 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/04/20 17:24:27 by yunjcho          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,10 @@ void	init_element(t_token *element, char **parsed)
 	element->args = join_all(parsed, args_idx); // option 유뮤 / opention 정상적인지;
 	element->prev = NULL;
 	element->next = NULL;
+
+	//TODO - infile/outfile
+	element->infile = NULL;
+	element->outfile = NULL;
 }
 
 void	free_deque(t_deque *deque)
@@ -113,7 +117,7 @@ void	print_deque(t_deque *deque)
 	tmp = deque->head;
 	while (tmp)
 	{
-		printf("com[%d] command : %s, option : %s, args : %s, prev : %p, next : %p\n", i, tmp->command, tmp->option, tmp->args, tmp->prev, tmp->next);
+		printf("com[%d] %p command : %s, option : %s, args : %s, prev : %p, next : %p\n", i, tmp, tmp->command, tmp->option, tmp->args, tmp->prev, tmp->next);
 		i++;
 		tmp = tmp->next;
 	}
