@@ -8,6 +8,7 @@
 		"algorithm": "c",
 		"__split_buffer": "c",
 		"string": "c",
-		"vector": "c"
+		"vector": "c",
+		"fcntl.h": "c"
 	}
 }
