@@ -6,13 +6,12 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 19:10:14 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/20 18:46:58 by yunjcho          ###   ########seoul.kr  */
+/*   Updated: 2023/04/20 19:09:23 by yunjcho          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-// leak 체크!!
 void	find_execpath(t_file *file, char **arr)
 {
 	int		i;
