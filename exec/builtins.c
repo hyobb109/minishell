@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/16 19:57:20 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/04/21 21:58:15 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/21 22:18:19 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,21 +143,21 @@ int	check_option(char **arguments)
 	int	idx;
 
 	idx = 0;
-	if (!arguments[0])
-		return (0);
-	if (!strncmp(arguments[0], "-n", 2))
+	if (!arguments[1])
+		return (1);
+	if (!strncmp(arguments[1], "-n", 2))
 	{
 		idx = 2;
-		while (arguments[0][idx])
+		while (arguments[1][idx])
 		{
-			if (arguments[0][idx] != 'n')
-				return (0);
+			if (arguments[1][idx] != 'n')
+				return (1);
 			idx++;
 		}
 	}
 	else
-		return (0);
-	return (1);
+		return (1);
+	return (2);
 }
 
 char	**parse_args(char *av)
@@ -190,9 +190,10 @@ int	exec_echo(t_token *echo)
 	char	**arguments;
 
 	arguments = NULL;
-	echo->args = "abc def";
-	if (echo->args)
-		arguments = parse_args(echo->args);
+	echo->command[1] = "abc ";
+	echo->command[2] = "def";
+	if (echo->command[1])
+		arguments = parse_args(echo->command);
 
 	//TODO - Debuggin 추후 삭제
 	// int i = 0;
@@ -203,34 +204,35 @@ int	exec_echo(t_token *echo)
 	// }
 
 	target_idx = check_option(arguments);
-	if (target_idx)
-	{
-		// printf("yes\n");
-		print_args(arguments, target_idx); //-n 옵션이 유효한 경우 (-n은 출력 안함)
-	}
-	else
-	{
-		// printf("no\n");
-		ft_putendl_fd(echo->args, 1); //-n 옵션이 무효한 경우 (-n 출력)
-	}
+	print_args(arguments, target_idx);
+	// if (target_idx)
+	// {
+	// 	// printf("yes\n");
+	// 	print_args(arguments, target_idx); //-n 옵션이 유효한 경우 (-n은 출력 안함)
+	// }
+	// else
+	// {
+	// 	// printf("no\n");
+	// 	ft_putendl_fd(echo->args, 1); //-n 옵션이 무효한 경우 (-n 출력)
+	// }
 	return (1);
 }
 
 int	exec_builtins(t_token *token)
 {
-	if (!strcmp(ft_strlowcase(token->command), "echo"))
+	if (!strcmp(ft_strlowcase(token->command[0]), "echo"))
 		return(exec_echo(token));
-	else if (!strcmp(ft_strlowcase(token->command), "pwd"))
+	else if (!strcmp(ft_strlowcase(token->command[0]), "pwd"))
 		return (exec_pwd());
-	else if (!strcmp(ft_strlowcase(token->command), "env"))
+	else if (!strcmp(ft_strlowcase(token->command[0]), "env"))
 		return (1);
-	else if (!strcmp(token->command, "cd"))
+	else if (!strcmp(token->command[0], "cd"))
 		return (1);
-	else if (!strcmp(token->command, "export"))
+	else if (!strcmp(token->command[0], "export"))
 		return (1);
-	else if (!strcmp(token->command, "unset"))
+	else if (!strcmp(token->command[0], "unset"))
 		return (1);
-	else if (!strcmp(token->command, "exit"))
+	else if (!strcmp(token->command[0], "exit"))
 		return (exec_exit(token));
 	return (0);
 }
