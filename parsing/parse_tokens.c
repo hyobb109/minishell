@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:15:26 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/21 15:39:07 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/21 16:28:57 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	parse_token(char *str, t_token *token)
 	token->command = parsed[0];
 }
 
-void	make_cmdlst(char *str, t_deque *cmd_deque)
+void	make_cmdlst(char *str, t_deque *cmd_deque, char **env)
 {
 	char		**strs;
 	t_token		*token;
@@ -82,7 +82,7 @@ void	make_cmdlst(char *str, t_deque *cmd_deque)
 	strs = ft_pipe_split(str);
 	while (strs[i])
 	{
-		printf("str[%d] : %s\n", i, strs[i]);
+		// printf("str[%d] : %s\n", i, strs[i]);
 		token = malloc(sizeof(t_token));
 		if(!token)
 			ft_error();

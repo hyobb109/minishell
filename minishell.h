@@ -59,6 +59,13 @@ typedef struct s_file
 	t_token *cur_com;
 } t_file;
 
+typedef struct s_matrix
+{
+	int row;
+	int column;
+}	t_matrix;
+
+
 typedef enum e_flag {
 	CLOSED
 }	t_flag;
@@ -80,11 +87,11 @@ int		check_option(char **parsed);
 char	*join_all(char **strs, int idx);
 char	**ft_pipe_split(char *str);
 void	syntax_check(char *str);
-void	make_cmdlst(char *str, t_deque *cmd_deque);
+void	make_cmdlst(char *str, t_deque *cmd_deque, char **env);
 
 // builtins
 int		exec_pwd(void);
-void	parse_args(char *str);
+char	**parse_args(char *av);
 int		exec_echo(t_token *echo);
 int		exec_builtins(t_token *token);
 // pipe
@@ -100,5 +107,10 @@ void	wait_processes(int len);
 void	find_execpath(t_file *file, char **arr);
 char	*matching_path(char **path_str, char **arr);
 int		exec_builtins(t_token *token);
+void	assign_argument(char **str, char *av);
+void	get_size(char **arguments, char *av);
+void	get_size_step1(char *av, char *quote, int *size);
+void	get_size_step2(char **arguments, char *av, int *size, int *index);
+int		count_rows(char *argument);
 
 #endif

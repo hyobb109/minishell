@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 14:32:42 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/21 15:38:16 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/21 16:26:52 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,26 +40,6 @@ char	*join_all(char **strs, int idx)
 	return (result);
 }
 
-// echo 명령어에서 join 시작할 인덱스를 리턴
-int	check_option(char **parsed)
-{
-	int	idx;
-	if (!parsed[1])
-		return (1);
-	if (!strncmp(parsed[1], "-n", 2))
-	{
-		idx = 2;
-		while (parsed[1][idx])
-		{
-			if (parsed[1][idx] != 'n')
-				return (1);
-			idx++;
-		}
-		return (2);
-	}
-	return (1);
-}
-
 void	init_element(t_token *element, char **parsed)
 {
 	int	args_idx;
@@ -67,8 +47,6 @@ void	init_element(t_token *element, char **parsed)
 	args_idx = 1;
 	//옵션 추후 필요하면 분리
 	element->command = parsed[0];
-	if (!strcmp(ft_strlowcase(parsed[0]), "echo"))
-		args_idx = check_option(parsed);
 	element->args = join_all(parsed, args_idx); // option 유뮤 / opention 정상적인지;
 	element->prev = NULL;
 	element->next = NULL;
