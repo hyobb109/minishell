@@ -89,7 +89,6 @@ void	free_deque(t_deque *deque);
 void	print_deque(t_deque *deque); //delete
 
 // parsing
-int		check_option(char **parsed);
 char	*join_all(char **strs, int idx);
 char	**ft_pipe_split(char *str);
 void	syntax_check(char *str);
@@ -97,9 +96,16 @@ void	make_cmdlst(char *str, t_deque *cmd_deque, char **env);
 
 // builtins
 int		exec_pwd(void);
+void	assign_argument(char **str, char *av);
+void	get_size(char **arguments, char *av);
+void	get_size_step1(char *av, char *quote, int *size);
+void	get_size_step2(char **arguments, char *av, int *size, int *index);
+int		count_rows(char *argument);
+int		check_option(char **parsed);
 char	**parse_args(char *av);
 int		exec_echo(t_token *echo);
 int		exec_builtins(t_token *token);
+
 // pipe
 void	make_pipefork(t_deque *com_deque, t_file *file, char **environ);
 void	make_comdeque(t_deque *com_deque, int ac, char **av);

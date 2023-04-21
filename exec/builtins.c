@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/16 19:57:20 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/04/21 20:09:12 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/04/21 20:35:04 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,8 @@
 
 int	exec_pwd(void)
 {
-	// 디렉토리 최대 길이(나중에 제대로 확인)
 	char	cwd_name[PATH_MAX];
-	// printf("token->command: %s\n", token->command);
+
 	getcwd(cwd_name, sizeof(cwd_name));
 	ft_putendl_fd(cwd_name, 1);
 	return (1);
@@ -102,7 +101,7 @@ void	get_size_step2(char **arguments, char *av, int *size, int *index)
 	*size = 0;
 }
 
-int	count_rows(char *argument) //token->args
+int	count_rows(char *argument) //token->args가 인자로 들어옴
 {
 	int		rows;
 	int		index;
@@ -117,7 +116,6 @@ int	count_rows(char *argument) //token->args
 		c = argument[index];
 		if (c == '\'' || c == '\"')
 		{
-			printf("in: %d, !in: %d\n", in_quote, !in_quote);
 			in_quote = !in_quote;
 		}
 		else if (!in_quote && (c == ' ' || c == '\t' || c == '\n')) // 공백문자 추가(23.04.21)
@@ -131,30 +129,28 @@ int	count_rows(char *argument) //token->args
 	return (rows);
 }
 
-// echo 명령어에서 join 시작할 인덱스를 리턴
+// echo 명령어에서 join 시작할 인덱스를 리턴 -> 23.04.21 옵션 유효여부를 반환(0 : 옵션 무효(개행 출력), 1 : 옵션 유효(개행 제거))
 int	check_option(char **arguments)
 {
-	int	i;
-	int	j;
+	int	idx;
 
-	i = 0;
+	idx = 0;
 	if (!arguments[0])
 		return (0);
-	while (arguments[i])
+	while (arguments[0][idx])
 	{
-		if (!strncmp(arguments[i], "-n", 2))
+		if (!strncmp(arguments[0], "-n", 2))
 		{
-			j = 2;
-			while (arguments[i][j])
+			idx = 2;
+			while (arguments[0][idx])
 			{
-				if (arguments[i][j] != 'n')
+				if (arguments[0][idx] != 'n')
 					return (0);
-				j++;
+				idx++;
 			}
 		}
 		else	
 			return (0);
-		i++;
 	}
 	return (1);
 }
@@ -172,35 +168,12 @@ char	**parse_args(char *av)
 	return (arguments);
 }
 
-// void	parse_args(char *str)
-// {
-// 	char	quote;
-// 	int		i;
-
-// 	i = 0;
-// 	quote = 0;
-// 	while (str[i])
-// 	{
-// 		if (quote && str[i] == quote)
-// 		{
-// 			quote = 0;
-// 			str[i] = -1;
-// 		}
-// 		else if (quote == 0 && (str[i] == '\'' || str[i] == '\"'))
-// 		{
-// 			quote = str[i];
-// 			str[i] = -1;
-// 		}
-// 		i++;
-// 	}
-// }
-
 int	exec_echo(t_token *echo)
 {
 	char **arguments;
 
 	arguments = NULL;
-	echo->args = "-n -n-n-n-n \"Hello \'42\'\"             ";
+	echo->args = "-n -n-n-n-n \"Hello \'42\'\"";
 	if (echo->args)
 		arguments = parse_args(echo->args);
 	if (check_option(arguments))
@@ -211,15 +184,8 @@ int	exec_echo(t_token *echo)
 	else
 	{
 		printf("no\n");
-	
 		ft_putendl_fd(echo->args, 1); //-n 옵션이 무효한 경우 (-n 출력)
 	}
-	// int idx = 0;
-	// while (arguments[idx])
-	// {
-	// 	printf("args : %s\n", arguments[idx]);
-	// 	idx++;
-	// }
 	return (1);
 }
 
