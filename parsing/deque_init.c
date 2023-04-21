@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   deque_utils.c                                      :+:      :+:    :+:   */
+/*   deque_init.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 14:32:42 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/20 17:24:27 by yunjcho          ###   ########seoul.kr  */
+/*   Updated: 2023/04/21 15:38:16 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "../minishell.h"
 
 void	init_deque(t_deque *deque)
 {
@@ -69,10 +69,6 @@ void	init_element(t_token *element, char **parsed)
 	element->command = parsed[0];
 	if (!strcmp(ft_strlowcase(parsed[0]), "echo"))
 		args_idx = check_option(parsed);
-	if (args_idx == 2)
-		element->option = parsed[1];
-	else
-		element->option = NULL;
 	element->args = join_all(parsed, args_idx); // option 유뮤 / opention 정상적인지;
 	element->prev = NULL;
 	element->next = NULL;
@@ -117,7 +113,7 @@ void	print_deque(t_deque *deque)
 	tmp = deque->head;
 	while (tmp)
 	{
-		printf("com[%d] %p command : %s, option : %s, args : %s, prev : %p, next : %p\n", i, tmp, tmp->command, tmp->option, tmp->args, tmp->prev, tmp->next);
+		printf("com[%d] %p command : %s, args : %s, prev : %p, next : %p\n", i, tmp, tmp->command, tmp->args, tmp->prev, tmp->next);
 		i++;
 		tmp = tmp->next;
 	}

@@ -6,11 +6,11 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 19:37:29 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/20 18:47:49 by yunjcho          ###   ########seoul.kr  */
+/*   Updated: 2023/04/21 15:34:14 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "../minishell.h"
 
 void	child_proc(t_file *file)
 {
@@ -64,7 +64,7 @@ void	firchild_proc(t_file *file, char **arr, int *open_fd)
 
 		//TODO - 추후 간단하게 변경(parsing)
 		str = ft_strjoin_three(file->cur_com->command, " ", file->cur_com->args);
-		arr = ft_split(str, ' ');
+		arr = ft_split(str, " ");
 		free(str);
 		find_execpath(file, arr);
 	}
@@ -94,7 +94,7 @@ void	secchild_proc(t_file *file, char **arr, int *open_fd)
 		
 		//TODO - 추후 간단하게 변경(parsing)
 		str = ft_strjoin_three(file->cur_com->command, " ", file->cur_com->args);
-		arr = ft_split(str, ' ');
+		arr = ft_split(str, " ");
 		free(str);
 		find_execpath(file, arr);
 	}

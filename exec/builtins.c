@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/16 19:57:20 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/04/16 21:34:50 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/04/21 15:34:06 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "../minishell.h"
 
 int	exec_pwd(void)
 {
@@ -47,17 +47,12 @@ void	parse_args(char *str)
 
 int	exec_echo(t_token *echo)
 {
-	// char	result[1000];
-	// args parsing
-	// TODO : echo->args $? => 마지막 작업 종료상태 출력
-	// parse_args(echo->args, result);
 	if (echo->args)
 		parse_args(echo->args);
-	// printf("args: %s\n", echo->args);
-	if (echo->option)
-		ft_putstr_fd(echo->args, 1);
-	else
-		ft_putendl_fd(echo->args, 1);
+	// if (echo->option) : option 확인작업 필요
+	// 	ft_putstr_fd(echo->args, 1);
+	// else
+	// 	ft_putendl_fd(echo->args, 1);
 	return (1);
 }
 

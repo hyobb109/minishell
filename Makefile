@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+         #
+#    By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/18 19:16:02 by yunjcho           #+#    #+#              #
-#    Updated: 2023/04/16 22:27:35 by hyobicho         ###   ########.fr        #
+#    Updated: 2023/04/21 15:36:35 by yunjcho          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,12 +19,15 @@ LIBFT_FLAG = -Llibft -lft
 LIBFT_DIR = ./libft/
 SRCS = \
 ft_main.c \
-pipex/deque_utils.c \
-pipex/deque.c \
-pipex/process_children.c \
-pipex/process_parents.c \
-pipex/builtins.c \
-pipex/find_paths.c
+parsing/deque_init.c \
+parsing/deque.c \
+parsing/pipe_split.c \
+parsing/parse_tokens.c \
+parsing/syntax_error.c \
+exec/process_children.c \
+exec/process_parents.c \
+exec/builtins.c \
+exec/find_paths.c
 M_OBJ = $(SRCS:.c=.o)
 
 ifdef SANITIZE

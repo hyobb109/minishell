@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   deque.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 14:23:22 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/16 18:56:13 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/04/21 15:21:59 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "../minishell.h"
 
 // void	append_front(t_deque *deque, char *command)
 // {

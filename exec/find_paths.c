@@ -6,11 +6,11 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 19:10:14 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/20 19:09:23 by yunjcho          ###   ########seoul.kr  */
+/*   Updated: 2023/04/21 15:34:10 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "../minishell.h"
 
 void	find_execpath(t_file *file, char **arr)
 {
@@ -24,7 +24,7 @@ void	find_execpath(t_file *file, char **arr)
 	{
 		if (!ft_strncmp(file->env[i], "PATH=", 5))
 		{
-			path_str = ft_split(&file->env[i][5], ':');
+			path_str = ft_split(&file->env[i][5], ":");
 			exec_path = matching_path(path_str, arr);
 			execve(exec_path, arr, file->env);
 			ft_putstr_fd("command not found: ", 2);

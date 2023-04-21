@@ -6,13 +6,13 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 16:33:30 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/20 18:17:57 by yunjcho          ###   ########seoul.kr  */
+/*   Updated: 2023/04/21 15:33:53 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "../minishell.h"
 
-void	make_pipefork(t_deque *com_deque, t_file *file, char **environ)
+void	make_pipefork(t_deque *com_deque, t_file *file, char **env)
 {
 	int		len;
 	pid_t	pid;
@@ -21,7 +21,7 @@ void	make_pipefork(t_deque *com_deque, t_file *file, char **environ)
 	file->cur_com = com_deque->head;
 	file->pre_fds[READ] = -1;
 	file->pre_fds[WRITE] = -1;
-	file->env = environ;
+	file->env = env;
 	while (len)
 	{
 		parents_proc(file, &pid);
