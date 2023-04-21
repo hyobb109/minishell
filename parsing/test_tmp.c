@@ -21,6 +21,7 @@ int	is_blank(char c)
 }
 
 // $ 나오면 뒤에 한글자씩 붙여가면서 env에서 계속 확인..!
+// ex) $hello 일때 h부터 he, hel, hell, hello 이런 식으로..
 void	check_env(char *str, char **env)
 {
 	int	i;
@@ -33,7 +34,7 @@ void	check_env(char *str, char **env)
 	
 }
 
-// 지금은 일차원 배열인데.. 이차원배열로 만들어야해요 고쳐주세요..(시도)
+// 따옴표는 대충 했는데 테스트 안해봄, 환경변수 처리 해야함!
 char	**parse_command11(char *str, char **env)
 {
 	int		i;
@@ -45,7 +46,7 @@ char	**parse_command11(char *str, char **env)
 	// 처음 들어오는 공백 넘김
 	while (is_blank(str[i]))
 		i++;
-	// command -> 공백 전까지 입력받으니까 따옴표 닫혀 있고 공백이면 break
+
 	quote = 0;
 	len = 0;
 	while (str[i])
@@ -65,16 +66,20 @@ char	**parse_command11(char *str, char **env)
 			// env 쭉 보면서 환경변수 있는지 확인
 			check_env(&str[i], env);
 		}
-		else
+		else if (!quote && is_blank(str[i]))
+		{
+			str[i] = -1; // 따옴표 밖 공백이면 잘라야하니까 일단 -1로 치환
+			//break;
+			}
+			else
 		{
 			res[len++] = str[i];
 		}
 		i++;
-		if (!quote && is_blank(str[i]))
-			break;
 	}
 	res[len] = '\0';
-	return (res);
+	// 구분자 하나만 받는 스플릿 사용해서 이차원 만들어서 리턴
+	return (ft_split_c(res, -1));
 }
 
 // 파싱 테스트용 메인
