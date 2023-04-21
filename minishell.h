@@ -70,7 +70,13 @@ typedef enum e_flag {
 	CLOSED
 }	t_flag;
 
-
+// quoting parsing tmp
+char	**parse_command_tmp(char *av);
+void	get_size_tmp(char **arguments, char *av);
+int		count_rows_tmp(char *argument);
+void	get_size_step2_tmp(char **arguments, char *av, int *size, int *index);
+void	get_size_step1_tmp(char *av, char *quote, int *size);
+void	assign_argument_tmp(char **str, char *av);
 
 // deque
 void	init_deque(t_deque *deque);
