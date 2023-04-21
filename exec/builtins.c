@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/16 19:57:20 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/04/21 16:28:23 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/21 16:51:39 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,23 +130,30 @@ int	count_rows(char *argument)
 	return (rows);
 }
 
-
 // echo 명령어에서 join 시작할 인덱스를 리턴
-int	check_option(char **parsed)
+int	check_option(char **arguments)
 {
-	int	idx;
-	if (!parsed[1])
-		return (1);
-	if (!strncmp(parsed[1], "-n", 2))
+	int	i;
+	int	j;
+
+	i = 0;
+	if (!arguments[0])
+		return (0);
+	while (arguments[i])
 	{
-		idx = 2;
-		while (parsed[1][idx])
+		if (!strncmp(arguments[i], "-n", 2))
 		{
-			if (parsed[1][idx] != 'n')
-				return (1);
-			idx++;
+			j = 2;
+			while (arguments[i][j])
+			{
+				if (arguments[i][j] != 'n')
+					return (0);
+				j++;
+			}
 		}
-		return (2);
+		else	
+			return (0);
+		i++;
 	}
 	return (1);
 }
@@ -189,30 +196,34 @@ char	**parse_args(char *av)
 
 int	exec_echo(t_token *echo)
 {
-	char **arg;
+	char **arguments;
 
-	arg = NULL;
-	printf("echo args : %s\n", echo->args);
+	arguments = NULL;
+	echo->args = "-n -n-n-n-n \"Hello \'42\'\"             ";
 	if (echo->args)
-		arg = parse_args(echo->args);
-	printf("arg : %s\n", arg[0]);
-	// if (echo->option)
-	// 	ft_putstr_fd(echo->args, 1);
-	// else
-	// 	ft_putendl_fd(echo->args, 1);
-	int idx = 0;
-	while (arg[idx])
+		arguments = parse_args(echo->args);
+	if (check_option(arguments))
 	{
-		printf("args : %s\n", arg[idx]);
-		idx++;
+		printf("yes\n");
+		ft_putstr_fd(echo->args, 1); //-n 옵션이 유효한 경우 (-n은 출력 안함)
 	}
+	else
+	{
+		printf("no\n");
+	
+		ft_putendl_fd(echo->args, 1); //-n 옵션이 무효한 경우 (-n 출력)
+	}
+	// int idx = 0;
+	// while (arguments[idx])
+	// {
+	// 	printf("args : %s\n", arguments[idx]);
+	// 	idx++;
+	// }
 	return (1);
 }
 
 int	exec_builtins(t_token *token)
 {
-	printf("command : %s\n", token->command);
-	printf("command : %s\n", token->command);
 	if (!strcmp(ft_strlowcase(token->command), "echo"))
 		return(exec_echo(token));
 	else if (!strcmp(ft_strlowcase(token->command), "pwd"))

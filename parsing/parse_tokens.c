@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:15:26 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/21 16:28:57 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/21 16:32:01 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ void	make_cmdlst(char *str, t_deque *cmd_deque, char **env)
 	t_token		*token;
 	int			i;
 
+	(void) env;
 	i = 0;
 	// quotes 안에 | 따로 처리 필요
 	strs = ft_pipe_split(str);
