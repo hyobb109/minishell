@@ -29,8 +29,7 @@
 
 typedef struct s_token
 {
-	char			*command;
-	char			*args;
+	char			**command;
 	pid_t			pid;
 	int				pre_fds[2];
 	int				new_fds[2];
