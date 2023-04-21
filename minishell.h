@@ -70,6 +70,11 @@ typedef enum e_flag {
 	CLOSED
 }	t_flag;
 
+typedef enum e_state {
+    BUILTIN,
+    GENERAL
+}   t_state;
+
 // quoting parsing tmp
 char	**parse_command_tmp(char *av);
 void	get_size_tmp(char **arguments, char *av);
@@ -96,6 +101,7 @@ void	make_cmdlst(char *str, t_deque *cmd_deque, char **env);
 
 // builtins
 int		exec_pwd(void);
+int		exec_exit(t_token *token);
 void	assign_argument(char **str, char *av);
 void	get_size(char **arguments, char *av);
 void	get_size_step1(char *av, char *quote, int *size);
@@ -105,6 +111,7 @@ int		check_option(char **parsed);
 char	**parse_args(char *av);
 int		exec_echo(t_token *echo);
 int		exec_builtins(t_token *token);
+void	print_args(char **arguments, int target_idx);
 
 // pipe
 void	make_pipefork(t_deque *com_deque, t_file *file, char **environ);

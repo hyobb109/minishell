@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/16 19:57:20 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/04/21 20:35:04 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/21 21:58:15 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,14 @@ int	exec_pwd(void)
 	getcwd(cwd_name, sizeof(cwd_name));
 	ft_putendl_fd(cwd_name, 1);
 	return (1);
+}
+
+int	exec_exit(t_token *token)
+{
+	//TODO - 프로그램 종료시 반환값 전달 가능한지 확인 후 리턴값 없애기
+	//TODO - 프로그램 종료 실패 시 예외처리 추가?
+	ft_putstr_fd("exit\n", 1);
+	return (!kill(token->pid, SIGKILL));
 }
 
 void	assign_argument(char **str, char *av)
@@ -129,7 +137,7 @@ int	count_rows(char *argument) //token->args가 인자로 들어옴
 	return (rows);
 }
 
-// echo 명령어에서 join 시작할 인덱스를 리턴 -> 23.04.21 옵션 유효여부를 반환(0 : 옵션 무효(개행 출력), 1 : 옵션 유효(개행 제거))
+// echo 명령어에서 출력을 시작할 행의 인덱스를 반환
 int	check_option(char **arguments)
 {
 	int	idx;
@@ -137,21 +145,18 @@ int	check_option(char **arguments)
 	idx = 0;
 	if (!arguments[0])
 		return (0);
-	while (arguments[0][idx])
+	if (!strncmp(arguments[0], "-n", 2))
 	{
-		if (!strncmp(arguments[0], "-n", 2))
+		idx = 2;
+		while (arguments[0][idx])
 		{
-			idx = 2;
-			while (arguments[0][idx])
-			{
-				if (arguments[0][idx] != 'n')
-					return (0);
-				idx++;
-			}
+			if (arguments[0][idx] != 'n')
+				return (0);
+			idx++;
 		}
-		else	
-			return (0);
 	}
+	else
+		return (0);
 	return (1);
 }
 
@@ -168,22 +173,44 @@ char	**parse_args(char *av)
 	return (arguments);
 }
 
+void	print_args(char **arguments, int target_idx)
+{
+	while(arguments[target_idx])
+	{
+		ft_putstr_fd(arguments[target_idx], 1);
+		target_idx++;
+		if (arguments[target_idx] != 0)
+			ft_putstr_fd(" ", 1);
+	}
+}
+
 int	exec_echo(t_token *echo)
 {
-	char **arguments;
+	int		target_idx;
+	char	**arguments;
 
 	arguments = NULL;
-	echo->args = "-n -n-n-n-n \"Hello \'42\'\"";
+	echo->args = "abc def";
 	if (echo->args)
 		arguments = parse_args(echo->args);
-	if (check_option(arguments))
+
+	//TODO - Debuggin 추후 삭제
+	// int i = 0;
+	// while (arguments[i])
+	// {
+	// 	printf("arguments[%d] %s\n", i, arguments[i]);
+	// 	i++;
+	// }
+
+	target_idx = check_option(arguments);
+	if (target_idx)
 	{
-		printf("yes\n");
-		ft_putstr_fd(echo->args, 1); //-n 옵션이 유효한 경우 (-n은 출력 안함)
+		// printf("yes\n");
+		print_args(arguments, target_idx); //-n 옵션이 유효한 경우 (-n은 출력 안함)
 	}
 	else
 	{
-		printf("no\n");
+		// printf("no\n");
 		ft_putendl_fd(echo->args, 1); //-n 옵션이 무효한 경우 (-n 출력)
 	}
 	return (1);
@@ -204,6 +231,6 @@ int	exec_builtins(t_token *token)
 	else if (!strcmp(token->command, "unset"))
 		return (1);
 	else if (!strcmp(token->command, "exit"))
-		return (1);
+		return (exec_exit(token));
 	return (0);
 }
