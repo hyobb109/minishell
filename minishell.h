@@ -74,13 +74,14 @@ typedef enum e_state {
     GENERAL
 }   t_state;
 
-// quoting parsing tmp
-char	**parse_command_tmp(char *av);
-void	get_size_tmp(char **arguments, char *av);
-int		count_rows_tmp(char *argument);
-void	get_size_step2_tmp(char **arguments, char *av, int *size, int *index);
-void	get_size_step1_tmp(char *av, char *quote, int *size);
-void	assign_argument_tmp(char **str, char *av);
+// quoting
+void	assign_argument(char **str, char *av);
+void	get_size(char **arguments, char *av);
+void	get_size_step1(char *av, char *quote, int *size);
+void	get_size_step2(char **arguments, char *av, int *size, int *index);
+int		count_rows(char *argument);
+char	**parse_command(char *av, char **env);
+int		is_blank(char c);
 
 // deque
 void	init_deque(t_deque *deque);
@@ -101,13 +102,7 @@ void	make_cmdlst(char *str, t_deque *cmd_deque, char **env);
 // builtins
 int		exec_pwd(void);
 int		exec_exit(t_token *token);
-void	assign_argument(char **str, char *av);
-void	get_size(char **arguments, char *av);
-void	get_size_step1(char *av, char *quote, int *size);
-void	get_size_step2(char **arguments, char *av, int *size, int *index);
-int		count_rows(char *argument);
 int		check_option(char **parsed);
-char	**parse_args(char *av);
 int		exec_echo(t_token *echo);
 int		exec_builtins(t_token *token);
 void	print_args(char **arguments, int target_idx);

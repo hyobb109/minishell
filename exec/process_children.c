@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_children.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 19:37:29 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/21 15:34:14 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/21 22:35:29 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ void	firchild_proc(t_file *file, char **arr, int *open_fd)
 {
 	char	*str;
 	
+	(void)arr;
 	str = NULL;
 	if (!file->cur_com->infile)
 	{
@@ -61,19 +62,15 @@ void	firchild_proc(t_file *file, char **arr, int *open_fd)
 		dup2(file->new_fds[WRITE], STDOUT_FILENO);
 		close(file->new_fds[READ]);
 		close(file->new_fds[WRITE]);
-
-		//TODO - 추후 간단하게 변경(parsing)
-		str = ft_strjoin_three(file->cur_com->command, " ", file->cur_com->args);
-		arr = ft_split(str, " ");
-		free(str);
-		find_execpath(file, arr);
+		find_execpath(file, file->cur_com->command);
 	}
 }
 
 void	secchild_proc(t_file *file, char **arr, int *open_fd)
 {
 	char	*str;
-	
+
+	(void)arr;
 	str = NULL;
 	if (!file->cur_com->outfile)
 		file->filepath = "out_tmp";
@@ -92,10 +89,6 @@ void	secchild_proc(t_file *file, char **arr, int *open_fd)
 		close(file->new_fds[READ]);
 		close(file->new_fds[WRITE]);
 		
-		//TODO - 추후 간단하게 변경(parsing)
-		str = ft_strjoin_three(file->cur_com->command, " ", file->cur_com->args);
-		arr = ft_split(str, " ");
-		free(str);
-		find_execpath(file, arr);
+		find_execpath(file, file->cur_com->command);
 	}
 }

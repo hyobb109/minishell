@@ -6,13 +6,20 @@
 /*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 19:55:14 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/04/21 20:01:30 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/04/21 22:57:45 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	assign_argument_tmp(char **str, char *av)
+int	is_blank(char c)
+{
+	if (c == ' ' || c == '\t' || c == '\n')
+		return (1);
+	return (0);
+}
+
+void	assign_argument(char **str, char *av)
 {
 	t_matrix	matrix;
 	int			in_quotes;
@@ -40,9 +47,9 @@ void	assign_argument_tmp(char **str, char *av)
 	str[matrix.row][matrix.column] = '\0';
 }
 
-void	get_size_step1_tmp(char *av, char *quote, int *size)
+void	get_size_step1(char *av, char *quote, int *size)
 {
-	while (*av == ' ')
+	while (is_blank(*av))
 		++av;
 	if (*av == '\'' || *av == '\"')
 	{
@@ -58,7 +65,7 @@ void	get_size_step1_tmp(char *av, char *quote, int *size)
 	}
 	else
 	{
-		while (*av != ' ' && *av != '\'' && *av != '\"' && *av != '\0')
+		while (!is_blank(*av) && *av != '\'' && *av != '\"' && *av != '\0')
 		{
 			++(*size);
 			++av;
@@ -66,15 +73,35 @@ void	get_size_step1_tmp(char *av, char *quote, int *size)
 	}
 }
 
-void	get_size_step2_tmp(char **arguments, char *av, int *size, int *index)
+void	get_size_step2(char **arguments, char *av, int *size, int *index)
 {
 	arguments[*index] = malloc(sizeof(char) * (*size + 1));
+	if (!arguments[*index])
+		ft_error();
 	ft_strlcpy(arguments[*index], av - (*size), (*size + 1));
 	++(*index);
 	*size = 0;
 }
 
-int	count_rows_tmp(char *argument)
+void	get_size(char **arguments, char *av)
+{
+	int		size;
+	int		index;
+	char	quote;
+
+	size = 0;
+	index = 0;
+	quote = 0;
+	while (*av != '\0')
+	{
+		get_size_step1(av, &quote, &size);
+		if (size)
+			get_size_step2(arguments, av, &size, &index);
+		++av;
+	}
+}
+
+int	count_rows(char *argument)
 {
 	int		rows;
 	int		index;
@@ -91,7 +118,7 @@ int	count_rows_tmp(char *argument)
 		{
 			in_quote = !in_quote;
 		}
-		else if (!in_quote && c == ' ')
+		else if (!in_quote && is_blank(c))
 		{
 			++rows;
 		}
@@ -102,35 +129,18 @@ int	count_rows_tmp(char *argument)
 	return (rows);
 }
 
-void	get_size_tmp(char **arguments, char *av)
-{
-	int		size;
-	int		index;
-	char	quote;
-
-	size = 0;
-	index = 0;
-	quote = 0;
-	while (*av != '\0')
-	{
-		get_size_step1_tmp(av, &quote, &size);
-		if (size)
-			get_size_step2_tmp(arguments, av, &size, &index);
-		++av;
-	}
-}
-
-
-char	**parse_command_tmp(char *av)
+char	**parse_command(char *av, char **env)
 {
 	int		row;
 	char	**arguments;
 
-	row = count_rows_tmp(av);
-	arguments = malloc(sizeof(char *) * row + 1);
-	get_size_tmp(arguments, av);
-	assign_argument_tmp(arguments, av);
+	(void)env;
+	row = count_rows(av);
+	arguments = malloc(sizeof(char *) * (row + 1));
+	if (!arguments)
+		ft_error();
+	get_size(arguments, av);
+	assign_argument(arguments, av);
 	arguments[row] = 0;
 	return (arguments);
 }
-

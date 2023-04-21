@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/16 19:57:20 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/04/21 22:18:19 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/21 22:54:30 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,112 +29,25 @@ int	exec_exit(t_token *token)
 	return (!kill(token->pid, SIGKILL));
 }
 
-void	assign_argument(char **str, char *av)
+char	*join_all(char **strs, int idx)
 {
-	t_matrix	matrix;
-	int			in_quotes;
-	int			in_single_quotes;
+	char	*result;
 
-	matrix.row = 0;
-	matrix.column = 0;
-	in_quotes = 0;
-	in_single_quotes = 0;
-	while (*av)
+	result = ft_strdup("\0");
+	while (strs[idx])
 	{
-		if (*av == '\"' && !in_single_quotes)
-			in_quotes = !in_quotes;
-		else if (*av == '\'' && !in_quotes)
-			in_single_quotes = !in_single_quotes;
-		else if (*av == ' ' && !in_quotes && !in_single_quotes)
-		{
-			str[(matrix.row)++][matrix.column] = '\0';
-			matrix.column = 0;
-		}
-		else
-			str[matrix.row][(matrix.column)++] = *av;
-		av++;
+		result = ft_strjoin(result, strs[idx]);
+		if (strs[idx + 1])
+			result = ft_strjoin(result, " ");
+		idx++;
 	}
-	str[matrix.row][matrix.column] = '\0';
-}
 
-void	get_size(char **arguments, char *av)
-{
-	int		size;
-	int		index;
-	char	quote;
-
-	size = 0;
-	index = 0;
-	quote = 0;
-	while (*av != '\0')
+	if (result[0] == '\0')
 	{
-		get_size_step1(av, &quote, &size);
-		if (size)
-			get_size_step2(arguments, av, &size, &index);
-		++av;
+		free(result);
+		return (0);
 	}
-}
-
-void	get_size_step1(char *av, char *quote, int *size)
-{
-	while (*av == ' ')
-		++av;
-	if (*av == '\'' || *av == '\"')
-	{
-		*quote = *av;
-		++av;
-		while (*av != *quote && *av != '\0')
-		{
-			++(*size);
-			++av;
-		}
-		if (*av == *quote)
-			++av;
-	}
-	else
-	{
-		while (*av != ' ' && *av != '\'' && *av != '\"' && *av != '\0')
-		{
-			++(*size);
-			++av;
-		}
-	}
-}
-
-void	get_size_step2(char **arguments, char *av, int *size, int *index)
-{
-	arguments[*index] = malloc(sizeof(char) * (*size + 1));
-	ft_strlcpy(arguments[*index], av - (*size), (*size + 1));
-	++(*index);
-	*size = 0;
-}
-
-int	count_rows(char *argument) //token->args가 인자로 들어옴
-{
-	int		rows;
-	int		index;
-	int		in_quote;
-	char	c;
-
-	rows = 0;
-	index = 0;
-	in_quote = 0;
-	while (argument[index] != '\0')
-	{
-		c = argument[index];
-		if (c == '\'' || c == '\"')
-		{
-			in_quote = !in_quote;
-		}
-		else if (!in_quote && (c == ' ' || c == '\t' || c == '\n')) // 공백문자 추가(23.04.21)
-		{
-			++rows;
-		}
-		++index;
-	}
-	if (!in_quote)
-		++rows;
-	return (rows);
+	return (result);
 }
 
 // echo 명령어에서 출력을 시작할 행의 인덱스를 반환
@@ -160,40 +73,35 @@ int	check_option(char **arguments)
 	return (2);
 }
 
-char	**parse_args(char *av)
-{
-	int		row;
-	char	**arguments;
-
-	row = count_rows(av);
-	arguments = malloc(sizeof(char *) * row + 1);
-	get_size(arguments, av);
-	assign_argument(arguments, av);
-	arguments[row] = 0;
-	return (arguments);
-}
-
 void	print_args(char **arguments, int target_idx)
 {
-	while(arguments[target_idx])
-	{
-		ft_putstr_fd(arguments[target_idx], 1);
-		target_idx++;
-		if (arguments[target_idx] != 0)
-			ft_putstr_fd(" ", 1);
-	}
+	int	i;
+
+	i = 0;
+	char *tmp = join_all(arguments, target_idx);
+	printf("tmp: %s\n", tmp);
+	if (target_idx == 1)
+		ft_putendl_fd(tmp, 1);
+	else
+		ft_putstr_fd(tmp, 1);
+	free(tmp);
+	// while(arguments[target_idx])
+	// {
+	// 	ft_putstr_fd(arguments[target_idx], 1);
+	// 	target_idx++;
+	// 	if (arguments[target_idx] != 0)
+	// 		ft_putstr_fd(" ", 1);
+	// }
 }
 
-int	exec_echo(t_token *echo)
+int	exec_echo(t_token *token)
 {
 	int		target_idx;
-	char	**arguments;
 
-	arguments = NULL;
-	echo->command[1] = "abc ";
-	echo->command[2] = "def";
-	if (echo->command[1])
-		arguments = parse_args(echo->command);
+	// token->command[1] = "abc ";
+	// token->command[2] = "def";
+	// if (token->command[1])
+		// arguments = parse_args(token->command);
 
 	//TODO - Debuggin 추후 삭제
 	// int i = 0;
@@ -203,9 +111,10 @@ int	exec_echo(t_token *echo)
 	// 	i++;
 	// }
 
-	target_idx = check_option(arguments);
-	print_args(arguments, target_idx);
-	// if (target_idx)
+	target_idx = check_option(token->command);
+	printf("idx: %d\n", target_idx);
+	print_args(token->command, target_idx);
+	// if (target_idx == )
 	// {
 	// 	// printf("yes\n");
 	// 	print_args(arguments, target_idx); //-n 옵션이 유효한 경우 (-n은 출력 안함)
