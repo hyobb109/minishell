@@ -35,6 +35,7 @@ void	check_env(char *str, char **env)
 }
 
 // 따옴표는 대충 했는데 테스트 안해봄, 환경변수 처리 해야함!
+// "" '' 는 빈문자열 입력된거로 처리 해야하는데 아직 안 함
 char	**parse_command11(char *str, char **env)
 {
 	int		i;
@@ -68,7 +69,7 @@ char	**parse_command11(char *str, char **env)
 		}
 		else if (!quote && is_blank(str[i]))
 		{
-			str[i] = -1; // 따옴표 밖 공백이면 잘라야하니까 일단 -1로 치환
+			str[i] = '\0'; // 따옴표 밖 공백이면 자름
 			//break;
 			}
 			else
@@ -78,8 +79,7 @@ char	**parse_command11(char *str, char **env)
 		i++;
 	}
 	res[len] = '\0';
-	// 구분자 하나만 받는 스플릿 사용해서 이차원 만들어서 리턴
-	return (ft_split_c(res, -1));
+	return (ft_split_c(res, "\0"));
 }
 
 // 파싱 테스트용 메인
