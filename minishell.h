@@ -101,7 +101,7 @@ void	syntax_check(char *str);
 void	make_cmdlst(char *str, t_deque *cmd_deque, char **env);
 
 // builtins
-int		exec_pwd(void);
+int		exec_pwd(t_token *token);
 int		exec_exit(t_token *token);
 int		check_option(char **parsed);
 int		exec_echo(t_token *echo);
@@ -114,8 +114,9 @@ void	make_comdeque(t_deque *com_deque, int ac, char **av);
 void	split_comopt(t_deque *com_deque, char *str, int fd);
 void	parents_proc(t_file *file, pid_t *pid);
 void	child_proc(t_file *file);
-void	firchild_proc(t_file *file, char **arr, int *open_fd);
-void	secchild_proc(t_file *file, char **arr, int *open_fd);
+void	firchild_proc(t_file *file, int *open_fd);
+void	laschild_proc(t_file *file, int *open_fd);
+void	midchild_proc(t_file *file, int *open_fd);
 void	prefds_proc(t_file *file);
 void	wait_processes(int len);
 void	find_execpath(t_file *file, char **arr);

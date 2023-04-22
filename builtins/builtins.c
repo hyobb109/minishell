@@ -6,16 +6,17 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/16 19:57:20 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/04/22 16:07:47 by yunjcho          ###   ########seoul.kr  */
+/*   Updated: 2023/04/22 18:27:57 by yunjcho          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	exec_pwd(void)
+int	exec_pwd(t_token *token)
 {
 	char	cwd_name[PATH_MAX];
 
+	(void) token;
 	getcwd(cwd_name, sizeof(cwd_name));
 	ft_putendl_fd(cwd_name, 1);
 	return (1);
@@ -34,7 +35,7 @@ int	exec_builtins(t_token *token)
 	if (!ft_strcmp(ft_strlowcase(token->command[0]), "echo"))
 		return(exec_echo(token));
 	else if (!ft_strcmp(ft_strlowcase(token->command[0]), "pwd"))
-		return (exec_pwd());
+		return (exec_pwd(token));
 	else if (!ft_strcmp(ft_strlowcase(token->command[0]), "env"))
 		return (1);
 	else if (!ft_strcmp(token->command[0], "cd"))

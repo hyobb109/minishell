@@ -10,6 +10,8 @@
 *.swp
 *.c.swp
 *.o
+*.a
+a.out
 
 in_tmp
 out_tmp
