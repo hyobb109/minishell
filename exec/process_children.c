@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_children.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 19:37:29 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/21 22:35:29 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/04/22 15:12:36 by yunjcho          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,8 @@ void	child_proc(t_file *file)
 
 void	firchild_proc(t_file *file, char **arr, int *open_fd)
 {
-	char	*str;
-	
 	(void)arr;
-	str = NULL;
+	
 	if (!file->cur_com->infile)
 	{
 		//echo | ls -al 작동 구현 (infile 지정X)
@@ -68,10 +66,8 @@ void	firchild_proc(t_file *file, char **arr, int *open_fd)
 
 void	secchild_proc(t_file *file, char **arr, int *open_fd)
 {
-	char	*str;
-
 	(void)arr;
-	str = NULL;
+
 	if (!file->cur_com->outfile)
 		file->filepath = "out_tmp";
 	else
