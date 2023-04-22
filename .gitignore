@@ -9,6 +9,7 @@
 
 *.swp
 *.c.swp
+*.o
 
 in_tmp
 out_tmp
