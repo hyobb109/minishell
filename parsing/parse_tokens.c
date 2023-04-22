@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_tokens.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:15:26 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/21 23:04:11 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/04/22 16:02:43 by yunjcho          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ static void	init_token(char *str, t_token *token, char **env)
 	token->outfile = NULL;
 	token->prev = NULL;
 	token->next = NULL;
+	token->env = env;
 }
 
 void	make_cmdlst(char *str, t_deque *cmd_deque, char **env)

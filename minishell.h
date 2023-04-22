@@ -40,6 +40,7 @@ typedef struct s_token
 	int				state; //enum builtin, redirection etc.
 	char			*infile;
 	char			*outfile;
+	char			**env;
 }	t_token;
 
 typedef struct s_deque
@@ -125,5 +126,6 @@ void	get_size(char **arguments, char *av);
 void	get_size_step1(char *av, char *quote, int *size);
 void	get_size_step2(char **arguments, char *av, int *size, int *index);
 int		count_rows(char *argument);
+char	**strs_trim(char **before, int row);
 
 #endif
