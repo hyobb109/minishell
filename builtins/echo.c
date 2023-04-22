@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/22 15:55:25 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/22 16:32:11 by yunjcho          ###   ########seoul.kr  */
+/*   Updated: 2023/04/22 16:50:16 by yunjcho          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,10 @@ char	*join_all(char **strs, int idx)
 	result = ft_strdup("\0");
 	while (strs[idx])
 	{
-        if (idx == 1 && !ft_strcmp(strs[1], "~"))
+        if (idx == 1 && !ft_strcmp(strs[1], "~")) //옵션이 무효한 경우
             result = ft_strjoin(result, home);
+		else if (idx == 2 && !ft_strcmp(strs[2], "~")) //옵션이 유효한 경우
+			result = ft_strjoin(result, home);
         else
 		    result = ft_strjoin(result, strs[idx]);
 		if (strs[idx + 1])
