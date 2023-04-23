@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_tokens.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:15:26 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/23 21:20:17 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/24 05:49:15 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,37 @@ int	is_blank(char c)
 	return (0);
 }
 
-char	**parse_command(char *str, char **env)
+int	is_builtin(char *cmd)
+{
+	if (!ft_strcmp(ft_strlowcase(cmd), "echo"))
+		return(1);
+	if (!ft_strcmp(ft_strlowcase(cmd), "pwd"))
+		return (1);
+	if (!ft_strcmp(ft_strlowcase(cmd), "env"))
+		return (1);
+	if (!ft_strcmp(cmd, "cd"))
+		return (1);
+	if (!ft_strcmp(cmd, "export"))
+		return (1);
+	if (!ft_strcmp(cmd, "unset"))
+		return (1);
+	if (!ft_strcmp(cmd, "exit"))
+		return (1);
+	return (0);
+}
+
+// redirection이 있는 토큰은 따로 처리.. 여기서도 따옴표 확인 계속 해야 함
+// <, <<, > , >> 인지 체크, infile, outfile 업데이트
+void	io_here_token(char *str, int idx, t_token *token)
+{
+	(void) str;
+	(void) idx;
+	(void) token;
+	return;
+}
+
+// 리다이렉션 처리 필요
+void	parse_command(char *str, t_token *token)
 {
 	int		i;
 	int		len;
@@ -27,7 +57,6 @@ char	**parse_command(char *str, char **env)
 	char	res[ARG_MAX];
 	char	charset[1];
 
-	(void)env;
 	charset[0] = -1;
 	// printf("str: %s\n", str);
 	ft_memset(res, 0, ARG_MAX); // 버퍼 초기화
@@ -47,12 +76,18 @@ char	**parse_command(char *str, char **env)
 		{
 			quote = 0;
 		}
-		// else if ((!quote && str[i] == '$') || (quote == '\"' && str[i] == '$')) // $ 나오면 환경변수 아닌 것 까지 보고 자름
-		// {
-		// 	i++;
-		// 	// env 쭉 보면서 환경변수 있는지 확인
-		// 	check_env(&str[i], env);
-		// }
+		else if ((!quote && str[i] == '$') || (quote == '\"' && str[i] == '$')) // $ 나오면 환경변수 아닌 것 까지 보고 자름
+		{
+			// env 쭉 보면서 환경변수 있는지 확인하고 res에 복사
+			// printf("***len: %d, ***res: %p\n", len, res);
+			len += env_trans(&str[i + 1], &i, &res[len], token->env);
+			// printf("***len: %d, ***res: %s\n", len, res);
+		}
+		else if (!quote && (str[i] == '<' || str[i] == '>')) // 리다이렉션 있으면 io_here 토큰으로 분리하여 담음
+		{
+			io_here_token(str, i, token);
+			return ;
+		}
 		else if (!quote && is_blank(str[i]))
 		{
 			res[len++] = -1; // 따옴표 밖 공백이면 자름
@@ -67,21 +102,23 @@ char	**parse_command(char *str, char **env)
 	}
 	res[len] = '\0';
 	// printf("res : %s\n", res);
-
-	return (ft_split(res, charset));
+	token->command = ft_split(res, charset);
+	if (is_builtin(token->command[0]))
+		token->state = BUILTIN;
 }
 
 // cmd 와 arg로 분리
 static void	init_token(char *str, t_token *token, char **env)
 {
-	token->command = parse_command(str, env);
+	token->env = env;
 	//TODO - infile/outfile
-	token->state = 0;
+	token->state = GENERAL;
+	token->redir = NONE;
 	token->infile = NULL;
 	token->outfile = NULL;
+	parse_command(str, token);
 	token->prev = NULL;
 	token->next = NULL;
-	token->env = env;
 }
 
 void	make_cmdlst(char *str, t_deque *cmd_deque, char **env)

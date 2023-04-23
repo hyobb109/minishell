@@ -6,7 +6,7 @@
 /*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 14:12:04 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/04/21 19:36:30 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/04/24 05:53:49 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ int	main(int ac, char **av, char **env)
 			break;
 		syntax_check(str);
 		// printf("%s\n", str);
-		// 받은 문자열 | 로 스플릿 echo -n sdfjlskdjf | dsfcajkkle fdsfklj 
 		make_cmdlst(str, &cmd_deque, env);
 		make_pipefork(&cmd_deque, &file, env);
 		add_history(str);

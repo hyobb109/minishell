@@ -90,8 +90,6 @@ typedef struct s_matrix
 // void	get_size_step1(char *av, char *quote, int *size);
 // void	get_size_step2(char **arguments, char *av, int *size, int *index);
 // int		count_rows(char *argument);
-// char	**parse_command(char *av, char **env);
-int		is_blank(char c);
 
 // deque
 void	init_deque(t_deque *deque);
@@ -108,6 +106,9 @@ char	*join_all(char **strs, int idx);
 char	**ft_pipe_split(char *str);
 void	syntax_check(char *str);
 void	make_cmdlst(char *str, t_deque *cmd_deque, char **env);
+int		is_blank(char c);
+void	parse_command(char *str, t_token *token);
+int		env_trans(char *str, int *idx, char *buf, char **env);
 
 // builtins
 int		exec_pwd(t_token *token);
@@ -118,6 +119,7 @@ int		exist_args(t_token *token);
 int		exec_env(t_token *token);
 int		exec_builtins(t_token *token);
 void	print_args(char **arguments, int target_idx);
+int		is_builtin(char *cmd);
 
 // pipe
 void	make_pipefork(t_deque *com_deque, t_file *file, char **environ);
