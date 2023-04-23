@@ -48,8 +48,8 @@ typedef struct s_token
 	//TODO - infile/outfile
 	int				state; // builtin?
 	int				status; // exit code
-	char			*infile; // redirection check
-	char			*outfile;
+	char			**infile; // redirection check
+	char			**outfile;
 	char			**env;
 }	t_token;
 
