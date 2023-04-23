@@ -36,6 +36,13 @@ typedef enum e_state {
     GENERAL
 }   t_state;
 
+typedef enum e_redirection {
+    INPUT,
+	OUTPUT,
+	APPEND,
+	HEREDOC,
+	NONE
+}   t_redirection;
 typedef struct s_token
 {
 	char			**command;
@@ -48,7 +55,7 @@ typedef struct s_token
 	//TODO - infile/outfile
 	int				state; // builtin?
 	int				status; // exit code
-	int				here_doc; // heredoc flag
+	int				redir; // redirection check
 	char			**infile; // redirection check
 	char			**outfile;
 	char			**env;
