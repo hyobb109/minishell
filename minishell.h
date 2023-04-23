@@ -48,6 +48,7 @@ typedef struct s_token
 	//TODO - infile/outfile
 	int				state; // builtin?
 	int				status; // exit code
+	int				here_doc; // heredoc flag
 	char			**infile; // redirection check
 	char			**outfile;
 	char			**env;
@@ -82,7 +83,7 @@ typedef struct s_matrix
 // void	get_size_step1(char *av, char *quote, int *size);
 // void	get_size_step2(char **arguments, char *av, int *size, int *index);
 // int		count_rows(char *argument);
-char	**parse_command(char *av, char **env);
+// char	**parse_command(char *av, char **env);
 int		is_blank(char c);
 
 // deque
