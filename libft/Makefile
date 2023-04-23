@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+         #
+#    By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/09 17:43:15 by hyobicho          #+#    #+#              #
-#    Updated: 2023/04/20 16:44:57 by yunjcho          ###   ########seoul.kr   #
+#    Updated: 2023/04/24 05:39:43 by hyobicho         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -53,30 +53,12 @@ ft_putchar_fd.c \
 ft_putstr_fd.c \
 ft_putnbr_fd.c \
 ft_putendl_fd.c
-B_SRCS = \
-ft_lstsize_bonus.c \
-ft_lstlast_bonus.c \
-ft_lstnew_bonus.c \
-ft_lstmap_bonus.c \
-ft_lstadd_front_bonus.c \
-ft_lstadd_back_bonus.c \
-ft_lstdelone_bonus.c \
-ft_lstclear_bonus.c \
-ft_lstiter_bonus.c
 M_OBJ = $(SRCS:.c=.o)
-B_OBJ = $(B_SRCS:.c=.o)
 
 all: $(NAME)
 
-bonus: $(NAME)
-
-ifeq ($(findstring bonus, $(MAKECMDGOALS)), bonus)
-$(NAME): $(M_OBJ) $(B_OBJ)
-	ar rc $@ $^
-else
 $(NAME): $(M_OBJ)
 	ar rc $@ $^
-endif
 
 %.o : %.c
 	$(CC) -c $(CFLAGS) $< -o $@
@@ -91,4 +73,4 @@ re:
 	make fclean
 	make all
 
-.PHONY: all re clean fclean bonus
+.PHONY: all re clean fclean
