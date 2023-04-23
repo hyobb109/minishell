@@ -6,11 +6,11 @@
 /*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 04:50:31 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/04/16 18:42:26 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/04/24 05:34:57 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	whitespace(char a)
+static int	whitespace(char a)
 {
 	if ((a >= 9 && a <= 13) || a == 32)
 		return (1);
