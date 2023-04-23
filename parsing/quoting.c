@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quoting.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 19:55:14 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/04/22 15:48:58 by yunjcho          ###   ########seoul.kr  */
+/*   Updated: 2023/04/23 16:39:39 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,7 @@ int	count_rows(char *argument)
 	}
 	if (!in_quote)
 		++rows;
+	printf("row: %d\n", rows);
 	return (rows);
 }
 
@@ -133,14 +134,17 @@ char	**parse_command(char *av, char **env)
 {
 	int		row;
 	char	**arguments;
+	char	*trimmed;
 
 	(void)env;
-	row = count_rows(av);
+	trimmed = ft_strtrim(av, " \t\n");
+	row = count_rows(trimmed);
 	arguments = malloc(sizeof(char *) * (row + 1));
 	if (!arguments)
 		ft_error();
-	get_size(arguments, av);
-	assign_argument(arguments, av);
+	get_size(arguments, trimmed);
+	assign_argument(arguments, trimmed);
 	arguments[row] = 0;
+	free(trimmed);
 	return (arguments);
 }
