@@ -6,7 +6,7 @@
 #    By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/18 19:16:02 by yunjcho           #+#    #+#              #
-#    Updated: 2023/04/22 16:03:39 by yunjcho          ###   ########seoul.kr   #
+#    Updated: 2023/04/23 21:19:45 by yunjcho          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,6 @@ LIBFT_FLAG = -Llibft -lft
 LIBFT_DIR = ./libft/
 SRCS = \
 ft_main.c \
-parsing/quoting.c \
 parsing/deque_init.c \
 parsing/deque.c \
 parsing/pipe_split.c \

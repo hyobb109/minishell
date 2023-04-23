@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 19:37:29 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/23 17:59:30 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/23 20:52:32 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	firchild_proc(t_file *file, int *open_fd)
 	else
 	{
 		//< infile ls -al | wc -l > outfile 작동 구현 (infile 지정O)
-		file->filepath = file->cur_com->infile;
+		file->filepath = *file->cur_com->infile;
 		*open_fd = open(file->filepath, O_RDONLY);
 	}
 	if (*open_fd == -1)
@@ -69,7 +69,7 @@ void	laschild_proc(t_file *file, int *open_fd)
 	if (!file->cur_com->outfile)
 		file->filepath = "out_tmp";
 	else
-		file->filepath = file->cur_com->outfile;
+		file->filepath = *file->cur_com->outfile;
 	*open_fd = open(file->filepath, \
 	O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (*open_fd == -1)

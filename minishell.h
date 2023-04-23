@@ -77,11 +77,11 @@ typedef struct s_matrix
 
 
 // quoting
-void	assign_argument(char **str, char *av);
-void	get_size(char **arguments, char *av);
-void	get_size_step1(char *av, char *quote, int *size);
-void	get_size_step2(char **arguments, char *av, int *size, int *index);
-int		count_rows(char *argument);
+// void	assign_argument(char **str, char *av);
+// void	get_size(char **arguments, char *av);
+// void	get_size_step1(char *av, char *quote, int *size);
+// void	get_size_step2(char **arguments, char *av, int *size, int *index);
+// int		count_rows(char *argument);
 char	**parse_command(char *av, char **env);
 int		is_blank(char c);
 
@@ -103,7 +103,7 @@ void	make_cmdlst(char *str, t_deque *cmd_deque, char **env);
 
 // builtins
 int		exec_pwd(t_token *token);
-int		exec_exit(t_token *token);
+void	exec_exit(t_token *token);
 int		check_option(char **parsed);
 int		exec_echo(t_token *echo);
 int		exist_args(t_token *token);
