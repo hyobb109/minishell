@@ -6,18 +6,11 @@
 /*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 19:55:14 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/04/23 16:39:39 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/04/23 20:46:29 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-int	is_blank(char c)
-{
-	if (c == ' ' || c == '\t' || c == '\n')
-		return (1);
-	return (0);
-}
 
 void	assign_argument(char **str, char *av)
 {
@@ -130,7 +123,7 @@ int	count_rows(char *argument)
 	return (rows);
 }
 
-char	**parse_command(char *av, char **env)
+char	**parse_command11(char *av, char **env)
 {
 	int		row;
 	char	**arguments;
