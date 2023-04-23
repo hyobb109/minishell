@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 19:53:02 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/04/21 15:03:38 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/24 05:32:05 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,8 @@ static unsigned int	cntstr(char *s, char *charset)
 	cnt = 0;
 	i = 0;
 	flag = 1;
+	if (s[0] == '\0')
+		return (1);
 	while (s[i])
 	{
 		if (!incharset(s[i], charset) && flag)
