@@ -106,6 +106,8 @@ int		exec_pwd(t_token *token);
 int		exec_exit(t_token *token);
 int		check_option(char **parsed);
 int		exec_echo(t_token *echo);
+int		exist_args(t_token *token);
+int		exec_env(t_token *token);
 int		exec_builtins(t_token *token);
 void	print_args(char **arguments, int target_idx);
 

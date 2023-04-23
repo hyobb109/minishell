@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 19:37:29 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/22 18:57:41 by yunjcho          ###   ########seoul.kr  */
+/*   Updated: 2023/04/23 17:59:30 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,8 +87,9 @@ void	laschild_proc(t_file *file, int *open_fd)
 	}
 }
 
-void	laschild_proc(t_file *file, int *open_fd)
+void	midchild_proc(t_file *file, int *open_fd)
 {
+	(void) open_fd;
 	dup2(file->pre_fds[READ], STDIN_FILENO);
 	dup2(file->new_fds[WRITE], STDOUT_FILENO);
 	close(file->pre_fds[READ]);
