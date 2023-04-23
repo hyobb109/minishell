@@ -27,6 +27,15 @@
 # define READ 0
 # define WRITE 1
 
+typedef enum e_flag {
+	CLOSED
+}	t_flag;
+
+typedef enum e_state {
+    BUILTIN,
+    GENERAL
+}   t_state;
+
 typedef struct s_token
 {
 	char			**command;
@@ -37,8 +46,9 @@ typedef struct s_token
 	struct s_token	*next;
 
 	//TODO - infile/outfile
-	int				state; //enum builtin, redirection etc.
-	char			*infile;
+	int				state; // builtin?
+	int				status; // exit code
+	char			*infile; // redirection check
 	char			*outfile;
 	char			**env;
 }	t_token;
@@ -65,15 +75,6 @@ typedef struct s_matrix
 	int column;
 }	t_matrix;
 
-
-typedef enum e_flag {
-	CLOSED
-}	t_flag;
-
-typedef enum e_state {
-    BUILTIN,
-    GENERAL
-}   t_state;
 
 // quoting
 void	assign_argument(char **str, char *av);
