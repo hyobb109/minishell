@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 19:37:29 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/23 21:24:22 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/24 21:55:23 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,12 @@ void	child_proc(t_file *file)
 	int		open_fd;
 
 	// printf("--------Child Start--------- : %ld\n", (long)getpid());
-	// printf("file command : %s\n", file->cur_com->command);
+	// printf("file command : %s\n", file->cur_com->command[0]);
 	// printf("pre_fds : %p\nfds[0] : %d, fds[1] : %d\n", file->pre_fds, file->pre_fds[0], file->pre_fds[1]);
 	// printf("new_fds : %p\nfds[0] : %d, fds[1] : %d\n", file->new_fds, file->new_fds[0], file->new_fds[1]);
 	open_fd = 0;
 	int	debugging = exec_builtins(file->cur_com);
-	printf("%ld debugging : %d\n", (long)getpid(), debugging);
+	// printf("%ld debugging : %d\n", (long)getpid(), debugging);
 	if (!debugging)
 	{
 		if (file->cur_com->prev == NULL)

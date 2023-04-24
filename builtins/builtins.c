@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/16 19:57:20 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/04/23 21:06:18 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/24 20:43:45 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,49 +41,9 @@ int	exist_args(t_token *token)
 	return (1);
 }
 
-int	exist_pwd(t_token *token)
-{
-	int		idx;
-	int		flag;
-
-	idx = 1;
-	flag = 0;
-	while (token->command[idx])
-	{
-		if(!ft_strcmp(ft_strlowcase(token->command[idx]), "pwd"))
-			return (1);
-		idx++;
-	}
-	return (0);
-}
-
-int	exec_env(t_token *token)
-{
-	int	idx;
-
-	idx = 0;
-	if (!exist_args(token)) //인자가 없는 경우에는 목록 출력
-	{
-		while (token->env[idx])
-		{
-			ft_putendl_fd(token->env[idx], 1);
-			idx++;
-		}
-	}
-	else
-	{
-		if (exist_pwd(token))
-			exec_pwd(token);
-		else
-			//에러 메시지 - 파일명 받아서 쓸 지?
-			ft_putendl_fd("No such file or directory", 2);
-	}
-	return (1);
-}
-
 int	exec_cd(t_token *token)
 {
-	int idx;
+	int	idx;
 
 	idx = 0;
 	while (token->env[idx])
@@ -97,7 +57,7 @@ int	exec_cd(t_token *token)
 int	exec_builtins(t_token *token)
 {
 	if (!ft_strcmp(ft_strlowcase(token->command[0]), "echo"))
-		return(exec_echo(token));
+		return (exec_echo(token));
 	else if (!ft_strcmp(ft_strlowcase(token->command[0]), "pwd"))
 		return (exec_pwd(token));
 	else if (!ft_strcmp(ft_strlowcase(token->command[0]), "env"))

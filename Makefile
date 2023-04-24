@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+         #
+#    By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/18 19:16:02 by yunjcho           #+#    #+#              #
-#    Updated: 2023/04/24 05:41:45 by hyobicho         ###   ########.fr        #
+#    Updated: 2023/04/24 20:51:02 by yunjcho          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,8 @@ exec/process_children.c \
 exec/process_parents.c \
 exec/find_paths.c \
 builtins/builtins.c \
-builtins/echo.c
+builtins/echo.c \
+builtins/env.c
 M_OBJ = $(SRCS:.c=.o)
 
 ifdef SANITIZE
