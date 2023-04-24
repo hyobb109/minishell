@@ -6,7 +6,7 @@
 #    By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/18 19:16:02 by yunjcho           #+#    #+#              #
-#    Updated: 2023/04/24 20:51:02 by yunjcho          ###   ########.fr        #
+#    Updated: 2023/04/25 01:26:42 by yunjcho          ###   ########seoul.kr   #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,8 @@ exec/process_parents.c \
 exec/find_paths.c \
 builtins/builtins.c \
 builtins/echo.c \
-builtins/env.c
+builtins/env.c \
+builtins/cd.c
 M_OBJ = $(SRCS:.c=.o)
 
 ifdef SANITIZE

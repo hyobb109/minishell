@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 20:42:23 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/24 22:50:08 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/25 01:51:52 by yunjcho          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	exist_validkey(t_token *token)
 					ft_putendl_fd("usage: pwd No need options and args", 2);
 				else
 					ft_putendl_fd("usage: logname", 2);
-				exit (1); //TODO - 추후 확인 후 수정 (return(-1))
+				exit (EXIT_FAILURE);// ft_error(); //TODO - 추후 확인 후 수정 (return(-1))
 			}
 		}
 		free(tmp);
@@ -80,6 +80,7 @@ int	exec_env(t_token *token)
 			// perror(NULL);
 			if (token->command[1])
 				printf("env: %s: %s\n", token->command[1], strerror(ENOENT));
+			exit (EXIT_FAILURE);//ft_error();
 		}
 	}
 	return (1);

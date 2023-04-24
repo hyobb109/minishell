@@ -113,6 +113,9 @@ int		env_trans(char *str, int *idx, char *buf, char **env);
 // builtins
 int		exec_pwd(t_token *token);
 void	exec_exit(t_token *token);
+int		chdir_home(void);
+int		exec_cd(t_token *token);
+int		exec_export(t_token *token);
 int		check_option(char **parsed);
 int		exec_echo(t_token *echo);
 int		exist_args(t_token *token);

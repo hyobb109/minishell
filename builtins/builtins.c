@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/16 19:57:20 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/04/24 20:43:45 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/25 01:26:06 by yunjcho          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,24 +33,14 @@ void	exec_exit(t_token *token)
 
 int	exist_args(t_token *token)
 {
-	int	idx;
-
-	idx = 0;
 	if (!token->command[1])
 		return (0);
 	return (1);
 }
 
-int	exec_cd(t_token *token)
+int	exec_export(t_token *token)
 {
-	int	idx;
-
-	idx = 0;
-	while (token->env[idx])
-	{
-		ft_putendl_fd(token->env[idx], 1);
-		idx++;
-	}
+	(void) token;
 	return (1);
 }
 
@@ -65,7 +55,7 @@ int	exec_builtins(t_token *token)
 	else if (!ft_strcmp(token->command[0], "cd"))
 		return (exec_cd(token));
 	else if (!ft_strcmp(token->command[0], "export"))
-		return (1);
+		return (exec_export(token));
 	else if (!ft_strcmp(token->command[0], "unset"))
 		return (1);
 	else if (!ft_strcmp(token->command[0], "exit"))
