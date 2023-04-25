@@ -52,6 +52,21 @@ typedef struct s_fd
 	int		error_flag;
 }t_fd;
 
+typedef struct s_env
+{
+	char			*key;
+	char			*val;
+	struct s_env	*prev;
+	struct s_env	*next;
+}t_env;
+
+typedef struct s_edeque
+{
+	t_env	*head;
+	t_env	*tail;
+	int		cnt;
+}	t_edeque;
+
 typedef struct s_token
 {
 	char			**command;
@@ -67,7 +82,8 @@ typedef struct s_token
 	int				redir; // redirection check
 	t_fd			**infile;
 	t_fd			**outfile;
-	char			**env;
+	t_edeque		**envp;
+	char			**env; // delete
 }	t_token;
 
 typedef struct s_deque
@@ -101,13 +117,19 @@ typedef struct s_matrix
 
 // deque
 void	init_deque(t_deque *deque);
+void	init_edeque(t_edeque *deque);
 void	init_element(t_token *element, char **parsed);
+
 // void	append_front(t_deque *deque, char *command);
 void	append_back(t_deque *deque, t_token *token);
+void	append_back_env(t_edeque *deque, t_env *env);
 // t_token	*pop_front(t_deque *deque);
 t_token	*pop_back(t_deque *deque);
+t_env	*pop_back_env(t_edeque *deque);
 void	free_deque(t_deque *deque);
+void	free_edeque(t_edeque *deque);
 void	print_deque(t_deque *deque); //delete
+void	print_edeque(t_edeque *deque); // delete
 
 // parsing
 char	*join_all(char **strs, int idx);
