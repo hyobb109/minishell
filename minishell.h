@@ -49,7 +49,7 @@ typedef enum e_redirection {
 typedef enum e_ftype {
     INFILE,
 	OUTFILE,
-	DELIMETER
+	DELIMITER
 }   t_ftype;
 
 typedef struct s_fdata
