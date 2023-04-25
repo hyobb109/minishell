@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 19:37:29 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/25 20:23:00 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/25 21:08:25 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,11 @@
 
 void	child_process(t_token *line, int count, int total, int (*fd)[2])
 {
-	(void) line;
+	//TODO - builtin 상의
+	int debugging = exec_builtins(line);
+	printf("debugging : %d\n", debugging);
+	//TODO - builtin 상의
+
 	manage_pipe(count, total, fd);
 }
 

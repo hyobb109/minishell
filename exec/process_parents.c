@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 16:33:30 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/25 20:45:05 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/25 21:18:08 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,24 @@ void	parents_process(t_deque *cmd_deque)
 	int	(*fd)[2];
 	int	count;
 
-	int debugging = exec_builtins(cmd_deque->head);
-	printf("debugging : %d\n", debugging);
-
-	fd = create_pipe(cmd_deque);	
-	int idx = 0;
-	while (idx < 5)
+	//TODO - builtin 상의
+	if (cmd_deque->cnt == 1)
 	{
-		printf("fd[%d][R] : %d, fd[%d][W] : %d\n", idx, fd[idx][0], idx, fd[idx][1]);
-		idx++;
+		int debugging = exec_builtins(cmd_deque->head);
+		printf("debugging : %d\n", debugging);
+		// if (debugging == 1) //TODO - 나중에 주석 풀기
+		// 	exit(0);
 	}
-	
+	//TODO - builtin 상의
+
+	fd = create_pipe(cmd_deque);
+	//TODO - Debbuging
+	// int idx = 0;
+	// while (idx < 5)
+	// {
+	// 	printf("fd[%d][R] : %d, fd[%d][W] : %d\n", idx, fd[idx][0], idx, fd[idx][1]);
+	// 	idx++;
+	// }
 	count = cmd_deque->cnt - 1;
 	create_child(cmd_deque, fd);
 	close_pipe(fd, count);
