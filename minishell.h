@@ -47,7 +47,9 @@ typedef enum e_redirection {
 typedef struct s_fd
 {
 	char	filename[PATH_MAX];
-	int		fd;
+	int		redir_fd;
+	int		file_fd;
+	int		error_flag;
 }t_fd;
 
 typedef struct s_token
