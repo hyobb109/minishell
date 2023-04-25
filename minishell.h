@@ -44,6 +44,12 @@ typedef enum e_redirection {
 	NONE
 }   t_redirection;
 
+typedef enum e_ftype {
+    INFILE,
+	OUTFILE,
+	DELIMETER
+}   t_ftype;
+
 typedef struct s_fdata
 {
 	char			filename[PATH_MAX];
