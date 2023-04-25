@@ -43,6 +43,13 @@ typedef enum e_redirection {
 	HEREDOC,
 	NONE
 }   t_redirection;
+
+typedef struct s_fd
+{
+	char	filename[PATH_MAX];
+	int		fd;
+}t_fd;
+
 typedef struct s_token
 {
 	char			**command;
@@ -56,8 +63,8 @@ typedef struct s_token
 	int				state; // builtin?
 	int				status; // exit code
 	int				redir; // redirection check
-	char			**infile; // redirection check
-	char			**outfile;
+	t_fd			**infile;
+	t_fd			**outfile;
 	char			**env;
 }	t_token;
 
