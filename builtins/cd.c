@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 01:25:35 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/25 18:52:58 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/25 19:41:07 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,16 +83,15 @@ int	exec_cd(t_token *token)
 			token->command[1], strerror(errno)); // perror(token->command[1]);
 		exit (EXIT_FAILURE);// ft_error();
 	}
-	result = chdir(dest);
 	getcwd(cwd_name, sizeof(cwd_name));
 	printf("dest : %s, cur_dir : %s, result : %d\n", dest, cwd_name, result);
 	//TODO - env PWD 현재 위치로 바꿔야 함
-	free (dest);
-	if (result == -1)
+	if (chdir(dest) == -1)
 	{
 		printf("%s: %s: %s\n", token->command[0], \
 			token->command[1], strerror(errno)); // perror(token->command[1]);
 		exit (EXIT_FAILURE);// ft_error();
 	}
+	free (dest);
 	return (1);
 }

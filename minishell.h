@@ -26,6 +26,8 @@
 # define ARG_MAX 262144
 # define READ 0
 # define WRITE 1
+# define TRUE 1
+# define FALSE 0
 
 typedef enum e_flag {
 	CLOSED
@@ -123,13 +125,14 @@ void	init_element(t_token *element, char **parsed);
 // void	append_front(t_deque *deque, char *command);
 void	append_back(t_deque *deque, t_token *token);
 void	append_back_env(t_edeque *deque, t_env *env);
-// t_token	*pop_front(t_deque *deque);
+t_token	*pop_front(t_deque *deque);
 t_token	*pop_back(t_deque *deque);
 t_env	*pop_back_env(t_edeque *deque);
 void	free_deque(t_deque *deque);
 void	free_edeque(t_edeque *deque);
 void	print_deque(t_deque *deque); //delete
 void	print_edeque(t_edeque *deque); // delete
+int		deque_is_empty(t_deque *pdeque);
 
 // parsing
 char	*join_all(char **strs, int idx);
@@ -160,18 +163,28 @@ void	print_args(char **arguments, int target_idx);
 int		is_builtin(char *cmd);
 
 // pipe
-void	make_pipefork(t_deque *com_deque, t_file *file, char **environ);
-void	make_comdeque(t_deque *com_deque, int ac, char **av);
-void	split_comopt(t_deque *com_deque, char *str, int fd);
-void	parents_proc(t_file *file, pid_t *pid);
-void	child_proc(t_file *file);
-void	firchild_proc(t_file *file, int *open_fd);
-void	laschild_proc(t_file *file, int *open_fd);
-void	midchild_proc(t_file *file, int *open_fd);
-void	prefds_proc(t_file *file);
-void	wait_processes(int len);
-void	find_execpath(t_file *file, char **arr);
-char	*matching_path(char **path_str, char **arr);
+void	parents_process(t_deque *cmd_deque);
+void	wait_child(int count);
+void	close_pipe(int (*fd)[2], int count);
+void	create_child(t_deque *cmd_deque, int (*fd)[2]);
+int		(*create_pipe(t_deque *cmd_deque))[2];
+void	child_process(t_token *line, int count, int total, int (*fd)[2]);
+void	manage_pipe(int count, int total, int (*fd)[2]);
+
+// 삭제 예정
+// void	make_pipefork(t_deque *com_deque, t_file *file, char **environ);
+// void	make_comdeque(t_deque *com_deque, int ac, char **av);
+// void	split_comopt(t_deque *com_deque, char *str, int fd);
+// void	parents_proc(t_file *file, pid_t *pid);
+// void	child_proc(t_file *file);
+// void	firchild_proc(t_file *file, int *open_fd);
+// void	laschild_proc(t_file *file, int *open_fd);
+// void	midchild_proc(t_file *file, int *open_fd);
+// void	prefds_proc(t_file *file);
+// void	wait_processes(int len);
+// void	find_execpath(t_file *file, char **arr);
+// char	*matching_path(char **path_str, char **arr);
+
 int		exec_builtins(t_token *token);
 void	assign_argument(char **str, char *av);
 void	get_size(char **arguments, char *av);

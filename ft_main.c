@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 14:12:04 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/04/25 18:46:45 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/25 20:44:09 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ int	main(int ac, char **av, char **env)
 
 	(void) ac;
 	(void) av;
+	(void) file;
 	while (1)
 	{
 		init_deque(&cmd_deque);
@@ -35,7 +36,8 @@ int	main(int ac, char **av, char **env)
 		syntax_check(str);
 		// printf("%s\n", str);
 		make_cmdlst(str, &cmd_deque, env);
-		make_pipefork(&cmd_deque, &file, env);
+		parents_process(&cmd_deque);
+		// make_pipefork(&cmd_deque, &file, env);
 		add_history(str);
 		free(str);
 		free_deque(&cmd_deque);
