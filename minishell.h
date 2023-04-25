@@ -94,7 +94,7 @@ typedef struct s_token
 	int				state; // builtin?
 	int				status; // exit code
 	int				redir; // redirection check
-	t_fdata			**files;
+	t_fdata			*files;
 	t_edeque		*envp;
 	t_fd			**infile; // delete
 	t_fd			**outfile; // delete
@@ -110,10 +110,10 @@ typedef struct s_deque
 
 typedef struct s_file
 {
-	char *filepath;
-	char **env;
-	int pre_fds[2];
-	int new_fds[2];
+	char 	*filepath;
+	char	**env;
+	int		pre_fds[2];
+	int		new_fds[2];
 	t_token *cur_com;
 } t_file;
 
