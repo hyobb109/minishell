@@ -139,10 +139,7 @@ void	init_element(t_token *element, char **parsed);
 void	append_back(t_deque *deque, t_token *token);
 void	append_back_env(t_edeque *deque, t_env *env);
 t_token	*pop_front(t_deque *deque);
-<<<<<<< HEAD
-=======
 t_env	*pop_front_env(t_edeque *deque);
->>>>>>> 92bde2ee164c0e292330b59e0f83f63c5f8d9c34
 t_token	*pop_back(t_deque *deque);
 t_env	*pop_back_env(t_edeque *deque);
 void	free_deque(t_deque *deque);
