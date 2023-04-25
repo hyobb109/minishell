@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 20:42:23 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/25 15:13:43 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/25 15:31:12 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,10 @@ int	exist_validkey(t_token *token)
 		if (ft_strcmp(tmp, "env"))
 		{
 			if (init_validkeyflag(token, idx, tmp, &flag) > 0)
+			{
+				free(tmp);
 				return (flag);
+			}
 		}
 		free(tmp);
 		idx++;

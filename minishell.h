@@ -90,7 +90,6 @@ typedef struct s_matrix
 	int column;
 }	t_matrix;
 
-
 // quoting
 // void	assign_argument(char **str, char *av);
 // void	get_size(char **arguments, char *av);
@@ -121,6 +120,7 @@ int		env_trans(char *str, int *idx, char *buf, char **env);
 int		exec_pwd(t_token *token);
 void	exec_exit(t_token *token);
 int		chdir_home(void);
+char	*make_dirstr(char *str);
 int		exec_cd(t_token *token);
 int		exec_export(t_token *token);
 int		check_option(char **parsed);
