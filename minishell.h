@@ -44,13 +44,11 @@ typedef enum e_redirection {
 	NONE
 }   t_redirection;
 
-typedef struct s_fd
+typedef struct s_fdata
 {
 	char	filename[PATH_MAX];
-	int		redir_fd;
-	int		file_fd;
-	int		error_flag;
-}t_fd;
+	int		type;
+}	t_fdata;
 
 typedef struct s_env
 {
@@ -80,8 +78,7 @@ typedef struct s_token
 	int				state; // builtin?
 	int				status; // exit code
 	int				redir; // redirection check
-	t_fd			**infile;
-	t_fd			**outfile;
+	t_fdata			**files;
 	t_edeque		**envp;
 	char			**env; // delete
 }	t_token;
@@ -120,10 +117,11 @@ void	init_deque(t_deque *deque);
 void	init_edeque(t_edeque *deque);
 void	init_element(t_token *element, char **parsed);
 
-// void	append_front(t_deque *deque, char *command);
+void	append_front(t_deque *deque, char *command);
 void	append_back(t_deque *deque, t_token *token);
 void	append_back_env(t_edeque *deque, t_env *env);
-// t_token	*pop_front(t_deque *deque);
+t_token	*pop_front(t_deque *deque);
+t_env	*pop_front_env(t_edeque *deque);
 t_token	*pop_back(t_deque *deque);
 t_env	*pop_back_env(t_edeque *deque);
 void	free_deque(t_deque *deque);
