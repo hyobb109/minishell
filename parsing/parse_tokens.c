@@ -110,7 +110,7 @@ int	io_here_token(char *str, t_token *token)
 	if (!strncmp(&str[i], "<<", 2))
 	{
 		token->redir = HEREDOC;
-		newfile->type = DELIMETER;
+		newfile->type = DELIMITER;
 		i += 2;
 	}
 	else if (!strncmp(&str[i], ">>", 2))
