@@ -6,7 +6,7 @@
 /*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:15:26 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/25 21:36:34 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/04/25 21:58:38 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,16 +38,16 @@ int	is_builtin(char *cmd)
 	return (0);
 }
 
-void	append_file(t_fdata *head, t_fdata *new)
+void	append_file(t_fdata **head, t_fdata *new)
 {
 	t_fdata	*last;
 
-	if (!head)
+	if (!(*head))
 	{
-		head = new;
+		*head = new;
 		return ;
 	}
-	last = head;
+	last = *head;
 	while (last->next)
 		last = last->next;
 	last->next = new;
@@ -88,8 +88,9 @@ int	get_filename(char *str, t_fdata *new, t_token *token)
 		i++;
 	}
 	new->filename[len] = '\0';
-	printf("string idx: %d filename: %s\n", i, new->filename);
-	append_file(token->files, new);
+	// printf("string idx: %d filename: %s\n", i, new->filename);
+	append_file(&token->files, new);
+	// printf("files addr: %p, next: \n", token->files);
 	return (i);
 }
 
@@ -143,7 +144,7 @@ void	parse_command(char *str, t_token *token)
 	char	charset[1];
 
 	charset[0] = -1;
-	printf("**str: %s\n", str);
+	// printf("**str: %s\n", str);
 	ft_memset(res, 0, ARG_MAX); // 버퍼 초기화
 	i = 0;
 	// 처음 들어오는 공백 넘김
@@ -171,7 +172,7 @@ void	parse_command(char *str, t_token *token)
 		else if (!quote && (str[i] == '<' || str[i] == '>')) // 리다이렉션 있으면 io_here 토큰으로 분리하여 담음
 		{
 			i += io_here_token(&str[i], token);
-			printf("str[%d]: %c res: %s quote: %d\n", i, str[i], res, quote);
+			// printf("str[%d]: %c res: %s quote: %d\n", i, str[i], res, quote);
 		} 
 		else if (!quote && is_blank(str[i]))
 		{
@@ -226,6 +227,17 @@ void	make_envlst(t_edeque *envp, char **env)
 	// print_edeque(&envp);
 }
 
+// delete!
+void	print_filelst(t_fdata *head)
+{
+	t_fdata *tmp = head;
+	while (tmp)
+	{
+		printf("filename: %s, type: %d\n", tmp->filename, tmp->type);
+		tmp = tmp->next;
+	}
+}
+
 void	make_cmdlst(char *str, t_deque *cmd_deque, char **env)
 {
 	t_edeque	envp;
@@ -248,7 +260,9 @@ void	make_cmdlst(char *str, t_deque *cmd_deque, char **env)
 		append_back(cmd_deque, token);
 		i++;
 	}
+	// print_filelst(cmd_deque->head->files);
 	// free_strs(parsed);
 	// free_strs(strs);
 	print_deque(cmd_deque);
 }
+
