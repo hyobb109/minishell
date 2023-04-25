@@ -46,13 +46,25 @@ typedef enum e_redirection {
 	NONE
 }   t_redirection;
 
+typedef enum e_ftype {
+    INFILE,
+	OUTFILE,
+	DELIMETER
+}   t_ftype;
+
+typedef struct s_fdata
+{
+	char			filename[PATH_MAX];
+	int				type;
+	struct	s_fdata	*next;
+}	t_fdata;
+
+// delete
 typedef struct s_fd
 {
 	char	filename[PATH_MAX];
-	int		redir_fd;
-	int		file_fd;
-	int		error_flag;
-}t_fd;
+	int		type;
+}	t_fd;
 
 typedef struct s_env
 {
@@ -82,9 +94,10 @@ typedef struct s_token
 	int				state; // builtin?
 	int				status; // exit code
 	int				redir; // redirection check
-	t_fd			**infile;
-	t_fd			**outfile;
-	t_edeque		**envp;
+	t_fdata			**files;
+	t_edeque		*envp;
+	t_fd			**infile; // delete
+	t_fd			**outfile; // delete
 	char			**env; // delete
 }	t_token;
 
@@ -126,6 +139,10 @@ void	init_element(t_token *element, char **parsed);
 void	append_back(t_deque *deque, t_token *token);
 void	append_back_env(t_edeque *deque, t_env *env);
 t_token	*pop_front(t_deque *deque);
+<<<<<<< HEAD
+=======
+t_env	*pop_front_env(t_edeque *deque);
+>>>>>>> 92bde2ee164c0e292330b59e0f83f63c5f8d9c34
 t_token	*pop_back(t_deque *deque);
 t_env	*pop_back_env(t_edeque *deque);
 void	free_deque(t_deque *deque);
@@ -141,7 +158,7 @@ void	syntax_check(char *str);
 void	make_cmdlst(char *str, t_deque *cmd_deque, char **env);
 int		is_blank(char c);
 void	parse_command(char *str, t_token *token);
-int		env_trans(char *str, int *idx, char *buf, char **env);
+int		env_trans(char *str, int *idx, char *buf, t_edeque *envp);
 
 // builtins
 int		exec_pwd(t_token *token);
