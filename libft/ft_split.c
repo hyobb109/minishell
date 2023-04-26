@@ -6,37 +6,23 @@
 /*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 19:53:02 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/04/24 05:32:05 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/04/26 16:34:43 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int	incharset(char a, char *charset)
+static unsigned int	ft_strlen1(char const *s, char c)
 {
 	int	i;
 
 	i = 0;
-	while (charset[i])
-	{
-		if (a == charset[i])
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
-static unsigned int	ft_strlen1(char *s, char *charset)
-{
-	int	i;
-
-	i = 0;
-	while (s[i] && (!(incharset(s[i], charset))))
+	while (s[i] && s[i] != c)
 		i++;
 	return (i);
 }
 
-static char	**result(char **res, char *str, char *charset, int cnt)
+static char	**result(char **res, char const *str, char c, int cnt)
 {
 	int	i;
 	int	j;
@@ -45,18 +31,18 @@ static char	**result(char **res, char *str, char *charset, int cnt)
 	i = 0;
 	while (i < cnt)
 	{
-		len = ft_strlen1(str, charset);
+		len = ft_strlen1(str, c);
 		res[i] = (char *)malloc(sizeof(char) * (len + 1));
 		if (res[i] == NULL)
 			ft_error();
 		j = 0;
-		while (j < len)
+		while (j < len && str[j])
 		{
 			res[i][j] = str[j];
 			j++;
 		}
 		res[i][j] = '\0';
-		while (incharset(str[j], charset) && str[j])
+		while (str[j] == c && str[j])
 			j++;
 		str += j;
 		i++;
@@ -65,7 +51,7 @@ static char	**result(char **res, char *str, char *charset, int cnt)
 	return (res);
 }
 
-static unsigned int	cntstr(char *s, char *charset)
+static unsigned int	cntstr(char const *s, char c)
 {
 	int	cnt;
 	int	i;
@@ -78,28 +64,30 @@ static unsigned int	cntstr(char *s, char *charset)
 		return (1);
 	while (s[i])
 	{
-		if (!incharset(s[i], charset) && flag)
+		if (s[i] != c && flag)
 		{
 			cnt++;
 			flag = 0;
 		}
-		else if (incharset(s[i], charset))
+		else if (s[i] == c)
 			flag = 1;
 		i++;
 	}
 	return (cnt);
 }
 
-char	**ft_split(char *str, char *charset)
+char	**ft_split(char const *s, char c)
 {
 	char			**res;
 	unsigned int	cnt;
+	int				i;
 
-	while (incharset(*str, charset))
-		str++;
-	cnt = cntstr(str, charset);
+	i = 0;
+	while (s[i] == c && c != '\0')
+		i++;
+	cnt = cntstr(&s[i], c);
 	res = (char **)malloc(sizeof(char *) * (cnt + 1));
 	if (res == NULL)
 		ft_error();
-	return (result(res, str, charset, cnt));
+	return (result(res, &s[i], c, cnt));
 }
