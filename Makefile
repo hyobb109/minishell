@@ -6,7 +6,7 @@
 #    By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/18 19:16:02 by yunjcho           #+#    #+#              #
-#    Updated: 2023/04/25 20:32:22 by yunjcho          ###   ########.fr        #
+#    Updated: 2023/04/26 14:54:33 by yunjcho          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,6 +25,7 @@ parsing/pipe_split.c \
 parsing/parse_tokens.c \
 parsing/env_check.c \
 parsing/syntax_error.c \
+parsing/env_deque.c \
 exec/process_children.c \
 exec/process_parents.c \
 builtins/builtins.c \

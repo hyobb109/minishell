@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 20:42:23 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/25 15:31:12 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/26 14:52:40 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,13 +84,17 @@ void	print_invalidargserror(t_token *token)
 
 void	print_envlist(t_token *token)
 {
-	int	idx;
+	char	*str;
+	t_env	*tmp;
 
-	idx = 0;
-	while (token->env[idx])
+	str = NULL;
+	tmp = token->envp->head;
+	while (tmp)
 	{
-		ft_putendl_fd(token->env[idx], 1);
-		idx++;
+		str = ft_strjoin_three(tmp->key, "=", tmp->val);
+		ft_putendl_fd(str, 1);
+		free(str);
+		tmp = tmp->next;
 	}
 }
 

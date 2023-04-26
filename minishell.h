@@ -143,7 +143,7 @@ int		deque_is_empty(t_deque *pdeque);
 char	*join_all(char **strs, int idx);
 char	**ft_pipe_split(char *str);
 void	syntax_check(char *str);
-void	make_cmdlst(char *str, t_deque *cmd_deque, char **env);
+void	make_cmdlst(char *str, t_deque *cmd_deque, t_edeque *envp);
 int		is_blank(char c);
 void	parse_command(char *str, t_token *token);
 int		env_trans(char *str, int *idx, char *buf, t_edeque *envp);
