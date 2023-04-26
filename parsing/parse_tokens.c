@@ -6,7 +6,7 @@
 /*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:15:26 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/26 18:35:50 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/04/26 20:18:21 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,12 +51,12 @@ int	io_here_token(char *str, t_token *token)
 		ft_error();
 	newfile->next = NULL;
 	// redirection flag check
-	if (!strncmp(&str[i], "<<", 2))
+	if (str[i] == '<' && str[i + 1] == '<')
 	{
 		newfile->type = DELIMITER;
 		i += 2;
 	}
-	else if (!strncmp(&str[i], ">>", 2))
+	else if (str[i] == '>' && str[i + 1] == '>')
 	{
 		newfile->type = APPEND;
 		i += 2;
@@ -107,6 +107,20 @@ void	parse_command(char *str, t_token *token)
 		else if (!quote && (str[i] == '<' || str[i] == '>')) // 리다이렉션 있으면 io_here 토큰으로 분리하여 담음
 		{
 			i += io_here_token(&str[i], token);
+			// if (str[i] == '<' && str[i + 1] == '<')
+			// {
+			// 	res[len++] = DELIMITER;
+			// 	i++;
+			// }
+			// else if (str[i] == '>' && str[i + 1] == '>')
+			// {
+			// 	res[len++] = APPEND;
+			// 	i++;
+			// }
+			// else if (str[i] == '<')
+			// 	res[len++] = INFILE;
+			// else if (str[i] == '>')
+			// 	res[len++] = OUTFILE;
 		} 
 		else if (!quote && is_blank(str[i]))
 		{
@@ -122,7 +136,7 @@ void	parse_command(char *str, t_token *token)
 	res[len] = '\0';
 	// printf("res : %s\n", res);
 	token->command = ft_split(res, BLANK);
-	env_trans(token->command, token->envp);
+	search_env(token->command, token->envp);
 	if (is_builtin(token->command[0]))
 		token->state = BUILTIN;
 }

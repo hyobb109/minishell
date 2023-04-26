@@ -6,7 +6,7 @@
 /*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 15:08:06 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/04/26 16:47:18 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/04/26 22:35:35 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	get_filename(char *str, t_fdata *new, t_token *token)
 		}
 		else if ((!quote && str[i] == '$') || (quote == '\"' && str[i] == '$'))
 		{
-			len += env_trans(&str[i + 1], &i, &new->filename[len], token->envp);
+			new->filename[len++] = ENVIRON;
 		}
 		else
 		{
@@ -73,7 +73,24 @@ int	get_filename(char *str, t_fdata *new, t_token *token)
 		i++;
 	}
 	new->filename[len] = '\0';
-	// printf("string idx: %d filename: %s\n", i, new->filename);
+	printf("=========\n");
+	printf("file: %s\n", new->filename);
+	int j = 0;
+	while (new->filename[j])
+	{
+		if (new->filename[j] == ENVIRON)
+		{
+			if (new->type == DELIMITER)
+			{
+				new->filename[j] = '$';
+			}
+			else
+			{
+				env_trans(new->filename, j + 1, token->envp, -1);
+			}
+		}
+		j++;
+	}
 	append_file(&token->files, new);
 	if (new->type == DELIMITER || new->type == APPEND)
 		i++;	// printf("files addr: %p, next: \n", token->files);
