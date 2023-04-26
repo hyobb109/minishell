@@ -34,24 +34,16 @@ typedef enum e_flag {
 }	t_flag;
 
 typedef enum e_state {
-    BUILTIN,
-    GENERAL
-}   t_state;
-
-typedef enum e_redirection {
-    INPUT,
-	OUTPUT,
-	APPEND,
-	HEREDOC,
-	NONE
-}   t_redirection;
+	BUILTIN,
+	GENERAL
+}	t_state;
 
 typedef enum e_ftype {
-    INFILE,
+	INFILE,
 	OUTFILE,
 	APPEND,
 	DELIMITER
-}   t_ftype;
+}	t_ftype;
 
 typedef struct s_fdata
 {
@@ -94,12 +86,8 @@ typedef struct s_token
 	//TODO - infile/outfile
 	int				state; // builtin?
 	int				status; // exit code
-	int				redir; // redirection check
 	t_fdata			*files;
 	t_edeque		*envp;
-	t_fd			**infile; // delete
-	t_fd			**outfile; // delete
-	char			**env; // delete
 }	t_token;
 
 typedef struct s_deque

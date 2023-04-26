@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_tokens.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:15:26 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/26 14:32:18 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/04/26 14:38:44 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,25 +109,21 @@ int	io_here_token(char *str, t_token *token)
 	// redirection flag check
 	if (!strncmp(&str[i], "<<", 2))
 	{
-		token->redir = HEREDOC;
 		newfile->type = DELIMITER;
 		i += 2;
 	}
 	else if (!strncmp(&str[i], ">>", 2))
 	{
-		token->redir = APPEND;
 		newfile->type = APPEND;
 		i += 2;
 	}
 	else if (str[i] == '<')
 	{
-		token->redir = INPUT;
 		newfile->type = INFILE;
 		i++;
 	}
 	else if (str[i] == '>')
 	{
-		token->redir = OUTPUT;
 		newfile->type = OUTFILE;
 		i++;
 	}
@@ -197,7 +193,6 @@ static void	init_token(char *str, t_token *token, t_edeque *envp)
 	token->envp = envp;
 	//TODO - infile/outfile
 	token->state = GENERAL;
-	token->redir = NONE;
 	token->files = NULL;
 	parse_command(str, token);
 	token->prev = NULL;
