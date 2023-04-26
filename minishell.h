@@ -124,6 +124,8 @@ void	init_deque(t_deque *deque);
 void	init_edeque(t_edeque *deque);
 void	init_element(t_token *element, char **parsed);
 
+void	make_envlst(t_edeque *envp, char **env);
+
 // void	append_front(t_deque *deque, char *command);
 void	append_back(t_deque *deque, t_token *token);
 void	append_back_env(t_edeque *deque, t_env *env);

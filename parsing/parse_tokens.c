@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:15:26 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/26 14:38:44 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/26 14:47:01 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,28 +199,6 @@ static void	init_token(char *str, t_token *token, t_edeque *envp)
 	token->next = NULL;
 }
 
-void	make_envlst(t_edeque *envp, char **env)
-{
-	int		i;
-	t_env	*env_node;
-	char	**tmp;
-
-	i = 0;
-	init_edeque(envp);
-	while (env[i])
-	{
-		env_node = malloc(sizeof(t_env));
-		if (!env_node)
-			ft_error();
-		tmp = ft_split(env[i], "=");
-		env_node->key = ft_strdup(tmp[0]);
-		env_node->val = ft_strdup(tmp[1]);
-		free_strs(tmp);
-		append_back_env(envp, env_node);
-		i++;
-	}
-	// print_edeque(&envp);
-}
 
 // delete!
 void	print_filelst(t_fdata *head)
@@ -233,15 +211,12 @@ void	print_filelst(t_fdata *head)
 	}
 }
 
-void	make_cmdlst(char *str, t_deque *cmd_deque, char **env)
+void	make_cmdlst(char *str, t_deque *cmd_deque, t_edeque *envp)
 {
-	t_edeque	envp;
 	t_token		*token;
 	char		**strs;
 	int			i;
 
-	// env deque create
-	make_envlst(&envp, env);
 	i = 0;
 	// quotes 안에 | 따로 처리 필요
 	strs = ft_pipe_split(str);
@@ -251,7 +226,7 @@ void	make_cmdlst(char *str, t_deque *cmd_deque, char **env)
 		token = malloc(sizeof(t_token));
 		if(!token)
 			ft_error();
-		init_token(strs[i], token, &envp);
+		init_token(strs[i], token, envp);
 		append_back(cmd_deque, token);
 		i++;
 	}
