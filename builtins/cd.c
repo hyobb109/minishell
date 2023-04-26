@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 01:25:35 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/25 21:20:49 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/26 16:39:07 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ char	*make_dirstr(char *str)
 
 	idx = 0;
 	result = ft_strdup("");
-	tmp = ft_split(str, "/");
+	tmp = ft_split(str, '/');
 	while (tmp[idx])
 		idx++;
 	free(tmp[idx]);

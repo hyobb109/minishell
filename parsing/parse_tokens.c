@@ -6,7 +6,7 @@
 /*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:15:26 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/26 15:09:43 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/04/26 16:39:56 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,9 +81,7 @@ void	parse_command(char *str, t_token *token)
 	int		len;
 	int		quote;
 	char	res[ARG_MAX];
-	char	charset[1];
 
-	charset[0] = -1;
 	// printf("**str: %s\n", str);
 	ft_memset(res, 0, ARG_MAX); // 버퍼 초기화
 	i = 0;
@@ -126,7 +124,7 @@ void	parse_command(char *str, t_token *token)
 	}
 	res[len] = '\0';
 	// printf("res : %s\n", res);
-	token->command = ft_split(res, charset);
+	token->command = ft_split(res, -1);
 	if (is_builtin(token->command[0]))
 		token->state = BUILTIN;
 }

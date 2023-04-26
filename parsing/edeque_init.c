@@ -6,7 +6,7 @@
 /*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 14:57:07 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/04/26 15:11:02 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/04/26 16:39:32 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	make_envlst(t_edeque *envp, char **env)
 		env_node = malloc(sizeof(t_env));
 		if (!env_node)
 			ft_error();
-		tmp = ft_split(env[i], "=");
+		tmp = ft_split(env[i], '=');
 		env_node->key = ft_strdup(tmp[0]);
 		env_node->val = ft_strdup(tmp[1]);
 		free_strs(tmp);
