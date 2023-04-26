@@ -6,7 +6,7 @@
 /*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 15:08:06 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/04/26 16:15:37 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/04/26 16:47:18 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	get_filename(char *str, t_fdata *new, t_token *token)
 
 	i = 0;
 	while (is_blank(str[i]))
-		i++;	
+		i++;
 	len = 0;
 	quote = 0;
 	while (str[i])
@@ -75,9 +75,8 @@ int	get_filename(char *str, t_fdata *new, t_token *token)
 	new->filename[len] = '\0';
 	// printf("string idx: %d filename: %s\n", i, new->filename);
 	append_file(&token->files, new);
-	// printf("files addr: %p, next: \n", token->files);
 	if (new->type == DELIMITER || new->type == APPEND)
-		i++;
+		i++;	// printf("files addr: %p, next: \n", token->files);
 	return (i);
 }
 

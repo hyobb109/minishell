@@ -6,7 +6,7 @@
 /*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 05:41:25 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/04/26 16:15:45 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/04/26 16:50:51 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	env_trans(char *str, int *idx, char *buf, t_edeque *envp)
 	while (str[i] && !(is_blank(str[i]) || str[i] == '$' || str[i] == '<' || str[i] == '>' || str[i] == '\'' || str[i] == '\"'))
 		i++;
 	// printf("===========\n");
-	printf("***i: %d, str: %s ***buf: %p\n", i, str+i, buf);
+	// printf("***i: %d, str: %s ***buf: %p\n", i, str+i, buf);
 	if (i == 0)
 	{
 		if (str[i] == '\'' || str[i] == '\"')
@@ -53,7 +53,7 @@ int	env_trans(char *str, int *idx, char *buf, t_edeque *envp)
 			{
 				ft_memcpy(buf, tmp->val, ft_strlen(tmp->val) + 1);
 				*idx += n;
-				printf("*str: %s, n: %d, buf : %s\n", str, n, buf);
+				// printf("*str: %s, n: %d, buf : %s\n", str, n, buf);
 				return (ft_strlen(buf));
 			}
 			tmp = tmp->next;

@@ -6,7 +6,7 @@
 /*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:15:26 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/26 16:47:55 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/04/26 17:29:06 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,20 +74,30 @@ int	io_here_token(char *str, t_token *token)
 	return (get_filename(&str[i], newfile, token));
 }
 
-void	env_trans1(char **cmd)
-{
-	int	i;
-	int	j;
+// void	env_trans1(char **cmd, t_edeque *envp)
+// {
+// 	int		i;
+// 	t_env	*tmp;
 
-	i = 0;
-	while (cmd[i])
-	{
-		if (cmd[i][0] == '$')
-		{
-			
-		}
-	}
-}
+// 	i = 0;
+// 	while (cmd[i])
+// 	{
+// 		if (cmd[i][0] == ENVIRON)
+// 		{
+// 			tmp = envp->head;
+// 			while (tmp)
+// 			{
+// 				if (!ft_strcmp(&cmd[i][1], tmp->key))
+// 				{
+					
+// 					return ;
+// 				}
+// 				tmp = tmp->next;
+// 			}
+// 		}
+// 		i++;
+// 	}
+// }
 
 // 리다이렉션 처리 필요
 void	parse_command(char *str, t_token *token)
@@ -117,7 +127,7 @@ void	parse_command(char *str, t_token *token)
 		}
 		else if ((!quote && str[i] == '$') || (quote == '\"' && str[i] == '$'))
 		{
-			res[len++] = -2;
+			res[len++] = ENVIRON;
 		}
 		// else if ((!quote && str[i] == '$') || (quote == '\"' && str[i] == '$')) // $ 나오면 환경변수 아닌 것 까지 보고 자름
 		// {
@@ -132,18 +142,18 @@ void	parse_command(char *str, t_token *token)
 		} 
 		else if (!quote && is_blank(str[i]))
 		{
-			res[len++] = -1; // 따옴표 밖 공백이면 자름
+			res[len++] = BLANK; // 따옴표 밖 공백이면 자름
 		}
 		else
 		{
 			res[len++] = str[i];
 		}
 		i++;
-		printf("str[%d]: %c res: %s quote: %d\n", i, str[i], res, quote);
+		// printf("str[%d]: %c res: %s quote: %d\n", i, str[i], res, quote);
 	}
 	res[len] = '\0';
 	// printf("res : %s\n", res);
-	token->command = ft_split(res, charset);
+	token->command = ft_split(res, BLANK);
 	if (is_builtin(token->command[0]))
 		token->state = BUILTIN;
 }

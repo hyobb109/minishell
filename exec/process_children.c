@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_children.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 19:37:29 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/26 17:22:51 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/26 17:33:55 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,43 +29,43 @@ void	child_process(t_token *line, int count, int total, int (*fd)[2])
 	printf("debugging : %d\n", debugging);
 	//TODO - builtin 상의/
 	manage_pipe(count, total, fd);
-	check_file(line);
+	// check_file(line);
 }
 
-void	check_file(t_token *line)
-{
-	check_here_doc(line);
-	check_infile(line);
-	check_outfile(line);
-}
+// void	check_file(t_token *line)
+// {
+// 	check_here_doc(line);
+// 	check_infile(line);
+// 	check_outfile(line);
+// }
 
-void	check_infile(t_token *line)
-{
-	t_fdata	*current_point;
-	int		cur_infile;
+// void	check_infile(t_token *line)
+// {
+// 	t_fdata	*current_point;
+// 	int		cur_infile;
 
-	current_point = line->files;
-	cur_infile = 0;
-	while (current_point != NULL)
-	{
-		if (!ft_strcmp(current_point->type, "infile"))
-		{
-			if (!access(current_point->filename, R_OK))
-			{
-				if (cur_infile)
-					close(cur_infile);
-				cur_infile = open(current_point->filename, O_RDONLY);
-			}
-		}
-	}
-}
+// 	current_point = line->files;
+// 	cur_infile = 0;
+// 	while (current_point != NULL)
+// 	{
+// 		if (!ft_strcmp(current_point->type, "infile"))
+// 		{
+// 			if (!access(current_point->filename, R_OK))
+// 			{
+// 				if (cur_infile)
+// 					close(cur_infile);
+// 				cur_infile = open(current_point->filename, O_RDONLY);
+// 			}
+// 		}
+// 	}
+// }
 
-void	check_here_doc(t_token *line)
-{
-	t_fdata	*current_point;
+// void	check_here_doc(t_token *line)
+// {
+// 	t_fdata	*current_point;
 
-	current_point = line->files;
-}
+// 	current_point = line->files;
+// }
 
 void	manage_pipe(int count, int total, int (*fd)[2])
 {
