@@ -6,7 +6,7 @@
 /*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:15:26 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/26 16:39:56 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/04/26 16:47:55 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,21 @@ int	io_here_token(char *str, t_token *token)
 	return (get_filename(&str[i], newfile, token));
 }
 
+void	env_trans1(char **cmd)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (cmd[i])
+	{
+		if (cmd[i][0] == '$')
+		{
+			
+		}
+	}
+}
+
 // 리다이렉션 처리 필요
 void	parse_command(char *str, t_token *token)
 {
@@ -100,17 +115,20 @@ void	parse_command(char *str, t_token *token)
 		{
 			quote = 0;
 		}
-		else if ((!quote && str[i] == '$') || (quote == '\"' && str[i] == '$')) // $ 나오면 환경변수 아닌 것 까지 보고 자름
+		else if ((!quote && str[i] == '$') || (quote == '\"' && str[i] == '$'))
 		{
-			//env 쭉 보면서 환경변수 있는지 확인하고 res에 복사
-			// printf("***len: %d, ***res: %p\n", len, res);
-			len += env_trans(&str[i + 1], &i, &res[len], token->envp);
-			// printf("***len: %d, ***res: %s\n", len, res);
+			res[len++] = -2;
 		}
+		// else if ((!quote && str[i] == '$') || (quote == '\"' && str[i] == '$')) // $ 나오면 환경변수 아닌 것 까지 보고 자름
+		// {
+		// 	//env 쭉 보면서 환경변수 있는지 확인하고 res에 복사
+		// 	// printf("***len: %d, ***res: %p\n", len, res);
+		// 	len += env_trans(&str[i + 1], &i, &res[len], token->envp);
+		// 	printf("i: %d, curr: %s, ***len: %d, ***res: %s\n",i, str+i, len, res);
+		// }
 		else if (!quote && (str[i] == '<' || str[i] == '>')) // 리다이렉션 있으면 io_here 토큰으로 분리하여 담음
 		{
 			i += io_here_token(&str[i], token);
-			// printf("str[%d]: %c res: %s quote: %d\n", i, str[i], res, quote);
 		} 
 		else if (!quote && is_blank(str[i]))
 		{
@@ -121,10 +139,11 @@ void	parse_command(char *str, t_token *token)
 			res[len++] = str[i];
 		}
 		i++;
+		printf("str[%d]: %c res: %s quote: %d\n", i, str[i], res, quote);
 	}
 	res[len] = '\0';
 	// printf("res : %s\n", res);
-	token->command = ft_split(res, -1);
+	token->command = ft_split(res, charset);
 	if (is_builtin(token->command[0]))
 		token->state = BUILTIN;
 }

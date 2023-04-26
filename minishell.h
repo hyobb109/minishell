@@ -30,6 +30,8 @@
 # define FALSE 0
 
 typedef enum e_flag {
+	ENVIRON = -2,
+	BLANK,
 	CLOSED
 }	t_flag;
 
