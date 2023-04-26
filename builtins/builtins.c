@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/16 19:57:20 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/04/25 01:26:06 by yunjcho          ###   ########seoul.kr  */
+/*   Updated: 2023/04/26 15:28:01 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,6 @@ int	exist_args(t_token *token)
 {
 	if (!token->command[1])
 		return (0);
-	return (1);
-}
-
-int	exec_export(t_token *token)
-{
-	(void) token;
 	return (1);
 }
 

@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 13:38:07 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/26 14:35:07 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/26 15:29:11 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,83 +31,73 @@ char	**make_strmatrix(t_edeque *envp)
 	return (string_arr);
 }
 
-void	sorting_strs(t_edeque *envp)
+char	**sorting_strsarr(t_edeque *envp)
 {
 	int		idx;
 	char	*tmp;
 	char	**sorting_arr;
 
 	idx = 0;
-	sorting_arr = make_strmatrix(envp);
-
-	idx = 0;
-	// while (sorting_arr[idx])
-	// {
-	// 	printf("sorting_arr[%d] : %s\n", idx, sorting_arr[idx]);
-	// 	idx++;
-	// }
 	tmp = NULL;
+	sorting_arr = make_strmatrix(envp);
 	while (sorting_arr[idx + 1])
 	{
-		printf("tmp : %p, sorting_arr[idx] : %p, sorting_arr[idx+1] : %p\n", tmp, sorting_arr[idx], sorting_arr[idx+1]);
-		if (ft_strcmp(sorting_arr[idx], sorting_arr[idx + 1]) < 0)
+		if (ft_strcmp(sorting_arr[idx], sorting_arr[idx + 1]) > 0)
 		{
-			// printf("tmp : %p, sorting_arr[idx] : %p, sorting_arr[idx+1] : %p\n", tmp, sorting_arr[idx], sorting_arr[idx+1]);
 			tmp = sorting_arr[idx];
 			sorting_arr[idx] = NULL;
 			sorting_arr[idx] = sorting_arr[idx + 1];
 			sorting_arr[idx + 1] = NULL;
 			sorting_arr[idx + 1] = tmp;
-			// printf("tmp : %p, sorting_arr[idx] : %p, sorting_arr[idx+1] : %p\n", tmp, sorting_arr[idx], sorting_arr[idx+1]);
 			tmp = NULL;
-			break ;
+			idx = 0;
+			continue ;
 		}
 		idx++;
 	}
-
-	idx = 0;
-	while (sorting_arr[idx])
-	{
-		printf("sorting_arr[%d] : %s\n", idx, sorting_arr[idx]);
-		idx++;
-	}
+	return (sorting_arr);
 }
 
-t_edeque	*sorting_envp(t_edeque *envp)
+t_env	*find_value(t_edeque *envp, char *key)
 {
-	char		*envp_str;
-	char		**env;
-	t_edeque	*sorting_edeque;
+	t_env	*tmp;
 
-	sorting_edeque = NULL;
-	envp_str = NULL;
-	env = malloc(sizeof(char *) * (envp->cnt + 1));
-	return (sorting_edeque);
+	tmp = envp->head;
+	while (tmp)
+	{
+		if (!ft_strcmp(key, tmp->key))
+			return (tmp);
+		tmp = tmp->next;
+	}
+	return (NULL);
+}
+
+void	print_export(t_env	*print_env)
+{
+	char	*str;
+	char	*value;
+
+	value = ft_strjoin_three("\"", print_env->val, "\"");
+	str = ft_strjoin_three(print_env->key, "=", value);
+	free(value);
+	ft_putstr_fd("declare -x ", 1);
+	ft_putendl_fd(str, 1);
 }
 
 void	print_exportenvlist(t_token *token)
 {
-	// char		*str;
-	// char		*value;
-	// t_env		*tmp;
-	// t_edeque	*tmp_edeque;
+	int		idx;
+	char	**sorting_strs;
+	t_env	*print_env;
 
-	// //TODO - 순서대로 출력하기 위해 추후 해시테이블 또는 이중배열 구현
-	// str = NULL;
-	// value = NULL;
-	// tmp_edeque = sorting_envp(token->envp);
-	// tmp = token->envp->head;
-	// while (tmp)
-	// {
-	// 	ft_putstr_fd("declare -x ", 1);
-	// 	value = ft_strjoin_three("\"", tmp->val, "\"");
-	// 	str = ft_strjoin_three(tmp->key, "=", value);
-	// 	ft_putendl_fd(str, 1);
-	// 	free(value);
-	// 	free(str);
-	// 	tmp = tmp->next;
-	// }
-	sorting_strs(token->envp);
+	idx = 0;
+	sorting_strs = sorting_strsarr(token->envp);
+	while (sorting_strs[idx])
+	{
+		print_env = find_value(token->envp, sorting_strs[idx]);
+		print_export(print_env);
+		idx++;
+	}
 }
 
 int	exec_export(t_token *token)
