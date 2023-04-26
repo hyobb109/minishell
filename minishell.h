@@ -86,6 +86,8 @@ typedef struct s_token
 	//TODO - infile/outfile
 	int				state; // builtin?
 	int				status; // exit code
+	int				infile_fd;
+	int				outfile_fd;
 	t_fdata			*files;
 	t_edeque		*envp;
 }	t_token;
