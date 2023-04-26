@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/16 19:57:20 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/04/26 15:28:01 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/26 15:41:00 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,6 @@ void	exec_exit(t_token *token)
 	(void) token;
 	ft_putstr_fd("exit\n", 1);
 	exit(0);
-}
-
-int	exist_args(t_token *token)
-{
-	if (!token->command[1])
-		return (0);
-	return (1);
 }
 
 int	exec_builtins(t_token *token)
