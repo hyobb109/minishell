@@ -49,6 +49,7 @@ typedef enum e_redirection {
 typedef enum e_ftype {
     INFILE,
 	OUTFILE,
+	APPEND,
 	DELIMITER
 }   t_ftype;
 

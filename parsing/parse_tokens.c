@@ -6,7 +6,7 @@
 /*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:15:26 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/25 21:58:38 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/04/26 14:32:18 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ int	io_here_token(char *str, t_token *token)
 	else if (!strncmp(&str[i], ">>", 2))
 	{
 		token->redir = APPEND;
-		newfile->type = OUTFILE;
+		newfile->type = APPEND;
 		i += 2;
 	}
 	else if (str[i] == '<')
