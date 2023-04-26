@@ -156,7 +156,7 @@ void	syntax_check(char *str);
 void	make_cmdlst(char *str, t_deque *cmd_deque, t_edeque *envp);
 int		is_blank(char c);
 void	parse_command(char *str, t_token *token);
-int		env_trans(char *str, int *idx, char *buf, t_edeque *envp);
+void	env_trans(char **cmd, t_edeque *envp);
 
 // builtins
 int		exec_pwd(t_token *token);
