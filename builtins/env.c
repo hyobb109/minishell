@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 20:42:23 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/26 14:52:40 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/26 16:15:27 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,8 @@ void	print_envlist(t_token *token)
 	tmp = token->envp->head;
 	while (tmp)
 	{
+		if (!tmp->val)
+			tmp = tmp->next;
 		str = ft_strjoin_three(tmp->key, "=", tmp->val);
 		ft_putendl_fd(str, 1);
 		free(str);

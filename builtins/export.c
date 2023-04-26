@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 13:38:07 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/26 15:40:21 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/26 17:19:34 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,19 @@ void	print_exportlist(t_token *token)
 
 int	exec_export(t_token *token)
 {
+	char	**tmp;
+	t_env	*env_node;
+
 	if (exist_args(token))
 	{
-		
+		env_node = malloc(sizeof(t_env));
+		if (!env_node)
+			ft_error();
+		tmp = ft_split(token->command[1], '=');
+		env_node->key = ft_strdup(tmp[0]);
+		env_node->val = ft_strdup(tmp[1]);
+		free_strs(tmp);
+		append_back_env(token->envp, env_node);
 	}
 	else
 		print_exportlist(token);
