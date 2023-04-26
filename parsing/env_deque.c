@@ -3,34 +3,93 @@
 /*                                                        :::      ::::::::   */
 /*   env_deque.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 14:45:34 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/26 14:46:44 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/26 15:06:22 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	make_envlst(t_edeque *envp, char **env)
+void	append_back_env(t_edeque *deque, t_env *env)
 {
-	int		i;
-	t_env	*env_node;
-	char	**tmp;
-
-	i = 0;
-	init_edeque(envp);
-	while (env[i])
+	if (!deque->tail)
 	{
-		env_node = malloc(sizeof(t_env));
-		if (!env_node)
-			ft_error();
-		tmp = ft_split(env[i], "=");
-		env_node->key = ft_strdup(tmp[0]);
-		env_node->val = ft_strdup(tmp[1]);
-		free_strs(tmp);
-		append_back_env(envp, env_node);
-		i++;
+		deque->head = env;
+		deque->tail = env;
 	}
-	// print_edeque(envp);
+	else
+	{
+		env->prev = deque->tail;
+		deque->tail->next = env;
+		deque->tail = env;
+	}
+	deque->cnt++;
+}
+
+// void	append_front_env(t_edeque *deque, char *command)
+// {
+// 	t_env	*new_element;
+
+// 	new_element = (t_env *)malloc(sizeof(t_env));
+// 	if (!new_element)
+// 		return ;
+// 	init_element(new_element, command);
+// 	if (!deque->head)
+// 	{
+// 		deque->head = new_element;
+// 		deque->tail = new_element;
+// 	}
+// 	else
+// 	{
+// 		deque->head->prev = new_element;
+// 		new_element->next = deque->head;
+// 		deque->head = new_element;
+// 	}
+// 	deque->cnt++;
+// }
+
+t_env	*pop_front_env(t_edeque *deque)
+{
+	t_env	*tmp;
+
+	if (deque->cnt)
+	{
+		tmp = deque->head;
+		deque->head = tmp->next;
+		if (deque->head)
+			deque->head->prev = 0;
+		tmp->next = 0;
+		deque->cnt--;
+		if (deque->cnt == 0)
+		{
+			deque->head = 0;
+			deque->tail = 0;
+		}
+		return (tmp);
+	}
+	return (0);
+}
+
+t_env	*pop_back_env(t_edeque *deque)
+{
+	t_env	*tmp;
+
+	if (deque->cnt)
+	{
+		tmp = deque->tail;
+		deque->tail = tmp->prev;
+		if (deque->tail)
+			deque->tail->next = 0;
+		tmp->prev = 0;
+		deque->cnt--;
+		if (deque->cnt == 0)
+		{
+			deque->head = 0;
+			deque->tail = 0;
+		}
+		return (tmp);
+	}
+	return (0);
 }

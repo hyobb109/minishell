@@ -6,20 +6,13 @@
 /*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 14:32:42 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/25 21:35:42 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/04/26 15:15:16 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
 void	init_deque(t_deque *deque)
-{
-	deque->head = NULL;
-	deque->tail = NULL;
-	deque->cnt = 0;
-}
-
-void	init_edeque(t_edeque *deque)
 {
 	deque->head = NULL;
 	deque->tail = NULL;
@@ -34,18 +27,8 @@ void	free_deque(t_deque *deque)
 	while (deque->cnt)
 	{
 		popped = pop_back(deque);
-		free(popped);
-	}
-}
-
-void	free_edeque(t_edeque *deque)
-{
-	t_env	*popped;
-
-	popped = NULL;
-	while (deque->cnt)
-	{
-		popped = pop_back_env(deque);
+		free_strs(popped->command);
+		free_files(&popped->files);
 		free(popped);
 	}
 }
@@ -64,22 +47,6 @@ void	print_deque(t_deque *deque)
 		{
 			printf("token[%d]'s command[%d] : %s\n", i, n, tmp->command[n]);
 		}
-		i++;
-		tmp = tmp->next;
-	}
-}
-
-void	print_edeque(t_edeque *deque)
-{
-	int		i;
-	t_env	*tmp;
-
-	i = 0;
-	tmp = deque->head;
-	while (tmp)
-	{
-		// printf("token[%d] %p env : %p, prev : %p, next : %p\n", i, tmp, tmp->env, tmp->prev, tmp->next);
-		printf("env[%d] key: %s, value: %s\n", i, tmp->key, tmp->val);
 		i++;
 		tmp = tmp->next;
 	}

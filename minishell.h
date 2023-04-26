@@ -121,23 +121,29 @@ typedef struct s_matrix
 
 // deque
 void	init_deque(t_deque *deque);
-void	init_edeque(t_edeque *deque);
 void	init_element(t_token *element, char **parsed);
-
-void	make_envlst(t_edeque *envp, char **env);
-
 // void	append_front(t_deque *deque, char *command);
 void	append_back(t_deque *deque, t_token *token);
-void	append_back_env(t_edeque *deque, t_env *env);
 t_token	*pop_front(t_deque *deque);
-t_env	*pop_front_env(t_edeque *deque);
 t_token	*pop_back(t_deque *deque);
-t_env	*pop_back_env(t_edeque *deque);
 void	free_deque(t_deque *deque);
-void	free_edeque(t_edeque *deque);
-void	print_deque(t_deque *deque); //delete
-void	print_edeque(t_edeque *deque); // delete
 int		deque_is_empty(t_deque *pdeque);
+void	print_deque(t_deque *deque); //delete
+
+//edeque
+void	init_edeque(t_edeque *deque);
+void	free_edeque(t_edeque *deque);
+void	make_envlst(t_edeque *envp, char **env);
+void	append_back_env(t_edeque *deque, t_env *env);
+t_env	*pop_front_env(t_edeque *deque);
+t_env	*pop_back_env(t_edeque *deque);
+void	print_edeque(t_edeque *deque); // delete
+
+// file list
+int		get_filename(char *str, t_fdata *new, t_token *token);
+void	append_file(t_fdata **head, t_fdata *new);
+void	free_files(t_fdata **lst);
+void	print_filelst(t_fdata *head); // delete
 
 // parsing
 char	*join_all(char **strs, int idx);
@@ -147,7 +153,6 @@ void	make_cmdlst(char *str, t_deque *cmd_deque, t_edeque *envp);
 int		is_blank(char c);
 void	parse_command(char *str, t_token *token);
 int		env_trans(char *str, int *idx, char *buf, t_edeque *envp);
-
 
 // builtins
 int		exec_pwd(t_token *token);

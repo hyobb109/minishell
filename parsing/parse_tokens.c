@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_tokens.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:15:26 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/26 14:47:01 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/26 15:09:43 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,62 +36,6 @@ int	is_builtin(char *cmd)
 	if (!ft_strcmp(cmd, "exit"))
 		return (1);
 	return (0);
-}
-
-void	append_file(t_fdata **head, t_fdata *new)
-{
-	t_fdata	*last;
-
-	if (!(*head))
-	{
-		*head = new;
-		return ;
-	}
-	last = *head;
-	while (last->next)
-		last = last->next;
-	last->next = new;
-}
-
-int	get_filename(char *str, t_fdata *new, t_token *token)
-{
-	int		quote;
-	int		i;
-	int		len;
-
-	i = 0;
-	len = 0;
-	quote = 0;
-	// str[i] null 아님
-	// quote == 0 이면서 공백이면 탈출
-	// !quote 면서 < 면 탈출, !quote 면서 > 면 탈출
-	while (str[i])
-	{
-		if (!quote && (is_blank(str[i]) || str[i] == '<' || str[i] == '>'))
-			break;
-		if (!quote && (str[i] == '\'' || str[i] == '\"'))
-		{
-			quote = str[i];
-		}
-		else if (quote && str[i] == quote)
-		{
-			quote = 0;
-		}
-		else if ((!quote && str[i] == '$') || (quote == '\"' && str[i] == '$'))
-		{
-			len += env_trans(&str[i + 1], &i, &new->filename[len], token->envp);
-		}
-		else
-		{
-			new->filename[len++] = str[i];
-		}
-		i++;
-	}
-	new->filename[len] = '\0';
-	// printf("string idx: %d filename: %s\n", i, new->filename);
-	append_file(&token->files, new);
-	// printf("files addr: %p, next: \n", token->files);
-	return (i);
 }
 
 // redirection이 있는 토큰은 따로 처리.. 여기서도 따옴표 확인 계속 해야 함
@@ -197,18 +141,6 @@ static void	init_token(char *str, t_token *token, t_edeque *envp)
 	parse_command(str, token);
 	token->prev = NULL;
 	token->next = NULL;
-}
-
-
-// delete!
-void	print_filelst(t_fdata *head)
-{
-	t_fdata *tmp = head;
-	while (tmp)
-	{
-		printf("filename: %s, type: %d\n", tmp->filename, tmp->type);
-		tmp = tmp->next;
-	}
 }
 
 void	make_cmdlst(char *str, t_deque *cmd_deque, t_edeque *envp)
