@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_parents.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 16:33:30 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/27 21:36:00 by hyunwoju         ###   ########.fr       */
+/*   Updated: 2023/04/27 21:44:30 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,25 +16,28 @@ void	parents_process(t_deque *cmd_deque)
 {
 	t_token	*current_token = NULL;
 	int		(*fd)[2];
-	int		count;
+	int		count = 0;
+
+	(void) current_token;
+	(void) fd;
 	//TODO - builtin 상의
 	//if (cmd_deque->cnt == 1)
 	//{
-	//	int debugging = exec_builtins(cmd_deque->head);
-	//	printf("debugging : %d\n", debugging);
+		int debugging = exec_builtins(cmd_deque->head);
+		printf("debugging : %d\n", debugging);
 	//	// if (debugging == 1) //TODO - 나중에 주석 풀기
 	//	// 	exit(0);
 	//}
-	while (current_token != NULL)
-	{
-		check_file(current_token);
-		current_token = current_token->next;
-	}
-	fd = create_pipe(cmd_deque);
-	current_token = cmd_deque->head;
-	count = cmd_deque->cnt - 1;
-	create_child(cmd_deque, fd);
-	close_pipe(fd, count);
+	// while (current_token != NULL)
+	// {
+	// 	check_file(current_token);
+	// 	current_token = current_token->next;
+	// }
+	// fd = create_pipe(cmd_deque);
+	// current_token = cmd_deque->head;
+	// count = cmd_deque->cnt - 1;
+	// create_child(cmd_deque, fd);
+	// close_pipe(fd, count);
 	wait_child(count);
 }
 
