@@ -6,13 +6,13 @@
 /*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 05:41:25 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/04/27 14:11:13 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/04/27 20:35:52 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	is_envkey(const char *s1, const char *s2)
+int	is_envkey(const char *s1, const char *s2, size_t *key_len)
 {
 	size_t	i;
 	char	*str1;
@@ -21,57 +21,80 @@ int	is_envkey(const char *s1, const char *s2)
 	str1 = (char *)s1;
 	str2 = (char *)s2;
 	i = 0;
-	while ((str1[i] != ENVIRON && str1[i]) || str2[i])
+	while ((str1[i] != ENVIRON && !is_blank(str1[i]) && str1[i]) || str2[i])
 	{
 		if (str1[i] != str2[i])
+		{
+			while (str1[i] != ENVIRON && !is_blank(str1[i]) && str1[i])
+			{
+				i++;
+				printf("str1: %s str1[%zu]: %c\n", str1, i, str1[i]);
+				*key_len = i;
+			}
 			return (0);
+		}
 		i++;
 	}
+	*key_len = i;
 	return (1);
 }
-
-void	env_trans(char *str, int i, t_edeque *envp, char **buf)
+// $USer 
+// $USER Hyobicho
+int	env_trans(char *str, int i, t_edeque *envp, char *buf)
 {
 	t_env	*tmp;
+	size_t	key_len;
 
+	key_len = 0;
 	tmp = envp->head;
 	while (tmp)
 	{
-		if (is_envkey(str + i, tmp->key))
+		if (is_envkey(str + i, tmp->key, &key_len))
 		{
-			ft_strjoin(*buf, tmp->val);
+			ft_memcpy(buf,tmp->val,ft_strlen(tmp->val));
+			return (key_len);
 		}
 		tmp = tmp->next;
 	}
+	printf("key not found.. key_len: %zu\n", key_len);
+	return (key_len);
 }
 
-void	search_env(char **cmd, t_edeque *envp)
+void	search_env(char **cmds, t_edeque *envp)
 {
 	int		i;
 	int		j;
-	char	*buf;
+	int		k;
+	char	buf[ARG_MAX];
 
 	i = 0;
-	while (cmd[i])
+	while (cmds[i])
 	{
 		j = 0;
-		buf = strdup("\0");
-		while (cmd[i][j])
+		k = 0;
+		if (ft_strchr(cmds[i], ENVIRON))
 		{
-			if (cmd[i][j] == ENVIRON)
+			ft_memset(buf, 0, ARG_MAX);
+			while (cmds[i][j])
 			{
-				env_trans(cmd[i], j + 1, envp, &buf);
-				printf("cmd[%d][%d]: %c\n", i, j, cmd[i][j]);
+				// $ 만나면 치환
+				if (cmds[i][j] == ENVIRON)
+				{
+					// 환경변수 키 글자수 만큼 인덱스 늘려줌
+					j += env_trans(cmds[i], j + 1, envp, &buf[k]);
+					printf("cmds[%d][%d]: %c, buf: %s\n", i, j, cmds[i][j], buf);
+					k = ft_strlen(buf);
+				}
+				// 따옴표 안 글자들 버퍼에 복사
+				else
+				{
+					buf[k++] = cmds[i][j];
+				}
+				j++;
 			}
-			j++;
+			free(cmds[i]);
+			cmds[i] = ft_strdup(buf);
 		}
-		if (buf[0] != '\0')
-		{
-			free(&cmd[i]);
-			cmd[i] = buf;
-		}
-		// else
-		// 	free(buf);
 		i++;
 	}
 }

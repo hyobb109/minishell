@@ -6,7 +6,7 @@
 /*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:15:26 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/26 20:18:21 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/04/27 19:31:49 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,8 @@ void	parse_command(char *str, t_token *token)
 		{
 			quote = 0;
 		}
-		else if ((!quote && str[i] == '$') || (quote == '\"' && str[i] == '$'))
+		// $뒤가 알파벳이나 '_'일 때만 환경변수로 처리(변수 명 조건)
+		else if (((!quote && str[i] == '$') || (quote == '\"' && str[i] == '$')) && (ft_isalpha(str[i + 1]) || str[i + 1] == '_'))
 		{
 			res[len++] = ENVIRON;
 		}
@@ -173,8 +174,7 @@ void	make_cmdlst(char *str, t_deque *cmd_deque, t_edeque *envp)
 		i++;
 	}
 	print_filelst(cmd_deque->head->files);
-	// free_strs(parsed);
-	// free_strs(strs);
+	free_strs(strs);
 	print_deque(cmd_deque);
 }
 

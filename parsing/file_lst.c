@@ -6,7 +6,7 @@
 /*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 15:08:06 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/04/27 14:09:53 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/04/27 17:36:25 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	get_filename(char *str, t_fdata *new, t_token *token)
 		{
 			quote = 0;
 		}
-		else if ((!quote && str[i] == '$') || (quote == '\"' && str[i] == '$'))
+		else if (((!quote && str[i] == '$') || (quote == '\"' && str[i] == '$')) && (ft_isalpha(str[i + 1]) || str[i + 1] == '_'))
 		{
 			new->filename[len++] = ENVIRON;
 		}
