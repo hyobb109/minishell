@@ -157,7 +157,7 @@ void	syntax_check(char *str);
 void	make_cmdlst(char *str, t_deque *cmd_deque, t_edeque *envp);
 int		is_blank(char c);
 void	parse_command(char *str, t_token *token);
-void	env_trans(char *str, int i, t_edeque *envp, int flag);
+void	env_trans(char *str, int i, t_edeque *envp, char **buf);
 void	search_env(char **cmd, t_edeque *envp);
 
 // builtins
