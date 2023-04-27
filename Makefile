@@ -6,12 +6,12 @@
 #    By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/18 19:16:02 by yunjcho           #+#    #+#              #
-#    Updated: 2023/04/26 15:44:04 by yunjcho          ###   ########.fr        #
+#    Updated: 2023/04/27 20:46:28 by yunjcho          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
-CC = cc #-g
+CC = cc -g
 CFLAGS = -Wall -Wextra -Werror
 R_FLAG =  -lreadline -L${HOME}/.brew/opt/readline/lib
 R_INC = -I${HOME}/.brew/opt/readline/include

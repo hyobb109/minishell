@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 15:40:01 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/26 15:42:50 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/27 21:06:46 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,10 @@ char	**make_strmatrix(t_edeque *envp)
 
 	idx = 0;
 	string_arr = malloc(sizeof(char *) * (envp->cnt + 1));
+	if (!string_arr)
+		exit(EXIT_FAILURE);
 	tmp = envp->head;
-	while (tmp)
+	while (tmp && idx < envp->cnt)
 	{
 		string_arr[idx] = ft_strdup(tmp->key);
 		tmp = tmp->next;

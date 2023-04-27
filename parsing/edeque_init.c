@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   edeque_init.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 16:44:41 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/04/26 16:45:03 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/04/27 21:04:07 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ void	make_envlst(t_edeque *envp, char **env)
 		tmp = ft_split(env[i], '=');
 		env_node->key = ft_strdup(tmp[0]);
 		env_node->val = ft_strdup(tmp[1]);
+		env_node->prev = NULL;
+		env_node->next = NULL;
 		free_strs(tmp);
 		append_back_env(envp, env_node);
 		i++;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 01:25:35 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/26 17:32:21 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/04/27 18:48:57 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,15 +58,15 @@ char	*init_destpath(t_token *token, char *cwd_name)
 	if (exist_args(token))
 	{
 		if (!ft_strcmp(token->command[1], "~"))
-			return (ft_strdup(getenv("HOME")));
+			return (ft_strdup(ft_getenv(token->envp, "HOME")));
 		else if (!ft_strcmp(token->command[1], ".."))
-			return (make_dirstr(getenv("PWD"))); //TODO - free 에러 메시지, free(dest) 
+			return (make_dirstr(ft_getenv(token->envp, "PWD"))); //TODO - free 에러 메시지, free(dest) 
 		else
 			return (ft_strjoin_three(cwd_name, "/", \
 				token->command[1])); //free(dest)
 	}
 	else
-		return (ft_strdup(getenv("HOME")));
+		return (ft_strdup(ft_getenv(token->envp, "HOME")));
 }
 
 int	exec_cd(t_token *token)
@@ -84,15 +84,15 @@ int	exec_cd(t_token *token)
 			token->command[1], strerror(errno));
 		exit (EXIT_FAILURE);
 	}
-	getcwd(cwd_name, sizeof(cwd_name));
-	printf("dest : %s, cur_dir : %s, env pwd : %s, result : %d\n", dest, cwd_name, getenv("PWD"), result);
-	//TODO - env PWD 현재 위치로 바꿔야 함
 	if (chdir(dest) == -1)
 	{
 		printf("%s: %s: %s\n", token->command[0], \
 			token->command[1], strerror(errno));
 		exit (EXIT_FAILURE);
 	}
+	change_env(token, dest);
+	getcwd(cwd_name, sizeof(cwd_name));
+	printf("dest : %s, cwd_name : %s, ft_getenv() : %s, result : %d\n", dest, cwd_name, ft_getenv(token->envp, "PWD"), result);
 	free (dest);
 	return (1);
 }

@@ -6,28 +6,28 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/22 15:55:25 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/25 16:26:21 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/27 18:56:41 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char	*join_all(char **strs, int idx)
+char	*join_all(t_token *token, int idx)
 {
 	char	*home;
 	char	*result;
 
-	home = getenv("HOME");
+	home = ft_getenv(token->envp, "HOME");
 	result = ft_strdup("\0");
-	while (strs[idx])
+	while (token->command[idx])
 	{
-		if (idx == 1 && !ft_strcmp(strs[1], "~")) //옵션이 무효한 경우
+		if (idx == 1 && !ft_strcmp(token->command[1], "~")) //옵션이 무효한 경우
 			result = ft_strjoin(result, home); //result free
-		else if (idx == 2 && !ft_strcmp(strs[2], "~")) //옵션이 유효한 경우
+		else if (idx == 2 && !ft_strcmp(token->command[2], "~")) //옵션이 유효한 경우
 			result = ft_strjoin(result, home);
 		else
-			result = ft_strjoin(result, strs[idx]);
-		if (strs[idx + 1])
+			result = ft_strjoin(result, token->command[idx]);
+		if (token->command[idx + 1])
 			result = ft_strjoin(result, " ");
 		idx++;
 	}
@@ -69,11 +69,13 @@ int	check_option(char **arguments)
 	return (idx1);
 }
 
-void	print_args(char **arguments, int target_idx)
+void	print_args(t_token *token, int target_idx)
 {
 	char	*tmp;
+	char	**arguments;
 
-	tmp = join_all(arguments, target_idx);
+	arguments = token->command;
+	tmp = join_all(token, target_idx);
 	if (target_idx == 1)
 		ft_putendl_fd(tmp, 1);
 	else
@@ -87,6 +89,6 @@ int	exec_echo(t_token *token)
 
 	target_idx = check_option(token->command);
 	// printf("target idx : %d\n", target_idx);
-	print_args(token->command, target_idx);
+	print_args(token, target_idx);
 	return (1);
 }

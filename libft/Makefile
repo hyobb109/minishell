@@ -6,7 +6,7 @@
 #    By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/09 17:43:15 by hyobicho          #+#    #+#              #
-#    Updated: 2023/04/25 20:25:43 by yunjcho          ###   ########.fr        #
+#    Updated: 2023/04/27 20:16:39 by yunjcho          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,6 +14,7 @@ NAME = libft.a
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
 SRCS = \
+ft_strcpy.c \
 ft_strlowcase.c \
 ft_error.c \
 ft_freestrs.c \

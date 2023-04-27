@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_children.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 19:37:29 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/27 14:11:04 by hyunwoju         ###   ########.fr       */
+/*   Updated: 2023/04/27 17:37:42 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,61 +26,62 @@
 
 void	child_process(t_token *line, int count, int total, int (*fd)[2])
 {
+	(void) line;
 	//TODO - builtin 상의
-	int debugging = exec_builtins(line);
-	printf("debugging : %d\n", debugging);
+	// int debugging = exec_builtins(line);
+	// printf("debugging : %d\n", debugging);
 	//TODO - builtin 상의/
 	manage_pipe(count, total, fd);
-	check_file(line);
+	// check_file(line);
 }
 
-void	check_file(t_token *line)
-{
-	t_fdata	*current_point;
-	int		cur_infile;
-	int		cur_outfile;
-	int		result;
+// void	check_file(t_token *line)
+// {
+// 	t_fdata	*current_point;
+// 	int		cur_infile;
+// 	int		cur_outfile;
+// 	int		result;
 
-	current_point = line->files;
-	cur_infile = 0;
-	cur_outfile = 0;
-	while (current_point != NULL)
-	{
-		if (ft_strcmp(current_point->type, "infile"))
-		{
-			if (check_error_infile(current_point->filename, &cur_infile))
-				break ;
-		}
-		else if (ft_strcmp(current_point->type, "outfile"))
-		{
-			if (check_error_outfile(current_point->filename, &cur_outfile))
-				break ;
-		}
-		current_point = current_point->next;
-	}
-	line->infile_fd = cur_infile;
-	line->outfile_fd = cur_outfile;
-}
+// 	current_point = line->files;
+// 	cur_infile = 0;
+// 	cur_outfile = 0;
+// 	while (current_point != NULL)
+// 	{
+// 		if (ft_strcmp(current_point->type, "infile"))
+// 		{
+// 			if (check_error_infile(current_point->filename, &cur_infile))
+// 				break ;
+// 		}
+// 		else if (ft_strcmp(current_point->type, "outfile"))
+// 		{
+// 			if (check_error_outfile(current_point->filename, &cur_outfile))
+// 				break ;
+// 		}
+// 		current_point = current_point->next;
+// 	}
+// 	line->infile_fd = cur_infile;
+// 	line->outfile_fd = cur_outfile;
+// }
 
-int	check_error_infile(char *filename, int *infile)
-{
-	if (!access(filename, R_OK))
-	{
-		*infile = open(filename, O_RDONLY);
-		return (FALSE);
-	}
-	if (!access(filename, F_OK))
-	{
-		printf("%s: Permission denied\n", filename);
-		return (TRUE);
-	}
-	printf("%s: No such file or directory\n", filename);
-}
+// int	check_error_infile(char *filename, int *infile)
+// {
+// 	if (!access(filename, R_OK))
+// 	{
+// 		*infile = open(filename, O_RDONLY);
+// 		return (FALSE);
+// 	}
+// 	if (!access(filename, F_OK))
+// 	{
+// 		printf("%s: Permission denied\n", filename);
+// 		return (TRUE);
+// 	}
+// 	printf("%s: No such file or directory\n", filename);
+// }
 
-int	check_error_outfile(char *filename, int *outfile)
-{
+// int	check_error_outfile(char *filename, int *outfile)
+// {
 	
-}
+// }
 
 void	manage_pipe(int count, int total, int (*fd)[2])
 {

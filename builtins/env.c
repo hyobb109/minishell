@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 20:42:23 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/26 16:15:27 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/27 21:26:57 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ int	exist_validkey(t_token *token)
 	flag = 0;
 	while (token->command[idx])
 	{
+		
 		tmp = ft_strlowcase(ft_strjoin("", token->command[idx]));
 		if (ft_strcmp(tmp, "env"))
 		{
@@ -57,6 +58,13 @@ int	exist_validkey(t_token *token)
 		free(tmp);
 		idx++;
 	}
+	tmp = ft_strlowcase(ft_strjoin("", token->command[idx - 1]));
+	if (!ft_strcmp(tmp, "env"))
+	{
+		print_envlist(token);
+		return (4);
+	}
+	free(tmp);
 	return (0);
 }
 
@@ -78,7 +86,7 @@ void	print_invalidargserror(t_token *token)
 		print_idx++;
 	}
 	printf("%s: %s: %s\n", token->command[print_idx - 1], \
-	token->command[print_idx], strerror(ENOENT));
+		token->command[print_idx], strerror(ENOENT));
 	exit (EXIT_FAILURE); //ft_error();
 }
 
@@ -92,7 +100,10 @@ void	print_envlist(t_token *token)
 	while (tmp)
 	{
 		if (!tmp->val)
+		{
 			tmp = tmp->next;
+			continue ;
+		}
 		str = ft_strjoin_three(tmp->key, "=", tmp->val);
 		ft_putendl_fd(str, 1);
 		free(str);
@@ -114,8 +125,10 @@ int	exec_env(t_token *token)
 		{
 			if (flag == 1)
 				exec_pwd(token);
+			else if (flag == 4)
+				return (1);
 			else
-				ft_putendl_fd(getenv("LOGNAME"), 1);
+				ft_putendl_fd(ft_getenv(token->envp, "LOGNAME"), 1);
 		}
 		else
 			print_invalidargserror(token);

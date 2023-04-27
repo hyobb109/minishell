@@ -152,7 +152,6 @@ void	free_files(t_fdata **lst);
 void	print_filelst(t_fdata *head); // delete
 
 // parsing
-char	*join_all(char **strs, int idx);
 char	**ft_pipe_split(char *str);
 void	syntax_check(char *str);
 void	make_cmdlst(char *str, t_deque *cmd_deque, t_edeque *envp);
@@ -162,6 +161,10 @@ int		env_trans(char *str, int i, t_edeque *envp, char *buf);
 void	search_env(char **cmd, t_edeque *envp);
 
 // builtins
+int		exist_args(t_token *token);
+t_env	*find_value(t_edeque *envp, char *key);
+char	*ft_getenv(t_edeque *envp, char *key);
+void	change_env(t_token *token, char *dest);
 int		exec_pwd(t_token *token);
 void	exec_exit(t_token *token);
 int		chdir_home(void);
@@ -169,20 +172,19 @@ char	*make_dirstr(char *str);
 int		exec_cd(t_token *token);
 char	**make_strmatrix(t_edeque *envp);
 char	**sorting_strsarr(t_edeque *envp);
-t_env	*find_value(t_edeque *envp, char *key);
 void	print_export(t_env	*print_env);
 void	print_exportlist(t_token *token);
 int		exec_export(t_token *token);
+char	*join_all(t_token *token, int idx);
 int		check_option(char **parsed);
 int		exec_echo(t_token *echo);
-int		exist_args(t_token *token);
 int		init_validkeyflag(t_token *token, int idx, char *tmp, int *flag);
 int		exist_validkey(t_token *token);
 void	print_invalidargserror(t_token *token);
 void	print_envlist(t_token *token);
 int		exec_env(t_token *token);
 int		exec_builtins(t_token *token);
-void	print_args(char **arguments, int target_idx);
+void	print_args(t_token *token, int target_idx);
 int		is_builtin(char *cmd);
 
 // pipe
