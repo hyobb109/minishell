@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_children.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 19:37:29 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/27 17:37:42 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/27 21:35:12 by hyunwoju         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,65 +23,98 @@
 // 명령어 error 여도 outfile 은 open 한다.
 // outfile permission error 이면 바로 브레이크
 // "< a wc -l > b < c > d"  -> wc 명령어가 c 를 입력으로 받는다.
+// "< a > b < c > d" 에서 b가 permission error 라면 d 는 open 되지 않는다.
+// 에러처리 순서 -> 파일 먼저 그 다음 명령어
 
 void	child_process(t_token *line, int count, int total, int (*fd)[2])
 {
 	(void) line;
 	//TODO - builtin 상의
-	// int debugging = exec_builtins(line);
-	// printf("debugging : %d\n", debugging);
+	//int debugging = exec_builtins(line);
+	//printf("debugging : %d\n", debugging);
 	//TODO - builtin 상의/
 	manage_pipe(count, total, fd);
-	// check_file(line);
+	manage_file(line);
+	//execute_line(line, count, total, fd);
 }
 
-// void	check_file(t_token *line)
-// {
-// 	t_fdata	*current_point;
-// 	int		cur_infile;
-// 	int		cur_outfile;
-// 	int		result;
+void	manage_file(t_token *line)
+{
+	t_fdata	*cur_file;
+	int		infile_fd;
+	int		outfile_fd;
 
-// 	current_point = line->files;
-// 	cur_infile = 0;
-// 	cur_outfile = 0;
-// 	while (current_point != NULL)
-// 	{
-// 		if (ft_strcmp(current_point->type, "infile"))
-// 		{
-// 			if (check_error_infile(current_point->filename, &cur_infile))
-// 				break ;
-// 		}
-// 		else if (ft_strcmp(current_point->type, "outfile"))
-// 		{
-// 			if (check_error_outfile(current_point->filename, &cur_outfile))
-// 				break ;
-// 		}
-// 		current_point = current_point->next;
-// 	}
-// 	line->infile_fd = cur_infile;
-// 	line->outfile_fd = cur_outfile;
-// }
+	cur_file = line->files;
+	while (cur_file != NULL)
+	{
+		if (cur_file->type == INFILE)
+		{
+			open_infile(cur_file->filename, &infile_fd);
+		}
+		else if (cur_file->type == OUTFILE)
+		{
+			open_outfile(cur_file->filename, &outfile_fd);
+		}
+		cur_file = cur_file->next;
+	}
+	line->infile_fd = infile_fd;
+	line->outfile_fd = outfile_fd;
+}
 
-// int	check_error_infile(char *filename, int *infile)
-// {
-// 	if (!access(filename, R_OK))
-// 	{
-// 		*infile = open(filename, O_RDONLY);
-// 		return (FALSE);
-// 	}
-// 	if (!access(filename, F_OK))
-// 	{
-// 		printf("%s: Permission denied\n", filename);
-// 		return (TRUE);
-// 	}
-// 	printf("%s: No such file or directory\n", filename);
-// }
+void	open_infile(char *filename, int *infile_fd)
+{
+	*infile_fd = open(filename, O_RDONLY);
+	if (*infile_fd == -1)
+	{
+		printf("%s: %s\n", filename, strerror(errno));
+		exit (1);
+	}
+}
 
-// int	check_error_outfile(char *filename, int *outfile)
-// {
-	
-// }
+void	open_outfile(char *filename, int *outfile_fd)
+{
+	*outfile_fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC);
+	if (*outfile_fd == -1)
+	{
+		printf("%s: %s\n", filename, strerror(errno));
+		exit (1);
+	}
+}
+
+//void	check_error_infile(char *filename, int *infile)
+//{
+//	if (!access(filename, R_OK))
+//	{
+//		if (*infile)
+//			close(*infile);
+//		*infile = open(filename, O_RDONLY);
+//		return ;
+//	}
+//	if (!access(filename, F_OK))
+//	{
+//		printf("%s: Permission denied\n", filename);
+//		exit (1);
+//	}
+//	printf("%s: No such file or directory\n", filename);
+//	exit (1);
+//}
+
+//void	check_error_outfile(char *filename, int *outfile)
+//{
+//	if (*outfile)
+//		close(*outfile);
+//	*outfile = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0777);
+//	if (*outfile == -1)
+//	{
+//		printf("%s: Permission denied\n", filename);
+//		exit (1);
+//	}
+//}
+
+//void	execute_line(t_token *line, int count, int total, int (*fd)[2])
+//{
+
+//}
 
 void	manage_pipe(int count, int total, int (*fd)[2])
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_parents.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 16:33:30 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/27 19:40:15 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/27 21:36:00 by hyunwoju         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,32 +14,71 @@
 
 void	parents_process(t_deque *cmd_deque)
 {
-	int	(*fd)[2];
-	int	count;
-
+	t_token	*current_token = NULL;
+	int		(*fd)[2];
+	int		count;
 	//TODO - builtin 상의
-	if (cmd_deque->cnt == 1)
+	//if (cmd_deque->cnt == 1)
+	//{
+	//	int debugging = exec_builtins(cmd_deque->head);
+	//	printf("debugging : %d\n", debugging);
+	//	// if (debugging == 1) //TODO - 나중에 주석 풀기
+	//	// 	exit(0);
+	//}
+	while (current_token != NULL)
 	{
-		int debugging = exec_builtins(cmd_deque->head);
-		printf("debugging : %d\n", debugging);
-		// if (debugging == 1) //TODO - 나중에 주석 풀기
-		// 	exit(0);
+		check_file(current_token);
+		current_token = current_token->next;
 	}
-	//TODO - builtin 상의
-
 	fd = create_pipe(cmd_deque);
-	//TODO - Debbuging
-	// int idx = 0;
-	// while (idx < 5)
-	// {
-	// 	printf("fd[%d][R] : %d, fd[%d][W] : %d\n", idx, fd[idx][0], idx, fd[idx][1]);
-	// 	idx++;
-	// }
+	current_token = cmd_deque->head;
 	count = cmd_deque->cnt - 1;
 	create_child(cmd_deque, fd);
 	close_pipe(fd, count);
 	wait_child(count);
-	free_deque(cmd_deque);
+}
+
+void	check_file(t_token *line)
+{
+	t_fdata	*current_point;
+
+	current_point = line->files;
+	while (current_point != NULL)
+	{
+		if (current_point->type == INFILE)
+		{
+			if (check_infile(current_point->filename))
+				break ;
+		}
+		else if (current_point->type == OUTFILE)
+		{
+			if (check_outfile(current_point->filename))
+				break ;
+		}
+		current_point = current_point->next;
+	}
+}
+
+int	check_infile(char *filename)
+{
+	int	fd;
+
+	fd = open(filename, O_RDONLY);
+	if (fd == -1)
+		return (TRUE);
+	close(fd);
+	return (FALSE);
+}
+
+int	check_outfile(char *filename)
+{
+	int	fd;
+
+	fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC);
+	if (fd == -1)
+		return (TRUE);
+	close(fd);
+	return (FALSE);
 }
 
 void	wait_child(int count)
@@ -70,21 +109,22 @@ void	close_pipe(int (*fd)[2], int count)
 
 void	create_child(t_deque *cmd_deque, int (*fd)[2])
 {
-	t_token	*line;
+	t_token	*cur_token;
 	int		count;
 	int		total;
 
 	count = 0;
 	total = cmd_deque->cnt;
-	while (deque_is_empty(cmd_deque))
+	cur_token = cmd_deque->head;
+	while (count < total)
 	{
-		line = pop_front(cmd_deque);
-		line->pid = fork();
-		if (line->pid == -1)
-			exit(1);
-		else if (!line->pid)
-			child_process(line, count, total, fd);
+		cur_token->pid = fork();
+		if (cur_token->pid == -1)
+			exit (1);
+		else if (!cur_token->pid)
+			child_process(cur_token, count, total, fd);
 		++count;
+		cur_token = cur_token->next;
 	}
 }
 
