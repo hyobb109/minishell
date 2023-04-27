@@ -6,7 +6,7 @@
 /*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 05:41:25 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/04/27 20:35:52 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/04/27 21:39:48 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	is_envkey(const char *s1, const char *s2, size_t *key_len)
 			while (str1[i] != ENVIRON && !is_blank(str1[i]) && str1[i])
 			{
 				i++;
-				printf("str1: %s str1[%zu]: %c\n", str1, i, str1[i]);
+				// printf("str1: %s str1[%zu]: %c\n", str1, i, str1[i]);
 				*key_len = i;
 			}
 			return (0);
@@ -56,7 +56,7 @@ int	env_trans(char *str, int i, t_edeque *envp, char *buf)
 		}
 		tmp = tmp->next;
 	}
-	printf("key not found.. key_len: %zu\n", key_len);
+	// printf("key not found.. key_len: %zu\n", key_len);
 	return (key_len);
 }
 
@@ -98,19 +98,3 @@ void	search_env(char **cmds, t_edeque *envp)
 		i++;
 	}
 }
-
-// char	*search_env(char *str, t_edeque *envp)
-// {
-// 	int	i;
-// 	int	quote;
-	
-// 	i = 0;
-// 	quote = 0;
-// 	while (is_blank(str[i]))
-// 		i++;
-// 	while (str[i])
-// 	{
-		
-		
-// 	}
-// }
