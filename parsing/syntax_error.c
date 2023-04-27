@@ -6,7 +6,7 @@
 /*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:16:54 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/26 17:04:07 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/04/27 20:43:35 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,8 @@ void	syntax_check(char *str)
 {
 	// 닫히지 않는 따옴표
 	quote_check(str);
-	// 비어있는 리다이렉션, 파이프
+	// TODO
+	// heredoc 있는 것 처리 다시 -> exit하지 않고 에러메시지만 띄움
+	// 비어있는 리다이렉션, 파이프  => 다시 해야함!!
 	empty_check(str);
 }
