@@ -23,4 +23,5 @@ void	free_strs(char **strs)
 		i++;
 	}
 	free(strs);
+    strs = 0;
 }
