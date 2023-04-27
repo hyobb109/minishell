@@ -6,7 +6,7 @@
 /*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 15:08:06 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/04/26 22:35:35 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/04/27 14:09:53 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ int	get_filename(char *str, t_fdata *new, t_token *token)
 	new->filename[len] = '\0';
 	printf("=========\n");
 	printf("file: %s\n", new->filename);
+	// char	*buf = strdup("\0");
 	int j = 0;
 	while (new->filename[j])
 	{
@@ -84,10 +85,10 @@ int	get_filename(char *str, t_fdata *new, t_token *token)
 			{
 				new->filename[j] = '$';
 			}
-			else
-			{
-				env_trans(new->filename, j + 1, token->envp, -1);
-			}
+			// else
+			// {
+				// env_trans(new->filename, j + 1, token->envp, &buf);
+			// }
 		}
 		j++;
 	}
