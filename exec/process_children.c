@@ -6,7 +6,7 @@
 /*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 19:37:29 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/27 21:35:12 by hyunwoju         ###   ########.fr       */
+/*   Updated: 2023/04/27 22:46:07 by hyunwoju         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,87 @@ void	child_process(t_token *line, int count, int total, int (*fd)[2])
 	//TODO - builtin 상의/
 	manage_pipe(count, total, fd);
 	manage_file(line);
-	//execute_line(line, count, total, fd);
+	manage_io(line, count, total, fd);
+	execute_line(line, count, total);
+}
+
+char	**make_envlist(t_token *token)
+{
+	int		idx;
+	char	**str;
+	t_env	*tmp;
+
+	idx = 0;
+	str = (char **)malloc(sizeof(char *) + (token->envp->cnt + 1));
+	tmp = token->envp->head;
+	while (tmp)
+	{
+		str[idx] = ft_strjoin_three(tmp->key, "=", tmp->val);
+		tmp = tmp->next;
+		idx++;
+	}
+	str[idx] = 0;
+	return (str);
+}
+
+void	execute_line(t_token *line, int count, int total)
+{
+	char **env = make_envlist(line);
+	char *path_env = ft_getenv(line->envp, "PATH");
+	char **path = ft_split(path_env, ':');
+	char *current_path;
+	char *part_path;
+	count = 0;
+	total = 0;
+	//arguments = parse_command(av);
+	int i = 0;
+	while (path[i] != 0)
+	{
+		part_path = ft_strjoin(path[i], "/");
+		current_path = ft_strjoin(part_path, line->command[0]);
+		if (!access(current_path, F_OK))
+			break ;
+		free(current_path);
+		++i;
+	}
+	//c_free(path);
+	execve(current_path, line->command, env);
+	//ft_perror(cmd_not_found, arguments[0]);
+	//execve("./bin/ls")
+}
+
+//void	absolute_path()
+//{
+//}
+
+void	manage_io(t_token *line, int count, int total, int (*fd)[2])
+{
+	if (line->infile_fd)
+	{
+		dup2(line->infile_fd, STDIN_FILENO);
+		close(line->infile_fd);
+	}
+	else
+	{
+		if (count != 0)
+		{
+			dup2(fd[count - 1][0], STDIN_FILENO);
+			close(fd[count - 1][0]);
+		}
+	}
+	if (line->outfile_fd)
+	{
+		dup2(line->outfile_fd, STDOUT_FILENO);
+		close(line->outfile_fd);
+	}
+	else
+	{
+		if (count != total - 1)
+		{
+			dup2(fd[count][1], STDOUT_FILENO);
+			close(fd[count][1]);
+		}
+	}
 }
 
 void	manage_file(t_token *line)
@@ -45,6 +125,8 @@ void	manage_file(t_token *line)
 	int		outfile_fd;
 
 	cur_file = line->files;
+	infile_fd = 0;
+	outfile_fd = 0;
 	while (cur_file != NULL)
 	{
 		if (cur_file->type == INFILE)

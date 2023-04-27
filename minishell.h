@@ -210,4 +210,8 @@ void	get_size_step2(char **arguments, char *av, int *size, int *index);
 int		count_rows(char *argument);
 char	**strs_trim(char **before, int row);
 
+char	**make_envlist(t_token *token);
+void	execute_line(t_token *line, int count, int total);
+void	manage_io(t_token *line, int count, int total, int (*fd)[2]);
+
 #endif
