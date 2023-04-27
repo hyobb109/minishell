@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_tokens.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:15:26 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/27 21:30:14 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/27 22:40:26 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,23 +105,12 @@ void	parse_command(char *str, t_token *token)
 		{
 			res[len++] = ENVIRON;
 		}
+		// echo hi >> "$USER hi $LANG" <$USER >>append1 >>ap'en'd2 <<"heredoc" <<h_noquote <"infile $USER" <infileeeeeeee
+		// <<h_noquote <"infile $USER" <infileeeeeeee 부터 안됨!!!??
 		else if (!quote && (str[i] == '<' || str[i] == '>')) // 리다이렉션 있으면 io_here 토큰으로 분리하여 담음
 		{
+			// printf("*str: %s\n", &str[i]);
 			i += io_here_token(&str[i], token);
-			// if (str[i] == '<' && str[i + 1] == '<')
-			// {
-			// 	res[len++] = DELIMITER;
-			// 	i++;
-			// }
-			// else if (str[i] == '>' && str[i + 1] == '>')
-			// {
-			// 	res[len++] = APPEND;
-			// 	i++;
-			// }
-			// else if (str[i] == '<')
-			// 	res[len++] = INFILE;
-			// else if (str[i] == '>')
-			// 	res[len++] = OUTFILE;
 		} 
 		else if (!quote && is_blank(str[i]))
 		{

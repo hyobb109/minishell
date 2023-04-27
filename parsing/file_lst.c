@@ -6,7 +6,7 @@
 /*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 15:08:06 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/04/27 17:36:25 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/04/27 22:40:17 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ int	get_filename(char *str, t_fdata *new, t_token *token)
 		if (!quote && (str[i] == '\'' || str[i] == '\"'))
 		{
 			quote = str[i];
+			if (new->type == DELIMITER)
+				new->type = Q_DELIMIRER; // heredoc 에서 리미터에 따옴표 있으면 환경변수 치환 안하므로 따로 분류
 		}
 		else if (quote && str[i] == quote)
 		{
@@ -73,28 +75,43 @@ int	get_filename(char *str, t_fdata *new, t_token *token)
 		i++;
 	}
 	new->filename[len] = '\0';
-	printf("=========\n");
-	printf("file: %s\n", new->filename);
+	// printf("=========\n");
+	// printf("file: %s\n", new->filename);
 	// char	*buf = strdup("\0");
 	int j = 0;
-	while (new->filename[j])
+	int	k;
+	char	buf[PATH_MAX];
+	int	swap;
+	k = 0;
+	swap = 0;
+	if (ft_strchr(new->filename, ENVIRON))
 	{
-		if (new->filename[j] == ENVIRON)
+		ft_memset(buf, 0, PATH_MAX);
+		while (new->filename[j])
 		{
-			if (new->type == DELIMITER)
-			{
+			if (new->filename[j] == ENVIRON && (new->type == DELIMITER || new->type == Q_DELIMIRER))
 				new->filename[j] = '$';
+			else if (new->filename[j] == ENVIRON)
+			{
+				swap = 1;
+				j += env_trans(new->filename, j + 1, token->envp, &buf[k]);
+				k = ft_strlen(buf);
 			}
-			// else
-			// {
-				// env_trans(new->filename, j + 1, token->envp, &buf);
-			// }
+			else if (new->type != DELIMITER && new->type != Q_DELIMIRER)
+			{
+				buf[k++] = new->filename[j];
+			}
+			j++;
 		}
-		j++;
+	}
+	if (swap)
+	{
+		ft_memcpy(new->filename, buf, k);
+		new->filename[k] = '\0';
 	}
 	append_file(&token->files, new);
-	if (new->type == DELIMITER || new->type == APPEND)
-		i++;	// printf("files addr: %p, next: \n", token->files);
+	if (new->type == DELIMITER || new->type == Q_DELIMIRER || new->type == APPEND)
+		i++; // printf("files addr: %p, next: \n", token->files);
 	return (i);
 }
 

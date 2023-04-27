@@ -17,3 +17,6 @@ in_tmp
 out_tmp
 
 .DS_Store
+.gitignore
+
+process_parents.c
