@@ -6,7 +6,7 @@
 /*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 15:08:06 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/04/27 22:03:48 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/04/27 22:40:17 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int	get_filename(char *str, t_fdata *new, t_token *token)
 		i++;
 	}
 	new->filename[len] = '\0';
-	printf("=========\n");
+	// printf("=========\n");
 	// printf("file: %s\n", new->filename);
 	// char	*buf = strdup("\0");
 	int j = 0;
