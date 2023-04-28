@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 19:37:29 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/28 21:45:54 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/28 22:23:25 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,20 +47,19 @@ char	**make_envstrs(t_token *token)
 	char	**strs;
 	t_env	*tmp;
 
-	strs = (char **)malloc(sizeof(char *) + (token->envp->cnt + 1));
+	strs = malloc(sizeof(char *) + (token->envp->cnt + 1));
 	if (!strs)
 		exit(1);
-	tmp = token->envp->head;
 	idx = 0;
-	while (idx < token->envp->cnt && tmp)
+	tmp = token->envp->head;
+	while (tmp && idx < token->envp->cnt)
 	{
-		printf("key : %s, value : %s\n", tmp->key, tmp->val);
 		if (tmp->key)
 		{
 			if (!tmp->val)
 				strs[idx] = ft_strdup(tmp->key); 
 			else
-				strs[idx] = ft_strdup(ft_strjoin_three(tmp->key, "=", tmp->val));
+				strs[idx] = ft_strjoin_three(tmp->key, "=", tmp->val);
 		}
 		tmp = tmp->next;
 		idx++;
