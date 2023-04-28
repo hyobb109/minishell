@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_tokens.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: seulee2 <seulee2@42seoul.student.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:15:26 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/27 22:40:26 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/04/28 17:55:53 by seulee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,10 +101,10 @@ void	parse_command(char *str, t_token *token)
 			quote = 0;
 		}
 		// $뒤가 알파벳이나 '_'일 때만 환경변수로 처리(변수 명 조건)
-		else if (((!quote && str[i] == '$') || (quote == '\"' && str[i] == '$')) && (ft_isalpha(str[i + 1]) || str[i + 1] == '_'))
-		{
-			res[len++] = ENVIRON;
-		}
+		// else if (((!quote && str[i] == '$') || (quote == '\"' && str[i] == '$')) && (ft_isalpha(str[i + 1]) || str[i + 1] == '_'))
+		// {
+		// 	res[len++] = ENVIRON;
+		// }
 		// echo hi >> "$USER hi $LANG" <$USER >>append1 >>ap'en'd2 <<"heredoc" <<h_noquote <"infile $USER" <infileeeeeeee
 		// <<h_noquote <"infile $USER" <infileeeeeeee 부터 안됨!!!??
 		else if (!quote && (str[i] == '<' || str[i] == '>')) // 리다이렉션 있으면 io_here 토큰으로 분리하여 담음
@@ -126,9 +126,61 @@ void	parse_command(char *str, t_token *token)
 	res[len] = '\0';
 	// printf("res : %s\n", res);
 	token->command = ft_split(res, BLANK);
-	search_env(token->command, token->envp);
+	// search_env(token->command, token->envp);
 	if (is_builtin(token->command[0]))
 		token->state = BUILTIN;
+}
+
+char	*expand_environ(char *str, t_token *token, int quote)
+{
+	//	어차피 끝까지 볼거임
+	int		len;
+	char	*q_flag;
+	int		flag;
+	char	buffer[ARG_MAX];
+
+	q_flag = 0;
+	// printf("**str: %s\n", str);
+	ft_memset(buffer, 0, ARG_MAX); // 버퍼 초기화
+	quote = CLOSED;
+	len = 0;
+	while (*str)
+	{
+		if (quote == CLOSED && (*str == '\'' || *str == '\"'))
+		{
+			quote = *str;
+			if (quote == '\"')
+				q_flag = str;
+		}
+		else if (quote && *str == quote)
+		{
+			quote = CLOSED;
+		}
+		else if (quote == CLOSED && *str == '<' && *(str + 1) == '<')
+		{
+			flag = DELIMITER;
+		}
+		// $esd  뒤가 알파벳이나 '_'일 때만 환경변수로 처리(변수 명 조건)
+		else if ((flag != DELIMITER && ((quote == CLOSED && *str == '$') || (quote == '\"' && *str == '$')) && (ft_isalpha(*(str + 1)) || *(str + 1) == '_')))
+		{
+			// *str = ENVIRON;
+			// if (quote == '\"')
+			// {
+			// 	len += search_env(&q_flag, &buffer[len], token->envp, quote); // 큰따옴표부터 보내주기.
+			// 	str = q_flag;
+			// }
+			// else
+				len += search_env(&str, &buffer[len], token->envp, quote); // $위치부터 보내주기
+				// printf("len: %d, buf: %s\n", len, buffer);
+		}
+		buffer[len++] = *str;
+		if (*str == '\0')
+			break ;
+		// printf("str: %s, buf: %s\n", str, buffer);
+		str++;
+	}
+	return (ft_strdup(buffer));
+	// printf("res : %s\n", res);
 }
 
 // cmd 와 arg로 분리
@@ -138,7 +190,7 @@ static void	init_token(char *str, t_token *token, t_edeque *envp)
 	//TODO - infile/outfile
 	token->state = GENERAL;
 	token->files = NULL;
-	parse_command(str, token);
+	parse_command(expand_environ(str, token, CLOSED), token);
 	token->prev = NULL;
 	token->next = NULL;
 }
@@ -154,10 +206,10 @@ void	make_cmdlst(char *str, t_deque *cmd_deque, t_edeque *envp)
 	strs = ft_pipe_split(str);
 	while (strs[i])
 	{
-		// printf("str[%d] : %s\n", i, strs[i]);
 		token = malloc(sizeof(t_token));
 		if(!token)
 			ft_error();
+		// printf("str[%d] : %s\n", i, strs[i]);
 		init_token(strs[i], token, envp);
 		append_back(cmd_deque, token);
 		i++;

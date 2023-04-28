@@ -158,7 +158,7 @@ void	make_cmdlst(char *str, t_deque *cmd_deque, t_edeque *envp);
 int		is_blank(char c);
 void	parse_command(char *str, t_token *token);
 int		env_trans(char *str, int i, t_edeque *envp, char *buf);
-void	search_env(char **cmd, t_edeque *envp);
+int		search_env(char **str, char *buf, t_edeque *envp, int quote);
 
 // builtins
 int		exist_args(t_token *token);
@@ -211,7 +211,7 @@ int		count_rows(char *argument);
 char	**strs_trim(char **before, int row);
 
 char	**make_envlist(t_token *token);
-void	execute_line(t_token *line, char **env);
+void	execute_line(t_token *line, int count, int total);
 void	manage_io(t_token *line, int count, int total, int (*fd)[2]);
 
 #endif
