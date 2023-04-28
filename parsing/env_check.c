@@ -92,12 +92,12 @@ int	search_env(char **str, char *buf, t_edeque *envp, int quote)
 		{
 			if (**str == '$')
 			{
-				// printf("*str: %s\n", *str);
+				// printf("*str: %s\n", *str + 1);
 				key_len = env_trans(*str + 1, envp, &buf[i]);
 				// printf("ket_len: %d\n", key_len);
 				i = ft_strlen(buf);
 				*str += key_len + 1; // $도 넘겨줘야하니까 key_len + 1 만큼 주소 넘겨줌
-				// printf("*******str: %s\n", *str);
+				// printf("*******str: %s%%\n", *str);
 			}
 			else
 			{

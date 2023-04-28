@@ -76,7 +76,7 @@ int	get_filename(char *str, t_fdata *new, t_token *token)
 		i++;
 	}
 	new->filename[len] = '\0';
-	// printf("=========\n");
+	printf("=========\n");
 	// printf("file: %s\n", new->filename);
 	// char	*buf = strdup("\0");
 	// int j = 0;

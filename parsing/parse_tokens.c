@@ -158,10 +158,11 @@ char	*expand_environ(char *str, t_token *token, int quote)
 		// $esd  뒤가 알파벳이나 '_'일 때만 환경변수로 처리(변수 명 조건)
 		else if ((((quote == CLOSED && *str == '$') || (quote == '\"' && *str == '$')) && (ft_isalpha(*(str + 1)) || *(str + 1) == '_')))
 		{
-			// len = buff_idx + 1;
 			// printf("str: %s, buf[%d]: %s\n", str, len, &buffer[len]);
-			len += search_env(&str, &buffer[len], token->envp, quote); // $위치부터 보내주기.
-			// str = q_flag;
+			// printf("quote: %c\n", quote);
+			len += search_env(&str, &buffer[len], token->envp, quote); // $ 위치부터 보내주기
+			if (quote)
+				quote = CLOSED; // 따옴표 닫아줌 (환경변수 치환되면서 따옴표 제거됨)
 		}
 		buffer[len++] = *str;
 		if (*str == '\0')
@@ -169,8 +170,9 @@ char	*expand_environ(char *str, t_token *token, int quote)
 		str++;
 		// printf("str: %s, buf : %s, buf_len: %d\n", str, buffer, len);
 	}
+	buffer[len] = '\0';
 	// printf("============\n");
-	// printf("environ expansion result : %s\n", buffer);
+	printf("environ expansion result : %s\n", buffer);
 	// 버퍼에 환경변수 모두 치환된 결과 담김.
 	// 메모리 새로 할당하여 리턴.
 	return (ft_strdup(buffer));
