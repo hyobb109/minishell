@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 19:37:29 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/28 21:44:02 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/28 21:45:54 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	child_process(t_token *line, int count, int total, int (*fd)[2])
 	manage_pipe(count, total, fd);
 	manage_file(line);
 	manage_io(line, count, total, fd);
-	env = make_envlist(line);
+	env = make_envstrs(line);
 	if (line->command[0][0] != '\0')
 		execute_line(line, env);
 }
