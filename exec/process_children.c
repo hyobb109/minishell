@@ -6,7 +6,7 @@
 /*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 19:37:29 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/28 17:24:06 by hyunwoju         ###   ########.fr       */
+/*   Updated: 2023/04/28 19:35:10 by hyunwoju         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@ void	child_process(t_token *line, int count, int total, int (*fd)[2])
 	manage_file(line);
 	manage_io(line, count, total, fd);
 	env = make_envlist(line);
-	execute_line(line, env);
+	if (line->command[0][0] != '\0')
+		execute_line(line, env);
 }
 
 char	**make_envlist(t_token *token)
@@ -82,8 +83,11 @@ void	execute_line(t_token *line, char **env)
 		free(current_path);
 		++i;
 	}
-	execve(current_path, line->command, env);
-	printf("%s: command not found\n", line->command[0]);
+	if (execve(current_path, line->command, env) == - 1)
+	{
+		dup2(STDERR_FILENO, STDOUT_FILENO);
+		printf("%s: command not found\n", line->command[0]);
+	}
 	exit (1);
 }
 

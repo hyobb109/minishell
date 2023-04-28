@@ -6,7 +6,7 @@
 /*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 16:33:30 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/28 17:30:37 by hyunwoju         ###   ########.fr       */
+/*   Updated: 2023/04/28 19:20:37 by hyunwoju         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	parents_process(t_deque *cmd_deque)
 	fd = create_pipe(cmd_deque);
 	create_child(cmd_deque, fd);
 	close_pipe(fd, count);
-	wait_child(count);
+	wait_child(count, cmd_deque);
 }
 
 void	check_file(t_token *line)
@@ -81,15 +81,35 @@ int	check_outfile(char *filename)
 	return (FALSE);
 }
 
-void	wait_child(int count)
+void	wait_child(int count, t_deque *cmd_deque)
 {
-	int	idx;
-	
+	int		idx;
+	int 	status;
+	pid_t	pid;
+
 	idx = 0;
 	while (idx < count + 1)
 	{
-		wait(NULL);
+		pid = waitpid(-1, &status, 0);
+		if (pid == -1)
+			exit(EXIT_FAILURE);
+		find_child(cmd_deque, status, pid);
 		++idx;
+	}
+}
+
+void	find_child(t_deque *cmd_deque, int status, pid_t pid)
+{
+	t_token *cur_point;
+
+	cur_point = cmd_deque->head;
+	while (cur_point != NULL)
+	{
+		if (cur_point->pid == pid)
+		{
+			cur_point->status = status;
+		}
+		cur_point = cur_point->next;
 	}
 }
 
