@@ -40,7 +40,7 @@ int	is_builtin(char *cmd)
 
 // redirection이 있는 토큰은 따로 처리.. 여기서도 따옴표 확인 계속 해야 함
 //<, <<, > , >> 인지 체크, infile, outfile 업데이트
-int	io_here_token(char *str, t_token *token)
+int	check_redir(char *str, t_token *token)
 {
 	int		i;
 	t_fdata *newfile;
@@ -99,12 +99,11 @@ void	parse_command(char *str, t_token *token)
 		{
 			quote = 0;
 		}
-		// echo hi >> "$USER hi $LANG" <$USER >>append1 >>ap'en'd2 <<"heredoc" <<h_noquote <"infile $USER" <infileeeeeeee
-		// <<h_noquote <"infile $USER" <infileeeeeeee 부터 안됨!!!??
+		// echo hi >> "$USER hi $LANG" <$USER >>append1 >>ap'en'd2 <<"heredoc" <<h_noquote <"infile $USER" <infi 
 		else if (!quote && (str[i] == '<' || str[i] == '>')) // 리다이렉션 있으면 io_here 토큰으로 분리하여 담음
 		{
 			// printf("*str: %s\n", &str[i]);
-			i += io_here_token(&str[i], token);
+			i += check_redir(&str[i], token);
 		} 
 		else if (!quote && is_blank(str[i]))
 		{
