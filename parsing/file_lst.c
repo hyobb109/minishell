@@ -39,6 +39,7 @@ void	append_file(t_fdata **head, t_fdata *new)
 	last->next = new;
 }
 
+// 파일리스트에 파일 이름 복사해서 담고 증가시킨 인덱스 리턴
 int	get_filename(char *str, t_fdata *new, t_token *token)
 {
 	int		quote;
