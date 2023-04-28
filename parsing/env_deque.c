@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_deque.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 14:45:34 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/26 15:06:22 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/04/28 16:42:57 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,30 @@ t_env	*pop_back_env(t_edeque *deque)
 		{
 			deque->head = 0;
 			deque->tail = 0;
+		}
+		return (tmp);
+	}
+	return (0);
+}
+
+t_env	*pop_select_env(t_edeque *deque, char *key)
+{
+	t_env	*tmp;
+
+	if (deque->cnt)
+	{
+		tmp =  find_value(deque, key);
+		if (tmp == deque->head)
+			tmp = pop_front_env(deque);
+		else if (tmp == deque->tail)
+			tmp = pop_back_env(deque);
+		else
+		{
+			tmp->prev->next = tmp->next;
+			tmp->next->prev = tmp->prev->next;
+			tmp->prev = NULL;
+			tmp->next = NULL;
+			deque->cnt--;
 		}
 		return (tmp);
 	}

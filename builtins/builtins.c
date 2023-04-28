@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/16 19:57:20 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/04/27 19:16:00 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/28 16:44:10 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,16 @@ void	exec_exit(t_token *token)
 	exit(0);
 }
 
+int	exec_unset(t_token *token)
+{
+	t_env	*free_env;
+
+	free_env = pop_select_env(token->envp, token->command[1]);
+	if (free_env)
+		free(free_env);
+	return (1);
+}
+
 int	exec_builtins(t_token *token)
 {
 	if (!ft_strcmp(ft_strlowcase(token->command[0]), "echo"))
@@ -44,7 +54,7 @@ int	exec_builtins(t_token *token)
 	else if (!ft_strcmp(token->command[0], "export"))
 		return (exec_export(token));
 	else if (!ft_strcmp(token->command[0], "unset"))
-		return (1);
+		return (exec_unset(token));
 	else if (!ft_strcmp(token->command[0], "exit"))
 	{
 		exec_exit(token);

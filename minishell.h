@@ -143,6 +143,7 @@ void	make_envlst(t_edeque *envp, char **env);
 void	append_back_env(t_edeque *deque, t_env *env);
 t_env	*pop_front_env(t_edeque *deque);
 t_env	*pop_back_env(t_edeque *deque);
+t_env	*pop_select_env(t_edeque *deque, char *key);
 void	print_edeque(t_edeque *deque); // delete
 
 // file list
