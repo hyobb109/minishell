@@ -203,7 +203,7 @@ void	manage_pipe(int count, int total, int (*fd)[2]);
 void	manage_file(t_token *line);
 
 void	open_infile(char *filename, int *infile_fd);
-void	open_outfile(char *filename, int *outfile_fd);
+void	open_outfile(char *filename, int *outfile_fd, int append_flag);
 
 void	assign_argument(char **str, char *av);
 void	get_size(char **arguments, char *av);
