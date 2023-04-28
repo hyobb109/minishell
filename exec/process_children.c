@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 19:37:29 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/28 21:42:46 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/28 21:44:02 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	child_process(t_token *line, int count, int total, int (*fd)[2])
 		execute_line(line, env);
 }
 
-char	**make_envlist(t_token *token)
+char	**make_envstrs(t_token *token)
 {
 	int		idx;
 	char	**strs;
