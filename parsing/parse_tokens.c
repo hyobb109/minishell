@@ -74,15 +74,15 @@ int	check_redir(char *str, t_token *token)
 	return (get_filename(&str[i], newfile, token));
 }
 
-void	parse_command(char *str, t_token *token)
+char	**parse_command(char *str, t_token *token)
 {
 	int		i;
 	int		len;
 	int		quote;
-	char	res[ARG_MAX];
+	char	buffer[ARG_MAX];
 
 	// printf("**str: %s\n", str);
-	ft_memset(res, 0, ARG_MAX); // 버퍼 초기화
+	ft_memset(buffer, 0, ARG_MAX); // 버퍼 초기화
 	i = 0;
 	// 처음 들어오는 공백 넘김
 	while (is_blank(str[i]))
@@ -107,20 +107,18 @@ void	parse_command(char *str, t_token *token)
 		} 
 		else if (!quote && is_blank(str[i]))
 		{
-			res[len++] = BLANK; // 따옴표 밖 공백이면 자름
+			buffer[len++] = BLANK; // 따옴표 밖 공백이면 자름
 		}
 		else
 		{
-			res[len++] = str[i];
+			buffer[len++] = str[i];
 		}
 		i++;
-		// printf("str[%d]: %c res: %s quote: %d\n", i, str[i], res, quote);
+		// printf("str[%d]: %c buffer: %s quote: %d\n", i, str[i], buffer, quote);
 	}
-	res[len] = '\0';
-	// printf("res : %s\n", res);
-	token->command = ft_split(res, BLANK);
-	if (is_builtin(token->command[0]))
-		token->state = BUILTIN;
+	buffer[len] = '\0';
+	// printf("buffer : %s\n", buffer);
+	return (ft_split(buffer, BLANK));
 }
 
 char	*expand_environ(char *str, t_token *token, int quote)
@@ -172,7 +170,7 @@ char	*expand_environ(char *str, t_token *token, int quote)
 		// printf("str: %s, buf : %s, buf_len: %d\n", str, buffer, len);
 	}
 	// printf("============\n");
-	printf("environ expansion result : %s\n", buffer);
+	// printf("environ expansion result : %s\n", buffer);
 	// 버퍼에 환경변수 모두 치환된 결과 담김.
 	// 메모리 새로 할당하여 리턴.
 	return (ft_strdup(buffer));
@@ -186,7 +184,9 @@ static void	init_token(char *str, t_token *token, t_edeque *envp)
 	//TODO - infile/outfile
 	token->state = GENERAL;
 	token->files = NULL;
-	parse_command(expand_environ(str, token, CLOSED), token);
+	token->command = parse_command(expand_environ(str, token, CLOSED), token);
+	if (is_builtin(token->command[0]))
+		token->state = BUILTIN;
 	token->prev = NULL;
 	token->next = NULL;
 }

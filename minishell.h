@@ -86,8 +86,6 @@ typedef struct s_token
 	int				new_fds[2];
 	struct s_token	*prev;
 	struct s_token	*next;
-
-	//TODO - infile/outfile
 	int				state; // builtin?
 	int				status; // exit code
 	int				infile_fd;
@@ -157,7 +155,7 @@ char	**ft_pipe_split(char *str);
 int		syntax_error(char *str);
 void	make_cmdlst(char *str, t_deque *cmd_deque, t_edeque *envp);
 int		is_blank(char c);
-void	parse_command(char *str, t_token *token);
+char	**parse_command(char *str, t_token *token);
 int		env_trans(char *str, t_edeque *envp, char *buf);
 int		search_env(char **str, char *buf, t_edeque *envp, int quote);
 
