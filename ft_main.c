@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_main.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 14:12:04 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/04/27 19:36:48 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/28 14:06:06 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,16 @@ int	main(int ac, char **av, char **env)
 		init_deque(&cmd_deque);
 		str = readline("minishell-0.0$ ");
 		if (!str)
-			break;
-		syntax_check(str);
+			exit(EXIT_FAILURE);
+		if (!syntax_error(str))
+		{
+			make_cmdlst(str, &cmd_deque, &envp);
+			parents_process(&cmd_deque);
+			free_deque(&cmd_deque);
+		}
 		// printf("%s\n", str);
-		make_cmdlst(str, &cmd_deque, &envp);
-		parents_process(&cmd_deque);
 		add_history(str);
 		free(str);
-		free_deque(&cmd_deque);
 	}
 	free_edeque(&envp);
 	//TODO - history도 free?

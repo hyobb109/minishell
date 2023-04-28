@@ -6,13 +6,13 @@
 /*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:16:54 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/27 20:43:35 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/04/28 14:06:13 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	quote_check(char *str)
+int	quote_error(char *str)
 {
 	char	quote;
 	int		i;
@@ -27,8 +27,13 @@ void	quote_check(char *str)
 			quote = str[i];
 		i++;
 	}
-	if (quote)
-		ft_error();
+	if (quote == '\'')
+		printf("minishell: syntax error near unexpected token `''\n");
+	else if (quote == '\"')
+		printf("minishell: syntax error near unexpected token `\"'\n");
+	else
+		return (0);
+	return (1);
 }
 
 void	empty_check(char *str)
@@ -69,12 +74,14 @@ void	empty_check(char *str)
 }
 
 // 에러코드 258
-void	syntax_check(char *str)
+int	syntax_error(char *str)
 {
 	// 닫히지 않는 따옴표
-	quote_check(str);
+	if (quote_error(str))
+		return (1);
 	// TODO
 	// heredoc 있는 것 처리 다시 -> exit하지 않고 에러메시지만 띄움
 	// 비어있는 리다이렉션, 파이프  => 다시 해야함!!
 	empty_check(str);
+	return (0);
 }
