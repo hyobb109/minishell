@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_main.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 14:12:04 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/04/28 21:49:56 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/28 22:26:42 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,8 @@ int	main(int ac, char **av, char **env)
 		// printf("%s\n", str);
 		add_history(str);
 		free(str);
+		free_deque(&cmd_deque);
 	}
-	free_deque(&cmd_deque);
 	free_edeque(&envp);
 	//TODO - history도 free?
 	return (0);
