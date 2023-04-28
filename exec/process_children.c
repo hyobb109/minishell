@@ -6,7 +6,7 @@
 /*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 19:37:29 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/28 19:35:10 by hyunwoju         ###   ########.fr       */
+/*   Updated: 2023/04/28 19:52:29 by hyunwoju         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,19 +126,23 @@ void	manage_file(t_token *line)
 	t_fdata	*cur_file;
 	int		infile_fd;
 	int		outfile_fd;
+	int		append_flag;
 
 	cur_file = line->files;
 	infile_fd = 0;
 	outfile_fd = 0;
 	while (cur_file != NULL)
 	{
+		append_flag = 0;
 		if (cur_file->type == INFILE)
 		{
 			open_infile(cur_file->filename, &infile_fd);
 		}
-		else if (cur_file->type == OUTFILE)
+		else if (cur_file->type == OUTFILE || cur_file->type == APPEND)
 		{
-			open_outfile(cur_file->filename, &outfile_fd);
+			if (cur_file->type == APPEND)
+				append_flag = 1;
+			open_outfile(cur_file->filename, &outfile_fd, append_flag);
 		}
 		cur_file = cur_file->next;
 	}
@@ -156,9 +160,12 @@ void	open_infile(char *filename, int *infile_fd)
 	}
 }
 
-void	open_outfile(char *filename, int *outfile_fd)
+void	open_outfile(char *filename, int *outfile_fd, int append_flag)
 {
-	*outfile_fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0777);
+	if (append_flag)
+		*outfile_fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0777);
+	else
+		*outfile_fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	if (*outfile_fd == -1)
 	{
 		printf("%s: %s\n", filename, strerror(errno));
