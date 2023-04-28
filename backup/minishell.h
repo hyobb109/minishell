@@ -33,7 +33,7 @@ typedef enum e_flag {
 	ENVIRON = -2,
 	BLANK,
 	CLOSED,
-	FREE
+	FREE //del
 }	t_flag;
 
 typedef enum e_state {
@@ -45,7 +45,8 @@ typedef enum e_ftype {
 	INFILE,
 	OUTFILE,
 	APPEND,
-	DELIMITER
+	DELIMITER,
+	Q_DELIMIRER
 }	t_ftype;
 
 typedef struct s_fdata
@@ -151,16 +152,19 @@ void	free_files(t_fdata **lst);
 void	print_filelst(t_fdata *head); // delete
 
 // parsing
-char	*join_all(char **strs, int idx);
 char	**ft_pipe_split(char *str);
-void	syntax_check(char *str);
+int		syntax_error(char *str);
 void	make_cmdlst(char *str, t_deque *cmd_deque, t_edeque *envp);
 int		is_blank(char c);
 void	parse_command(char *str, t_token *token);
-void	env_trans(char *str, int i, t_edeque *envp, char **buf);
+int		env_trans(char *str, int i, t_edeque *envp, char *buf);
 void	search_env(char **cmd, t_edeque *envp);
 
 // builtins
+int		exist_args(t_token *token);
+t_env	*find_value(t_edeque *envp, char *key);
+char	*ft_getenv(t_edeque *envp, char *key);
+void	change_env(t_token *token, char *dest);
 int		exec_pwd(t_token *token);
 void	exec_exit(t_token *token);
 int		chdir_home(void);
@@ -168,35 +172,36 @@ char	*make_dirstr(char *str);
 int		exec_cd(t_token *token);
 char	**make_strmatrix(t_edeque *envp);
 char	**sorting_strsarr(t_edeque *envp);
-t_env	*find_value(t_edeque *envp, char *key);
 void	print_export(t_env	*print_env);
 void	print_exportlist(t_token *token);
 int		exec_export(t_token *token);
+char	*join_all(t_token *token, int idx);
 int		check_option(char **parsed);
 int		exec_echo(t_token *echo);
-int		exist_args(t_token *token);
 int		init_validkeyflag(t_token *token, int idx, char *tmp, int *flag);
 int		exist_validkey(t_token *token);
 void	print_invalidargserror(t_token *token);
 void	print_envlist(t_token *token);
 int		exec_env(t_token *token);
 int		exec_builtins(t_token *token);
-void	print_args(char **arguments, int target_idx);
+void	print_args(t_token *token, int target_idx);
 int		is_builtin(char *cmd);
 
 // pipe
 void	parents_process(t_deque *cmd_deque);
 void	check_file(t_token *line);
+int		check_infile(char *filename);
+int		check_outfile(char *filename);
 void	wait_child(int count);
 void	close_pipe(int (*fd)[2], int count);
 void	create_child(t_deque *cmd_deque, int (*fd)[2]);
 int		(*create_pipe(t_deque *cmd_deque))[2];
-
-void	child_process(t_deque *cmd_deque, int count, int total, int (*fd)[2]);
+void	child_process(t_token *line, int count, int total, int (*fd)[2]);
 void	manage_pipe(int count, int total, int (*fd)[2]);
+void	manage_file(t_token *line);
 
-int		check_error_infile(char *filename, int *infile);
-int		check_error_outfile(char *filename, int *outfile);
+void	open_infile(char *filename, int *infile_fd);
+void	open_outfile(char *filename, int *outfile_fd);
 
 void	assign_argument(char **str, char *av);
 void	get_size(char **arguments, char *av);
@@ -204,5 +209,9 @@ void	get_size_step1(char *av, char *quote, int *size);
 void	get_size_step2(char **arguments, char *av, int *size, int *index);
 int		count_rows(char *argument);
 char	**strs_trim(char **before, int row);
+
+char	**make_envlist(t_token *token);
+void	execute_line(t_token *line, char **env);
+void	manage_io(t_token *line, int count, int total, int (*fd)[2]);
 
 #endif

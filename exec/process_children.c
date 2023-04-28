@@ -6,7 +6,7 @@
 /*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 19:37:29 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/27 22:46:07 by hyunwoju         ###   ########.fr       */
+/*   Updated: 2023/04/28 17:24:06 by hyunwoju         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 
 void	child_process(t_token *line, int count, int total, int (*fd)[2])
 {
-	(void) line;
+	char **env;
 	//TODO - builtin 상의
 	//int debugging = exec_builtins(line);
 	//printf("debugging : %d\n", debugging);
@@ -36,7 +36,8 @@ void	child_process(t_token *line, int count, int total, int (*fd)[2])
 	manage_pipe(count, total, fd);
 	manage_file(line);
 	manage_io(line, count, total, fd);
-	execute_line(line, count, total);
+	env = make_envlist(line);
+	execute_line(line, env);
 }
 
 char	**make_envlist(t_token *token)
@@ -50,7 +51,10 @@ char	**make_envlist(t_token *token)
 	tmp = token->envp->head;
 	while (tmp)
 	{
-		str[idx] = ft_strjoin_three(tmp->key, "=", tmp->val);
+		if (!tmp->val)
+			str[idx] = ft_strdup(tmp->key); 
+		else
+			str[idx] = ft_strjoin_three(tmp->key, "=", tmp->val);
 		tmp = tmp->next;
 		idx++;
 	}
@@ -58,17 +62,17 @@ char	**make_envlist(t_token *token)
 	return (str);
 }
 
-void	execute_line(t_token *line, int count, int total)
+void	execute_line(t_token *line, char **env)
 {
-	char **env = make_envlist(line);
-	char *path_env = ft_getenv(line->envp, "PATH");
-	char **path = ft_split(path_env, ':');
-	char *current_path;
-	char *part_path;
-	count = 0;
-	total = 0;
-	//arguments = parse_command(av);
-	int i = 0;
+	char	*path_env;
+	char	**path;
+	char	*current_path;
+	char	*part_path;
+	int		i;
+	path_env = ft_getenv(line->envp, "PATH"); // value
+	path = ft_split(path_env, ':');
+	execve(line->command[0], line->command, env);
+	i = 0;
 	while (path[i] != 0)
 	{
 		part_path = ft_strjoin(path[i], "/");
@@ -78,15 +82,10 @@ void	execute_line(t_token *line, int count, int total)
 		free(current_path);
 		++i;
 	}
-	//c_free(path);
 	execve(current_path, line->command, env);
-	//ft_perror(cmd_not_found, arguments[0]);
-	//execve("./bin/ls")
+	printf("%s: command not found\n", line->command[0]);
+	exit (1);
 }
-
-//void	absolute_path()
-//{
-//}
 
 void	manage_io(t_token *line, int count, int total, int (*fd)[2])
 {
@@ -155,48 +154,13 @@ void	open_infile(char *filename, int *infile_fd)
 
 void	open_outfile(char *filename, int *outfile_fd)
 {
-	*outfile_fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC);
+	*outfile_fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	if (*outfile_fd == -1)
 	{
 		printf("%s: %s\n", filename, strerror(errno));
 		exit (1);
 	}
 }
-
-//void	check_error_infile(char *filename, int *infile)
-//{
-//	if (!access(filename, R_OK))
-//	{
-//		if (*infile)
-//			close(*infile);
-//		*infile = open(filename, O_RDONLY);
-//		return ;
-//	}
-//	if (!access(filename, F_OK))
-//	{
-//		printf("%s: Permission denied\n", filename);
-//		exit (1);
-//	}
-//	printf("%s: No such file or directory\n", filename);
-//	exit (1);
-//}
-
-//void	check_error_outfile(char *filename, int *outfile)
-//{
-//	if (*outfile)
-//		close(*outfile);
-//	*outfile = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0777);
-//	if (*outfile == -1)
-//	{
-//		printf("%s: Permission denied\n", filename);
-//		exit (1);
-//	}
-//}
-
-//void	execute_line(t_token *line, int count, int total, int (*fd)[2])
-//{
-
-//}
 
 void	manage_pipe(int count, int total, int (*fd)[2])
 {

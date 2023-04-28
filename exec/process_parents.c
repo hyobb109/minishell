@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_parents.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 16:33:30 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/27 21:44:30 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/28 17:30:37 by hyunwoju         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,9 @@
 
 void	parents_process(t_deque *cmd_deque)
 {
-	t_token	*current_token = NULL;
+	t_token	*current_token;
 	int		(*fd)[2];
-	int		count = 0;
-
-	(void) current_token;
-	(void) fd;
+	int		count;
 	//TODO - builtin 상의
 	//if (cmd_deque->cnt == 1)
 	//{
@@ -28,16 +25,16 @@ void	parents_process(t_deque *cmd_deque)
 	//	// if (debugging == 1) //TODO - 나중에 주석 풀기
 	//	// 	exit(0);
 	//}
-	// while (current_token != NULL)
-	// {
-	// 	check_file(current_token);
-	// 	current_token = current_token->next;
-	// }
-	// fd = create_pipe(cmd_deque);
-	// current_token = cmd_deque->head;
-	// count = cmd_deque->cnt - 1;
-	// create_child(cmd_deque, fd);
-	// close_pipe(fd, count);
+	current_token = cmd_deque->head;
+	count = cmd_deque->cnt - 1;
+	while (current_token != NULL)
+	{
+		check_file(current_token);
+		current_token = current_token->next;
+	}
+	fd = create_pipe(cmd_deque);
+	create_child(cmd_deque, fd);
+	close_pipe(fd, count);
 	wait_child(count);
 }
 
@@ -77,7 +74,7 @@ int	check_outfile(char *filename)
 {
 	int	fd;
 
-	fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC);
+	fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	if (fd == -1)
 		return (TRUE);
 	close(fd);
@@ -89,7 +86,7 @@ void	wait_child(int count)
 	int	idx;
 	
 	idx = 0;
-	while (idx < count)
+	while (idx < count + 1)
 	{
 		wait(NULL);
 		++idx;
@@ -105,7 +102,7 @@ void	close_pipe(int (*fd)[2], int count)
 	{
 		close(fd[idx][0]);
 		close(fd[idx][1]);
-		free(fd[idx]);
+		//free(fd);
 		++idx;
 	}
 }

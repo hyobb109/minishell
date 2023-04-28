@@ -211,7 +211,7 @@ int		count_rows(char *argument);
 char	**strs_trim(char **before, int row);
 
 char	**make_envlist(t_token *token);
-void	execute_line(t_token *line, int count, int total);
+void	execute_line(t_token *line, char **env);
 void	manage_io(t_token *line, int count, int total, int (*fd)[2]);
 
 #endif
