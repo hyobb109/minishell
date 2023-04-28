@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_children.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 19:37:29 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/28 19:35:10 by hyunwoju         ###   ########.fr       */
+/*   Updated: 2023/04/28 21:38:22 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ void	child_process(t_token *line, int count, int total, int (*fd)[2])
 {
 	char **env;
 	//TODO - builtin 상의
-	//int debugging = exec_builtins(line);
-	//printf("debugging : %d\n", debugging);
+	// int debugging = exec_builtins(line);
+	// printf("debugging : %d\n", debugging);
 	//TODO - builtin 상의/
 	manage_pipe(count, total, fd);
 	manage_file(line);
@@ -44,23 +44,29 @@ void	child_process(t_token *line, int count, int total, int (*fd)[2])
 char	**make_envlist(t_token *token)
 {
 	int		idx;
-	char	**str;
+	char	**strs;
 	t_env	*tmp;
 
-	idx = 0;
-	str = (char **)malloc(sizeof(char *) + (token->envp->cnt + 1));
+	strs = (char **)malloc(sizeof(char *) + (token->envp->cnt + 1));
+	if (!strs)
+		exit(1);
 	tmp = token->envp->head;
-	while (tmp)
+	idx = 0;
+	while (idx < token->envp->cnt && tmp)
 	{
-		if (!tmp->val)
-			str[idx] = ft_strdup(tmp->key); 
-		else
-			str[idx] = ft_strjoin_three(tmp->key, "=", tmp->val);
+		printf("key : %s, value : %s\n", tmp->key, tmp->val);
+		if (tmp->key)
+		{
+			if (!tmp->val)
+				strs[idx] = ft_strdup(tmp->key); 
+			else
+				strs[idx] = ft_strdup(ft_strjoin_three(tmp->key, "=", tmp->val));
+		}
 		tmp = tmp->next;
 		idx++;
 	}
-	str[idx] = 0;
-	return (str);
+	strs[idx] = 0;
+	return (strs);
 }
 
 void	execute_line(t_token *line, char **env)
