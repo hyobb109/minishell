@@ -30,7 +30,6 @@ int	main(int ac, char **av, char **env)
 	(void) file;
 	// env deque create
 	make_envlst(&envp, env);
-	init_deque(&cmd_deque);
 	while (1)
 	{
 		str = readline("minishell-0.0$ ");
@@ -38,13 +37,14 @@ int	main(int ac, char **av, char **env)
 			exit(EXIT_FAILURE);
 		if (!syntax_error(str))
 		{
+			init_deque(&cmd_deque);
 			make_cmdlst(str, &cmd_deque, &envp);
 			parents_process(&cmd_deque);
+			free_deque(&cmd_deque);
 		}
 		// printf("%s\n", str);
 		add_history(str);
 		free(str);
-		free_deque(&cmd_deque);
 	}
 	free_edeque(&envp);
 	//TODO - history도 free?
