@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 20:42:23 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/28 21:12:13 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/29 22:48:28 by yunjcho          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ void	print_invalidargserror(t_token *token)
 	}
 	printf("%s: %s: %s\n", token->command[print_idx - 1], \
 		token->command[print_idx], strerror(ENOENT));
-	exit (EXIT_FAILURE); //ft_error();
+	exit (EXIT_FAILURE);
 }
 
 void	print_envlist(t_token *token)
@@ -97,9 +97,10 @@ void	print_envlist(t_token *token)
 
 	str = NULL;
 	tmp = token->envp->head;
+	printf("--------------------------print_envlist start--------------------------\n");
 	while (tmp)
 	{
-		if (!tmp->val || !tmp->key)
+		if (!ft_strcmp(tmp->val, ""))
 		{
 			tmp = tmp->next;
 			continue ;
@@ -109,6 +110,7 @@ void	print_envlist(t_token *token)
 		free(str);
 		tmp = tmp->next;
 	}
+	printf("--------------------------print_envlist end--------------------------\n");
 }
 
 int	exec_env(t_token *token)

@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 14:45:34 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/28 16:42:57 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/29 22:49:29 by yunjcho          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,9 +102,9 @@ t_env	*pop_select_env(t_edeque *deque, char *key)
 	{
 		tmp =  find_value(deque, key);
 		if (tmp == deque->head)
-			tmp = pop_front_env(deque);
+			return (pop_front_env(deque));
 		else if (tmp == deque->tail)
-			tmp = pop_back_env(deque);
+			return (pop_back_env(deque));
 		else
 		{
 			tmp->prev->next = tmp->next;

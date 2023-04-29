@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 13:38:07 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/28 21:04:17 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/29 23:01:45 by yunjcho          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	print_export(t_env	*print_env)
 {
 	printf("declare -x %s", print_env->key);
-	if (print_env->val)
+	if (ft_strlen(print_env->val) > 0)
 		printf("=\"%s\"", print_env->val);
 	printf("\n");
 }
@@ -37,62 +37,99 @@ void	print_exportlist(t_token *token)
 	free_strs(sorting_strs);
 }
 
-int	append_export(t_token *token)
+int	is_validkey(char *key)
 {
-	int		idx;
-	int		target_idx;
-	char	*val;
-	char	*tmp;
-	t_env	*env_node;
-
-	idx = 1;
-	target_idx = 0;
-	val = NULL;
-	tmp = NULL;
-	env_node = NULL;
-	while (token->command[idx])
+	int	idx;
+	
+	idx = 0;
+	while(key[idx])
 	{
-		//TODO - 유효한 키인지 확인 #, &, *, (, ), | 는 에러
-		env_node = find_value(token->envp, token->command[idx]);
-		target_idx = ft_strchr_idx(token->command[idx], '=');
-		printf("target_idx : %d\n", target_idx);
-		if (env_node)
-		{
-			if (target_idx > 0)
-			{
-				if (env_node->val)
-				{
-					tmp = env_node->val;
-					free(tmp);
-				}
-				env_node->val = ft_substr(token->command[idx], \
-					target_idx + 1, ft_strlen(token->command[idx]) - 2);
-			}
-		}
-		else
-		{
-			env_node = malloc(sizeof(t_env));
-			if (!env_node)
-				ft_error();
-			tmp = env_node->key;
-			env_node->key = ft_substr(token->command[idx], 0, target_idx - 0);
-			// free(tmp);
-			if (target_idx > 0)
-			{
-				tmp = env_node->val;
-				env_node->val = ft_substr(token->command[idx], \
-					target_idx + 1, ft_strlen(token->command[idx]) - 2);
-				// free(tmp);
-			}
-			else
-				env_node->val = NULL;
-			env_node->prev = NULL;
-			env_node->next = NULL;
-			append_back_env(token->envp, env_node);
-		}
+		if (!ft_isalnum(key[idx]) && key[idx] != '=')
+			return (0);
+		else if (idx == 0 && ft_isdigit(key[idx]))
+			return (0);
 		idx++;
 	}
 	return (1);
+}
+
+int	appending(t_token *token, char *key, char *value)
+{
+	t_env	*env_node;
+	char	*free_str;
+
+	env_node = NULL;
+	free_str = NULL;
+	env_node = find_value(token->envp, key);
+	if (env_node)
+	{
+		if (!ft_strcmp(env_node->val, value))
+			return (-1);
+		free_str = env_node->val;
+		free(free_str);
+		env_node->val = ft_strdup(value);
+	}
+	else
+	{
+		env_node = malloc(sizeof(t_env));
+		if (!env_node)
+			ft_error();
+		env_node->key = ft_strdup(key);
+		env_node->val = ft_strdup(value);
+		env_node->prev = NULL;
+		env_node->next = NULL;
+		append_back_env(token->envp, env_node);
+	}
+	return (1);
+}
+
+void	append_export(t_token *token)
+{
+	int		idx;
+	int		target_idx;
+	char	*key;
+	char	*value;
+
+	idx = 1;
+	target_idx = -1;
+	key = NULL;
+	value = NULL;
+	while (token->command[idx])
+	{
+		target_idx = ft_strchr_idx(token->command[idx], '=');
+		if (!target_idx)
+		{
+			printf("export: '%s': not a valid identifier\n", token->command[idx]); //TODO - 에러넘버 찾기
+			idx++;
+		}
+		else
+		{
+			// printf("target idx : %d, %s equal exist\n", target_idx, token->command[idx]);
+			key = ft_substr(token->command[idx], 0, target_idx - 0);
+			if (!is_validkey(key))//TODO - 유효한 키인지 확인 #, &, *, (, ), | 는 에러 / 숫자만 있어도 에러
+			{
+				free(key);
+				printf("export: '%s': not a valid identifier\n", key); //TODO - 에러넘버 찾기
+				idx++;
+				continue ;
+			}
+			if (target_idx > 0) // = 이 있음
+				value = ft_substr(token->command[idx], \
+					target_idx + 1, ft_strlen(token->command[idx]));
+			else // = 이 없음, key만 있음
+				value = ft_strdup("");
+			if (appending(token, key, value) == -1)
+			{
+				free(key);
+				free(value);
+				idx++;
+				continue ;
+			}
+			free(key);
+			free(value);
+		}
+		idx++;
+	}
 }
 
 int	exec_export(t_token *token)

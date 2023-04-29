@@ -12,11 +12,6 @@
 *.o
 *.a
 a.out
-
-in_tmp
-out_tmp
-
 .DS_Store
-.gitignore
 
-process_parents.c
+minishell
