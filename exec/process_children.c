@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 19:37:29 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/29 16:42:20 by yunjcho          ###   ########seoul.kr  */
+/*   Updated: 2023/04/29 23:15:13 by yunjcho          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,16 @@
 void	child_process(t_token *line, int count, int total, int (*fd)[2])
 {
 	char **env;
-	//TODO - builtin 상의
-	// int debugging = exec_builtins(line);
-	// printf("debugging : %d\n", debugging);
-	//TODO - builtin 상의/
 	manage_pipe(count, total, fd);
 	manage_file(line);
 	manage_io(line, count, total, fd);
+	//TODO - builtin 상의
+	if (exec_builtins(line))
+	{
+		printf("child_process builtins!!!\n");
+		// exit(EXIT_SUCCESS); //TODO 종료?
+	}
+	//TODO - builtin 상의/
 	env = make_envstrs(line);
 	if (line->command[0][0] != '\0')
 		execute_line(line, env);
