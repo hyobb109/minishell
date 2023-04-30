@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 19:37:29 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/30 21:49:10 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/05/01 00:00:09 by yunjcho          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,6 @@ void	child_process(t_token *line, int count, int total, int (*fd)[2])
 	char **env;
 
 	env = NULL;
-
-	printf("command : %s, fd0: %d, fd1: %d\n", line->command[0], fd[0][0], fd[0][1]);
-	
 	manage_pipe(count, total, fd);
 	manage_file(line);
 	manage_io(line, count, total, fd);

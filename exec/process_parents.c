@@ -6,11 +6,33 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 16:33:30 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/30 22:38:43 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/05/01 01:33:10 by yunjcho          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+void	only_builtins(t_deque *cmd_deque,  int (*fd)[2])
+{
+	int	stdin_fd;
+	int	stdout_fd;
+
+	stdin_fd = dup(STDIN_FILENO);
+	stdout_fd = dup(STDOUT_FILENO);
+	manage_file(cmd_deque->head);
+	manage_io(cmd_deque->head, 0, 1, fd);
+	exec_builtins(cmd_deque->head);
+	if (cmd_deque->head->infile_fd)
+	{
+		printf("dup2 rollback : %d\n", dup2(stdin_fd, STDIN_FILENO));
+		close(stdin_fd);
+	}
+	if (cmd_deque->head->outfile_fd)
+	{
+		printf("dup2 rollback : %d\n", dup2(stdout_fd, STDOUT_FILENO));
+		close(stdout_fd);
+	}
+}
 
 void	parents_process(t_deque *cmd_deque)
 {
@@ -28,41 +50,7 @@ void	parents_process(t_deque *cmd_deque)
 	fd = create_pipe(cmd_deque);
 	if (cmd_deque->cnt == 1 && cmd_deque->head->state == BUILTIN)
 	{
-		manage_file(cmd_deque->head);
-		manage_io(cmd_deque->head, 0, 1, fd);
-		printf("before infile: %d, outfile: %d\n", cmd_deque->head->infile_fd, cmd_deque->head->outfile_fd);
-		exec_builtins(cmd_deque->head);
-
-		// fd 돌리기
-		if (cmd_deque->head->infile_fd)
-		{
-			dup2(STDIN_FILENO, cmd_deque->head->infile_fd);
-			close(cmd_deque->head->infile_fd);
-		}
-		else
-		{
-			if (count != 0)
-			{
-				dup2(STDIN_FILENO, fd[count - 1][0]);
-				close(fd[count - 1][0]);
-			}
-		}
-		if (cmd_deque->head->outfile_fd)
-		{
-			printf("check\n");
-			dup2(STDOUT_FILENO, cmd_deque->head->outfile_fd);
-			close(cmd_deque->head->outfile_fd);
-		}
-		else
-		{
-			if (count != cmd_deque->cnt - 1)
-			{
-				dup2(STDOUT_FILENO, fd[count][1]);
-				close(fd[count][1]);
-			}
-		}
-		printf("after infile: %d, outfile: %d\n", cmd_deque->head->infile_fd, cmd_deque->head->outfile_fd);
-		wait_child(count, cmd_deque);
+		only_builtins(cmd_deque, fd);
 		return ;
 	}
 	create_child(cmd_deque, fd);

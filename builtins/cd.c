@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 01:25:35 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/30 19:16:00 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/05/01 00:17:18 by yunjcho          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,11 +100,9 @@ void	change_env(t_token *token, char *dest)
 
 int	exec_cd(t_token *token)
 {
-	int		result;
 	char	*dest;
 	char	cwd_name[PATH_MAX];
 
-	result = 0;
 	getcwd(cwd_name, sizeof(cwd_name));
 	dest = init_destpath(token, cwd_name);
 	// printf("----dest : %s-----\n", dest);
