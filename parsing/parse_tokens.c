@@ -6,7 +6,7 @@
 /*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:15:26 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/28 22:24:24 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/04/30 13:09:38 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	is_builtin(char *cmd)
 }
 
 // redirection이 있는 토큰은 따로 처리.. 여기서도 따옴표 확인 계속 해야 함
-//<, <<, > , >> 인지 체크, infile, outfile 업데이트
+//<, <<, > , >> 인지 체크, infile, outfile 토큰 파일리스트에 업데이트
 int	check_redir(char *str, t_token *token)
 {
 	int		i;
@@ -50,27 +50,22 @@ int	check_redir(char *str, t_token *token)
 	if (!newfile)
 		ft_error();
 	newfile->next = NULL;
-	// redirection flag check
+	// redirection flag check => << 와 >> 는 인덱스 2개씩 늘려줌
 	if (str[i] == '<' && str[i + 1] == '<')
 	{
 		newfile->type = DELIMITER;
-		i += 2;
+		i++;
 	}
 	else if (str[i] == '>' && str[i + 1] == '>')
 	{
 		newfile->type = APPEND;
-		i += 2;
+		i++;
 	}
 	else if (str[i] == '<')
-	{
 		newfile->type = INFILE;
-		i++;
-	}
 	else if (str[i] == '>')
-	{
 		newfile->type = OUTFILE;
-		i++;
-	}
+	i++;
 	return (get_filename(&str[i], newfile, token));
 }
 
@@ -100,7 +95,8 @@ char	**parse_command(char *str, t_token *token)
 			quote = 0;
 		}
 		// echo hi >> "$USER hi $LANG" <$USER >>append1 >>ap'en'd2 <<"heredoc" <<h_noquote <"infile $USER" <infi 
-		else if (!quote && (str[i] == '<' || str[i] == '>')) // 리다이렉션 있으면 io_here 토큰으로 분리하여 담음
+		// 리다이렉션 있으면 command 에 넣지 않고 분리하여 토큰 파일 리스트에 파일 이름과 형식 추가
+		else if (!quote && (str[i] == '<' || str[i] == '>'))
 		{
 			// printf("*str: %s\n", &str[i]);
 			i += check_redir(&str[i], token);
@@ -141,17 +137,16 @@ char	*expand_environ(char *str, t_token *token, int quote)
 		{
 			quote = CLOSED;
 		}
+		// 히어독일 때는 환경변수 치환하면 안되므로 공백만나거나 널일 때까지 버퍼에 복사해줌
 		else if (quote == CLOSED && *str == '<' && *(str + 1) == '<')
 		{
-			buffer[len++] = *str;
-			str++;
-			buffer[len++] = *str;
-			str++;
+			// 버퍼에 <<만 복사
+			ft_memcpy(&buffer[len], str, 2);
+			len += 2;
+			str += 2;
 			while (!is_blank(*str) && *str != '<' && *str != '>' && *str)
 			{
 				buffer[len++] = *str;
-				if (*str == '\0')
-					break ;
 				str++;
 			}
 		}
