@@ -6,7 +6,7 @@
 /*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 14:12:04 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/04/28 22:26:42 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/04/30 14:50:35 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,12 @@ int	main(int ac, char **av, char **env)
 			free_deque(&cmd_deque);
 		}
 		// printf("%s\n", str);
-		add_history(str);
+		if (*str)
+			add_history(str);
 		free(str);
 	}
 	free_edeque(&envp);
+	rl_clear_history(); // free readline history list
 	//TODO - history도 free?
 	return (0);
 }
