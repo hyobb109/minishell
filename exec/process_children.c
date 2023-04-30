@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 19:37:29 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/30 18:43:31 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/30 21:49:10 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,15 +31,14 @@ void	child_process(t_token *line, int count, int total, int (*fd)[2])
 	char **env;
 
 	env = NULL;
+
+	printf("command : %s, fd0: %d, fd1: %d\n", line->command[0], fd[0][0], fd[0][1]);
+	
 	manage_pipe(count, total, fd);
 	manage_file(line);
 	manage_io(line, count, total, fd);
-	//TODO - builtin 상의
-	if (line->state == BUILTIN)
-	{
-		// exec_builtins(line);
-		// exit(EXIT_SUCCESS); //TODO - 종료?
-	}
+	if (count && line->state == BUILTIN)
+		exec_builtins(line);
 	else
 	{
 		env = make_envstrs(line);
@@ -54,20 +53,14 @@ char	**make_envstrs(t_token *token)
 	char	**strs;
 	t_env	*tmp;
 
-	strs = malloc(sizeof(char *) + (token->envp->cnt + 1));
+	strs = malloc(sizeof(char *) * (token->envp->cnt + 1));
 	if (!strs)
 		exit(1);
 	idx = 0;
 	tmp = token->envp->head;
-	while (tmp && idx < token->envp->cnt)
+	while (tmp)
 	{
-		if (tmp->key)
-		{
-			if (!tmp->val)
-				strs[idx] = ft_strdup(tmp->key); 
-			else
-				strs[idx] = ft_strjoin_three(tmp->key, "=", tmp->val);
-		}
+		strs[idx] = ft_strjoin_three(tmp->key, "=", tmp->val);
 		tmp = tmp->next;
 		idx++;
 	}
