@@ -6,7 +6,7 @@
 /*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 15:08:06 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/04/30 12:51:33 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/04/30 19:04:00 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	get_filename(char *str, t_fdata *new, t_token *token)
 		{
 			quote = str[i];
 			if (new->type == DELIMITER)
-				new->type = Q_DELIMIRER; // heredoc 에서 리미터에 따옴표 있으면 환경변수 치환 안하므로 따로 분류
+				new->type = Q_DELIMITER; // heredoc 에서 리미터에 따옴표 있으면 환경변수 치환 안하므로 따로 분류
 		}
 		else if (quote && str[i] == quote)
 		{
@@ -75,7 +75,7 @@ int	get_filename(char *str, t_fdata *new, t_token *token)
 	// printf("=========\n");
 	// printf("file: %s\n", new->filename);
 	append_file(&token->files, new);
-	if (new->type == DELIMITER || new->type == Q_DELIMIRER || new->type == APPEND)
+	if (new->type == DELIMITER || new->type == Q_DELIMITER || new->type == APPEND)
 		i++; // printf("files addr: %p, next: \n", token->files);
 	return (i);
 }

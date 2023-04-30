@@ -46,7 +46,7 @@ typedef enum e_ftype {
 	OUTFILE,
 	APPEND,
 	DELIMITER,
-	Q_DELIMIRER
+	Q_DELIMITER
 }	t_ftype;
 
 typedef struct s_fdata
@@ -55,6 +55,7 @@ typedef struct s_fdata
 	int				type;
 	struct	s_fdata	*next;
 }	t_fdata;
+
 
 // delete
 typedef struct s_fd
