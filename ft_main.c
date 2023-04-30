@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 14:12:04 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/04/30 19:01:38 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/30 22:00:42 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ int	main(int ac, char **av, char **env)
 			parents_process(&cmd_deque);
 			free_deque(&cmd_deque);
 		}
-		// printf("%s\n", str);
 		if (*str)
 			add_history(str);
 		free(str);

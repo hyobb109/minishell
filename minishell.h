@@ -146,6 +146,7 @@ t_env	*pop_select_env(t_edeque *deque, char *key);
 void	print_edeque(t_edeque *deque); // delete
 
 // file list
+int		check_redir(char *str, t_token *token);
 int		get_filename(char *str, t_fdata *new, t_token *token);
 void	append_file(t_fdata **head, t_fdata *new);
 void	free_files(t_fdata **lst);
@@ -153,10 +154,13 @@ void	print_filelst(t_fdata *head); // delete
 
 // parsing
 char	**ft_pipe_split(char *str);
+char	**parse_command(char *str, t_token *token);
 int		syntax_error(char *str);
 void	make_cmdlst(char *str, t_deque *cmd_deque, t_edeque *envp);
 int		is_blank(char c);
-char	**parse_command(char *str, t_token *token);
+
+// environ
+char	*expand_environ(char *str, t_token *token, int quote);
 int		env_trans(char *str, t_edeque *envp, char *buf);
 int		search_env(char **str, char *buf, t_edeque *envp, int quote);
 
