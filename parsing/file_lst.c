@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   file_lst.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 15:08:06 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/04/30 19:04:00 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/04/30 20:03:02 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,37 @@ int	get_filename(char *str, t_fdata *new, t_token *token)
 	if (new->type == DELIMITER || new->type == Q_DELIMITER || new->type == APPEND)
 		i++; // printf("files addr: %p, next: \n", token->files);
 	return (i);
+}
+
+// redirection이 있는 토큰은 따로 처리.. 여기서도 따옴표 확인 계속 해야 함
+//<, <<, > , >> 인지 체크, infile, outfile 토큰 파일리스트에 업데이트
+int	check_redir(char *str, t_token *token)
+{
+	int		i;
+	t_fdata *newfile;
+
+	i = 0;
+	newfile = malloc(sizeof(t_fdata));
+	if (!newfile)
+		ft_error();
+	newfile->next = NULL;
+	// redirection flag check => << 와 >> 는 인덱스 2개씩 늘려줌
+	if (str[i] == '<' && str[i + 1] == '<')
+	{
+		newfile->type = DELIMITER;
+		i++;
+	}
+	else if (str[i] == '>' && str[i + 1] == '>')
+	{
+		newfile->type = APPEND;
+		i++;
+	}
+	else if (str[i] == '<')
+		newfile->type = INFILE;
+	else if (str[i] == '>')
+		newfile->type = OUTFILE;
+	i++;
+	return (get_filename(&str[i], newfile, token));
 }
 
 // delete!

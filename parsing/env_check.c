@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_check.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 05:41:25 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/04/30 19:15:41 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/04/30 20:04:38 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,4 +108,61 @@ int	search_env(char **str, char *buf, t_edeque *envp, int quote)
 		// printf("buf copied: %s\n", buf);
 	}
 	return (ft_strlen(buf)); // 치환된 부분 포함하여 버퍼의 길이를 리턴.
+}
+
+char	*expand_environ(char *str, t_token *token, int quote)
+{
+	//	어차피 끝까지 볼거임
+	int		len;
+	char	buffer[ARG_MAX];
+
+	// printf("**str: %s\n", str);
+	ft_memset(buffer, 0, ARG_MAX); // 버퍼 초기화
+	quote = CLOSED;
+	len = 0;
+	while (*str)
+	{
+		if (quote == CLOSED && (*str == '\'' || *str == '\"'))
+		{
+			quote = *str;
+		}
+		else if (quote && *str == quote)
+		{
+			quote = CLOSED;
+		}
+		// 히어독일 때는 환경변수 치환하면 안되므로 공백만나거나 널일 때까지 버퍼에 복사해줌
+		else if (quote == CLOSED && *str == '<' && *(str + 1) == '<')
+		{
+			// 버퍼에 <<만 복사
+			ft_memcpy(&buffer[len], str, 2);
+			len += 2;
+			str += 2;
+			while (!is_blank(*str) && *str != '<' && *str != '>' && *str)
+			{
+				buffer[len++] = *str;
+				str++;
+			}
+		}
+		// $esd  뒤가 알파벳이나 '_'일 때만 환경변수로 처리(변수 명 조건)
+		else if ((((quote == CLOSED && *str == '$') || (quote == '\"' && *str == '$')) && (ft_isalpha(*(str + 1)) || *(str + 1) == '_')))
+		{
+			// printf("str: %s, buf[%d]: %s\n", str, len, &buffer[len]);
+			// printf("quote: %c\n", quote);
+			len += search_env(&str, &buffer[len], token->envp, quote); // $ 위치부터 보내주기
+			if (quote)
+				quote = CLOSED; // 따옴표 닫아줌 (환경변수 치환되면서 따옴표 제거됨)
+		}
+		buffer[len++] = *str;
+		if (*str == '\0')
+			break ;
+		str++;
+		// printf("str: %s, buf : %s, buf_len: %d\n", str, buffer, len);
+	}
+	buffer[len] = '\0';
+	// printf("============\n");
+	printf("environ expansion result : %s\n", buffer);
+	// 버퍼에 환경변수 모두 치환된 결과 담김.
+	// 메모리 새로 할당하여 리턴.
+	return (ft_strdup(buffer));
+	// printf("res : %s\n", res);
 }
