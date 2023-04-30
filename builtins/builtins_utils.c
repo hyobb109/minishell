@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 15:36:38 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/28 19:19:08 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/30 18:37:47 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ t_env	*find_value(t_edeque *envp, char *key)
 	return (NULL);
 }
 
-/* cd, */
+/* cd, execuve */
 char	*ft_getenv(t_edeque *envp, char *key)
 {
 	t_env	*tmp;
@@ -43,16 +43,4 @@ char	*ft_getenv(t_edeque *envp, char *key)
 	tmp = find_value(envp, key);
 	value = tmp->val;
 	return (value);
-}
-
-void	change_env(t_token *token, char *dest)
-{
-	char	*tmp;
-	t_env	*change_env;
-
-	change_env = find_value(token->envp, "PWD");
-	tmp = change_env->val;
-	free(tmp);
-	change_env->val = NULL;
-	change_env->val = ft_strdup(dest);
 }
