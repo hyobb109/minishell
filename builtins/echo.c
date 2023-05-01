@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/22 15:55:25 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/01 16:09:31 by hyunwoju         ###   ########.fr       */
+/*   Updated: 2023/05/01 19:06:33 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,23 +18,18 @@ char	*join_all(t_token *token, int idx)
 	char	*result;
 
 	home = ft_getenv(token->envp, "HOME");
-	result = ft_strdup("\0");
+	result = ft_strdup("");
 	while (token->command[idx])
 	{
-		if (idx == 1 && !ft_strcmp(token->command[1], "~")) //옵션이 무효한 경우
-			result = ft_strjoin(result, home); //result free
-		else if (idx >= 2 && !ft_strcmp(token->command[2], "~")) //옵션이 유효한 경우
+		if (idx == 1 && !ft_strcmp(token->command[1], "~")) //-n옵션이 무효한 경우
+			result = ft_strjoin(result, home);
+		else if (idx >= 2 && !ft_strcmp(token->command[2], "~")) //-n 옵션이 유효한 경우
 			result = ft_strjoin(result, home);
 		else
 			result = ft_strjoin(result, token->command[idx]);
 		if (token->command[idx + 1])
-			result = ft_strjoin(result, " ");
+			result = ft_strjoin(result, "");
 		idx++;
-	}
-	if (result[0] == '\0')
-	{
-		free(result);
-		return (0);
 	}
 	return (result);
 }
@@ -83,7 +78,7 @@ void	print_args(t_token *token, int target_idx)
 
 int	exec_echo(t_token *token)
 {
-	int		target_idx;
+	int	target_idx;
 
 	target_idx = check_option(token->command);
 	print_args(token, target_idx);
