@@ -22,7 +22,6 @@ void	free_strs(char **strs)
 		free(strs[i]);
 		i++;
 	}
-	free(strs[i]);
 	free(strs);
     strs = 0;
 }
