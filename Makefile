@@ -3,15 +3,15 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+         #
+#    By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/18 19:16:02 by yunjcho           #+#    #+#              #
-#    Updated: 2023/04/27 20:46:28 by yunjcho          ###   ########.fr        #
+#    Updated: 2023/05/01 16:56:31 by hyunwoju         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
-CC = cc -g
+CC = cc
 CFLAGS = -Wall -Wextra -Werror
 R_FLAG =  -lreadline -L${HOME}/.brew/opt/readline/lib
 R_INC = -I${HOME}/.brew/opt/readline/include

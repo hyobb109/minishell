@@ -6,7 +6,7 @@
 /*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 20:42:23 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/01 16:48:31 by hyunwoju         ###   ########.fr       */
+/*   Updated: 2023/05/01 17:07:37 by hyunwoju         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ int	exec_env(t_token *token)
 		{
 			if (flag == 1)
 				exec_pwd(token);
-			else if (flag == 4)
+			else if (flag == 4 || flag == -1)
 				return (1);
 			else
 				printf("%s\n", ft_getenv(token->envp, "LOGNAME"));

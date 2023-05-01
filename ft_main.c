@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/15 14:12:04 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/05/01 16:50:03 by hyunwoju         ###   ########.fr       */
+/*   Created: 2023/05/01 16:55:06 by hyunwoju          #+#    #+#             */
+/*   Updated: 2023/05/01 16:55:11 by hyunwoju         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	main(int ac, char **av, char **env)
 		str = readline("minishell-0.0$ ");
 		if (!str)
 			exit(EXIT_FAILURE);
-		if (!syntax_error(str))
+		if (syntax_error(str) == FALSE)
 		{
 			init_deque(&cmd_deque);
 			make_cmdlst(str, &cmd_deque, &envp);

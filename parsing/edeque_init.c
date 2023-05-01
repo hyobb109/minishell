@@ -6,7 +6,7 @@
 /*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 16:44:41 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/05/01 16:51:44 by hyunwoju         ###   ########.fr       */
+/*   Updated: 2023/05/01 17:06:01 by hyunwoju         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	make_envlst(t_edeque *envp, char **env)
 {
 	int		i;
 	t_env	*env_node;
-	t_env	*oldpwd;
+	//t_env	*oldpwd;
 	char	**tmp;
 
 	i = 0;
@@ -56,9 +56,6 @@ void	make_envlst(t_edeque *envp, char **env)
 		append_back_env(envp, env_node);
 		i++;
 	}
-	oldpwd = pop_select_env(envp, "OLDPWD");
-	if (oldpwd)
-		free(oldpwd);
 	// print_edeque(envp);
 }
 
