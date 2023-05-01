@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_tokens.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:15:26 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/01 00:35:17 by yunjcho          ###   ########seoul.kr  */
+/*   Updated: 2023/05/01 17:04:54 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ char	**parse_command(char *str, t_token *token)
 	}
 	buffer[len] = '\0';
 	// printf("buffer : %s\n", buffer);
+	free(str);
 	return (ft_split(buffer, BLANK));
 }
 
