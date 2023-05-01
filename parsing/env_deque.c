@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_deque.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 14:45:34 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/29 22:49:29 by yunjcho          ###   ########seoul.kr  */
+/*   Updated: 2023/05/01 16:08:02 by hyunwoju         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,8 @@ t_env	*pop_select_env(t_edeque *deque, char *key)
 {
 	t_env	*tmp;
 
+	if (deque->head == NULL || !deque || key == NULL)
+		return (NULL);
 	if (deque->cnt)
 	{
 		tmp =  find_value(deque, key);

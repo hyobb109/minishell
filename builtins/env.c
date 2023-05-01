@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 20:42:23 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/30 21:58:59 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/05/01 16:48:31 by hyunwoju         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 int	init_validkeyflag(t_token *token, int idx, char *tmp, int *flag)
 {
-	if (!ft_strcmp(tmp, "pwd"))
+	if (!ft_strncmp(tmp, "pwd", 4))
 		*flag = 1;
-	else if (!ft_strncmp(tmp, "log", 3))
+	else if (!ft_strncmp(tmp, "log", 4))
 	{
 		*flag = 3;
-		if (!ft_strcmp(tmp, "logname"))
+		if (!ft_strncmp(tmp, "logname", 8))
 			*flag = 2;
 	}
 	if (*flag < 3 && !token->command[idx + 1])
@@ -30,7 +30,8 @@ int	init_validkeyflag(t_token *token, int idx, char *tmp, int *flag)
 			printf("usage: pwd No need options and args\n");
 		else
 			printf("usage: logname\n");
-		exit (EXIT_FAILURE);//TODO - 추후 확인 후 수정 (return(-1))
+		return (-1);
+		//exit (EXIT_FAILURE);//TODO - 추후 확인 후 수정 (return(-1))
 	}
 	return (*flag);
 }
@@ -87,7 +88,8 @@ void	print_invalidargserror(t_token *token)
 	}
 	printf("%s: %s: %s\n", token->command[print_idx - 1], \
 		token->command[print_idx], strerror(ENOENT));
-	exit (EXIT_FAILURE);
+	//exit (EXIT_FAILURE); //TODO - return으로 변경
+	return ;
 }
 
 void	print_envlist(t_token *token)

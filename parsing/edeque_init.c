@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   edeque_init.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 16:44:41 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/04/30 19:02:35 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/05/01 16:51:44 by hyunwoju         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,8 @@ void	make_envlst(t_edeque *envp, char **env)
 		i++;
 	}
 	oldpwd = pop_select_env(envp, "OLDPWD");
-	free(oldpwd);
+	if (oldpwd)
+		free(oldpwd);
 	// print_edeque(envp);
 }
 

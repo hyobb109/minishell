@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/22 15:55:25 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/30 21:32:05 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/05/01 16:09:31 by hyunwoju         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char	*join_all(t_token *token, int idx)
 	{
 		if (idx == 1 && !ft_strcmp(token->command[1], "~")) //옵션이 무효한 경우
 			result = ft_strjoin(result, home); //result free
-		else if (idx == 2 && !ft_strcmp(token->command[2], "~")) //옵션이 유효한 경우
+		else if (idx >= 2 && !ft_strcmp(token->command[2], "~")) //옵션이 유효한 경우
 			result = ft_strjoin(result, home);
 		else
 			result = ft_strjoin(result, token->command[idx]);

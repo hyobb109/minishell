@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 01:25:35 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/01 14:27:34 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/05/01 16:26:14 by hyunwoju         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,21 @@ char	*make_dirstr(char *str)
 	idx = 0;
 	result = ft_strdup("");
 	tmp = ft_split(str, '/');
+	
 	while (tmp[idx])
 		idx++;
-	free(tmp[idx - 1]);
-	tmp[idx - 1] = 0;
+	if (idx != 1)
+	{
+		free(tmp[idx - 1]);
+		tmp[idx - 1] = 0;
+	}
+	else
+	{
+		char *free_str = tmp[idx - 1];
+		free(free_str);
+		tmp[idx - 1] = ft_strdup("");
+	}
+	//printf("%s, %s\n", tmp[0], tmp[1]);
 	idx = 0;
 	while (tmp[idx])
 	{
@@ -110,16 +121,16 @@ int	exec_cd(t_token *token)
 	{
 		printf("%s: %s: %s\n", token->command[0], \
 			token->command[1], strerror(errno));
-		exit (EXIT_FAILURE);
+		//exit (EXIT_FAILURE);
 	}
 	if (chdir(dest) == -1)
 	{
 		printf("%s: %s: %s\n", token->command[0], \
 			token->command[1], strerror(errno));
-		exit (EXIT_FAILURE);
+		//exit (EXIT_FAILURE);
 	}
 	change_env(token, dest);
-	getcwd(cwd_name, sizeof(cwd_name));
+	//getcwd(cwd_name, sizeof(cwd_name));
 	// printf("dest : %s, cwd_name : %s, ft_getenv() : %s, result : %d\n", dest, cwd_name, ft_getenv(token->envp, "PWD"), result);
 	free (dest);
 	return (1);
