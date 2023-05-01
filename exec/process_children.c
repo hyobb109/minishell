@@ -6,7 +6,7 @@
 /*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 19:37:29 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/01 14:57:49 by hyunwoju         ###   ########.fr       */
+/*   Updated: 2023/05/01 19:46:45 by hyunwoju         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,26 +100,20 @@ void	manage_io(t_token *line, int count, int total, int (*fd)[2])
 		dup2(line->infile_fd, STDIN_FILENO);
 		close(line->infile_fd);
 	}
-	else
+	else if (count != 0)
 	{
-		if (count != 0)
-		{
-			dup2(fd[count - 1][0], STDIN_FILENO);
-			close(fd[count - 1][0]);
-		}
+		dup2(fd[count - 1][0], STDIN_FILENO);
+		close(fd[count - 1][0]);
 	}
 	if (line->outfile_fd)
 	{
 		dup2(line->outfile_fd, STDOUT_FILENO);
 		close(line->outfile_fd);
 	}
-	else
+	else if (count != total - 1)
 	{
-		if (count != total - 1)
-		{
-			dup2(fd[count][1], STDOUT_FILENO);
-			close(fd[count][1]);
-		}
+		dup2(fd[count][1], STDOUT_FILENO);
+		close(fd[count][1]);
 	}
 }
 
