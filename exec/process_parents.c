@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_parents.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 16:33:30 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/01 20:00:49 by hyunwoju         ###   ########.fr       */
+/*   Updated: 2023/05/01 22:26:13 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,12 @@ void	only_builtins(t_deque *cmd_deque,  int (*fd)[2])
 	exec_builtins(cmd_deque->head);
 	if (cmd_deque->head->infile_fd)
 	{
-		printf("dup2 rollback : %d\n", dup2(stdin_fd, STDIN_FILENO));
+		dup2(stdin_fd, STDIN_FILENO);
 		close(stdin_fd);
 	}
 	if (cmd_deque->head->outfile_fd)
 	{
-		printf("dup2 rollback : %d\n", dup2(stdout_fd, STDOUT_FILENO));
+		dup2(stdout_fd, STDOUT_FILENO);
 		close(stdout_fd);
 	}
 }
@@ -39,7 +39,9 @@ void	parents_process(t_deque *cmd_deque)
 	t_token	*current_token;
 	int		(*fd)[2];
 	int		count;
+	int		idx;
 
+	idx = 0;
 	current_token = cmd_deque->head;
 	count = cmd_deque->cnt - 1;
 	//here_doc(cmd_deque);
@@ -51,11 +53,12 @@ void	parents_process(t_deque *cmd_deque)
 	fd = create_pipe(cmd_deque);
 	if (cmd_deque->cnt == 1 && cmd_deque->head->state == BUILTIN)
 	{
-		only_builtins(cmd_deque, fd);
+		only_builtins(cmd_deque, fd); //TODO - builtins return(-1); 처리
 		return ;
 	}
 	create_child(cmd_deque, fd);
 	close_pipe(fd, count);
+	free(fd);//pipe(fds) free()
 	wait_child(count, cmd_deque);
 }
 
@@ -148,7 +151,6 @@ void	close_pipe(int (*fd)[2], int count)
 	{
 		close(fd[idx][0]);
 		close(fd[idx][1]);
-		//free(fd);
 		++idx;
 	}
 }
@@ -179,6 +181,8 @@ int (*create_pipe(t_deque *cmd_deque))[2]
 	int (*fd)[2];
 	int	idx;
 
+	if (cmd_deque->cnt == 1)
+		return (NULL);
 	fd = malloc(sizeof(int *) * (cmd_deque->cnt - 1));
 	if (!fd)
 		ft_error();

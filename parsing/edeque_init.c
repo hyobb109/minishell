@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   edeque_init.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 16:44:41 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/05/01 17:06:01 by hyunwoju         ###   ########.fr       */
+/*   Updated: 2023/05/01 22:54:54 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void	print_edeque(t_edeque *deque)
 	tmp = deque->head;
 	while (tmp)
 	{
-		printf("env[%d] key: %s, value: %s\n", i, tmp->key, tmp->val);
+		printf("env[%d] %p key: %s, value: %s, prev : %p, next : %p\n", i, tmp, tmp->key, tmp->val, tmp->prev, tmp->next);
 		i++;
 		tmp = tmp->next;
 	}

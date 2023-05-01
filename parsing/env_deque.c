@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_deque.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 14:45:34 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/01 16:55:50 by hyunwoju         ###   ########.fr       */
+/*   Updated: 2023/05/01 23:02:24 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,25 +97,34 @@ t_env	*pop_back_env(t_edeque *deque)
 t_env	*pop_select_env(t_edeque *deque, char *key)
 {
 	t_env	*tmp;
+	t_env	*backup_prev;
+	t_env	*backup_next;
 
+	tmp = NULL;
+	backup_prev = NULL;
+	backup_next = NULL;
 	if (deque->head == NULL || !deque || key == NULL)
 		return (NULL);
 	if (deque->cnt)
 	{
 		tmp =  find_value(deque, key);
-		if (tmp == deque->head)
+		if (!tmp)
+			return (NULL);
+		else if (tmp == deque->head)
 			return (pop_front_env(deque));
 		else if (tmp == deque->tail)
 			return (pop_back_env(deque));
 		else
 		{
-			tmp->prev->next = tmp->next;
-			tmp->next->prev = tmp->prev->next;
+			backup_prev = tmp->prev;
+			backup_next = tmp->next;
+			tmp->prev->next = backup_next;
+			tmp->next->prev = backup_prev;
 			tmp->prev = NULL;
 			tmp->next = NULL;
 			deque->cnt--;
 		}
 		return (tmp);
 	}
-	return (0);
+	return (NULL);
 }

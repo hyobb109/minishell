@@ -3,42 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 01:25:35 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/01 16:26:14 by hyunwoju         ###   ########.fr       */
+/*   Updated: 2023/05/01 21:48:24 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-// make_dirstr() ft_split() 사용하지 않는 경우
-// int	find_cutidx(char *str)
-// {
-// 	int	len;
-
-// 	if (!str)
-// 		return (-1); //ft_error();
-// 	len = ft_strlen(str);
-// 	while (len >= 0)
-// 	{
-// 		if (str[len] == '/')
-// 			break ;
-// 		len--;
-// 	}
-// 	return (len);
-// }
-
 char	*make_dirstr(char *str)
 {
 	int		idx;
 	char	*result;
+	char	*result2;
 	char	**tmp;
 
 	idx = 0;
 	result = ft_strdup("");
+	result2 = NULL;
 	tmp = ft_split(str, '/');
-	
 	while (tmp[idx])
 		idx++;
 	if (idx != 1)
@@ -48,15 +32,17 @@ char	*make_dirstr(char *str)
 	}
 	else
 	{
-		char *free_str = tmp[idx - 1];
-		free(free_str);
+		result2 = tmp[idx - 1];
+		free(result2);
 		tmp[idx - 1] = ft_strdup("");
 	}
-	//printf("%s, %s\n", tmp[0], tmp[1]);
 	idx = 0;
 	while (tmp[idx])
 	{
-		result = ft_strjoin_three(result, "/", tmp[idx]); //TODO - free(old_result);
+		result2 = ft_strjoin_three(result, "/", tmp[idx]);
+		free(result);
+		result = result2;
+		result2 = NULL;
 		idx++;
 	}
 	free_strs(tmp);
@@ -106,7 +92,10 @@ void	change_env(t_token *token, char *dest)
 		append_back_env(token->envp, oldpwd_env);
 	}
 	else
+	{
+		free(oldpwd_env->val);
 		oldpwd_env->val = oldpwd;
+	}
 }
 
 int	exec_cd(t_token *token)
@@ -116,22 +105,21 @@ int	exec_cd(t_token *token)
 
 	getcwd(cwd_name, sizeof(cwd_name));
 	dest = init_destpath(token, cwd_name);
-	// printf("----dest : %s-----\n", dest);
 	if (access(dest, F_OK) == -1)
 	{
 		printf("%s: %s: %s\n", token->command[0], \
 			token->command[1], strerror(errno));
-		//exit (EXIT_FAILURE);
+		free(dest);
+		return (-1);
 	}
 	if (chdir(dest) == -1)
 	{
 		printf("%s: %s: %s\n", token->command[0], \
 			token->command[1], strerror(errno));
-		//exit (EXIT_FAILURE);
+		free(dest);
+		return (-1);
 	}
 	change_env(token, dest);
-	//getcwd(cwd_name, sizeof(cwd_name));
-	// printf("dest : %s, cwd_name : %s, ft_getenv() : %s, result : %d\n", dest, cwd_name, ft_getenv(token->envp, "PWD"), result);
 	free (dest);
 	return (1);
 }

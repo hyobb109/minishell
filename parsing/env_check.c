@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 05:41:25 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/04/30 20:04:38 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/05/01 22:00:38 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,7 +160,7 @@ char	*expand_environ(char *str, t_token *token, int quote)
 	}
 	buffer[len] = '\0';
 	// printf("============\n");
-	printf("environ expansion result : %s\n", buffer);
+	// printf("environ expansion result : %s\n", buffer);
 	// 버퍼에 환경변수 모두 치환된 결과 담김.
 	// 메모리 새로 할당하여 리턴.
 	return (ft_strdup(buffer));

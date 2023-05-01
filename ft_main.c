@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 16:55:06 by hyunwoju          #+#    #+#             */
-/*   Updated: 2023/05/01 17:46:28 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/05/01 20:40:50 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	leack_check(void)
 {
-	system("leaks minishell");
+	system("leaks $PPID");
 }
 
 int	main(int ac, char **av, char **env)
@@ -23,7 +23,7 @@ int	main(int ac, char **av, char **env)
 	t_deque		cmd_deque;
 	t_edeque	envp;
 	t_file		file;
-	//atexit(leack_check);
+	// atexit(leack_check);
 
 	(void) ac;
 	(void) av;
@@ -45,6 +45,7 @@ int	main(int ac, char **av, char **env)
 		if (*str)
 			add_history(str);
 		free(str);
+		
 	}
 	free_edeque(&envp);
 	rl_clear_history(); // free readline history list

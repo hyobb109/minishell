@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/16 19:57:20 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/04/30 21:56:52 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/05/01 23:03:25 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,19 @@ void	exec_exit(t_token *token)
 
 int	exec_unset(t_token *token)
 {
+	int		idx;
 	t_env	*free_env;
 
-	free_env = pop_select_env(token->envp, token->command[1]);
-	if (free_env)
-		free(free_env);
+	idx = 1;
+	while (token->command[idx])
+	{
+		free_env = pop_select_env(token->envp, token->command[idx]);
+		// printf("free_env : %p, key : %s\n", free_env, token->command[idx]);
+		if (free_env)
+			free(free_env);
+		// print_edeque(token->envp);
+		idx++;
+	}
 	return (1);
 }
 

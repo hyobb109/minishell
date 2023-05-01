@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_children.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 19:37:29 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/01 19:46:45 by hyunwoju         ###   ########.fr       */
+/*   Updated: 2023/05/01 22:27:32 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,13 @@ void	child_process(t_token *line, int count, int total, int (*fd)[2])
 	char **env;
 
 	env = NULL;
-	manage_pipe(count, total, fd);
 	manage_file(line);
 	manage_io(line, count, total, fd);
-	if (count && line->state == BUILTIN)
-		exec_builtins(line);
+	if (line->state == BUILTIN)
+	{
+		exec_builtins(line); //TODO - builtins return(-1); 처리
+		exit(0);
+	}
 	else
 	{
 		env = make_envstrs(line);

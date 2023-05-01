@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 20:42:23 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/01 17:12:27 by hyunwoju         ###   ########.fr       */
+/*   Updated: 2023/05/01 21:46:51 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,21 +17,18 @@ int	init_validkeyflag(t_token *token, int idx, char *tmp, int *flag)
 	if (!ft_strncmp(tmp, "pwd", 4))
 		*flag = 1;
 	else if (!ft_strncmp(tmp, "log", 4))
-	{
 		*flag = 3;
-		if (!ft_strncmp(tmp, "logname", 8))
-			*flag = 2;
-	}
+	else if (!ft_strncmp(tmp, "logname", 8))
+		*flag = 2;
 	if (*flag < 3 && !token->command[idx + 1])
 		return (*flag);
 	else
 	{
 		if (*flag == 1)
 			printf("usage: pwd No need options and args\n");
-		else
+		else if (*flag == 3)
 			printf("usage: logname\n");
-		return (*flag);
-		//exit (EXIT_FAILURE);//TODO - 추후 확인 후 수정 (return(-1))
+		*flag = 5;
 	}
 	return (*flag);
 }
@@ -46,7 +43,6 @@ int	exist_validkey(t_token *token)
 	flag = 0;
 	while (token->command[idx])
 	{
-		
 		tmp = ft_strlowcase(ft_strjoin("", token->command[idx]));
 		if (ft_strcmp(tmp, "env"))
 		{
@@ -63,6 +59,7 @@ int	exist_validkey(t_token *token)
 	if (!ft_strcmp(tmp, "env"))
 	{
 		print_envlist(token);
+		free(tmp);
 		return (4);
 	}
 	free(tmp);
@@ -81,14 +78,16 @@ void	print_invalidargserror(t_token *token)
 	{
 		msg_str = ft_strlowcase(ft_strjoin("", token->command[idx]));
 		if (ft_strcmp(msg_str, "env"))
+		{
+			free(msg_str);
 			break ;
+		}
 		free(msg_str);
 		idx++;
 		print_idx++;
 	}
 	printf("%s: %s: %s\n", token->command[print_idx - 1], \
 		token->command[print_idx], strerror(ENOENT));
-	//exit (EXIT_FAILURE); //TODO - return으로 변경
 	return ;
 }
 
@@ -127,10 +126,11 @@ int	exec_env(t_token *token)
 		{
 			if (flag == 1)
 				exec_pwd(token);
-			else if (flag == 4 || flag == -1)
+			else if (flag == 4 || flag == 5)
 				return (1);
-			else
+			else if (flag == 2)
 				printf("%s\n", ft_getenv(token->envp, "LOGNAME"));
+			return (1);
 		}
 		else
 			print_invalidargserror(token);
