@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_main.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 14:12:04 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/05/01 01:34:18 by yunjcho          ###   ########seoul.kr  */
+/*   Updated: 2023/05/01 15:37:17 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	main(int ac, char **av, char **env)
 		str = readline("minishell-0.0$ ");
 		if (!str)
 			exit(EXIT_FAILURE);
-		if (!syntax_error(str))
+		if (syntax_error(str) == FALSE)
 		{
 			init_deque(&cmd_deque);
 			make_cmdlst(str, &cmd_deque, &envp);
