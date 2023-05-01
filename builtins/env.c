@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 20:42:23 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/29 22:48:28 by yunjcho          ###   ########seoul.kr  */
+/*   Updated: 2023/04/30 21:58:59 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@ int	init_validkeyflag(t_token *token, int idx, char *tmp, int *flag)
 	else
 	{
 		if (*flag == 1)
-			ft_putendl_fd("usage: pwd No need options and args", 2);
+			printf("usage: pwd No need options and args\n");
 		else
-			ft_putendl_fd("usage: logname", 2);
+			printf("usage: logname\n");
 		exit (EXIT_FAILURE);//TODO - 추후 확인 후 수정 (return(-1))
 	}
 	return (*flag);
@@ -97,7 +97,6 @@ void	print_envlist(t_token *token)
 
 	str = NULL;
 	tmp = token->envp->head;
-	printf("--------------------------print_envlist start--------------------------\n");
 	while (tmp)
 	{
 		if (!ft_strcmp(tmp->val, ""))
@@ -106,11 +105,10 @@ void	print_envlist(t_token *token)
 			continue ;
 		}
 		str = ft_strjoin_three(tmp->key, "=", tmp->val);
-		ft_putendl_fd(str, 1);
+		printf("%s\n", str);
 		free(str);
 		tmp = tmp->next;
 	}
-	printf("--------------------------print_envlist end--------------------------\n");
 }
 
 int	exec_env(t_token *token)
@@ -118,7 +116,7 @@ int	exec_env(t_token *token)
 	int	flag;
 
 	flag = 0;
-	if (!exist_args(token)) //인자가 없는 경우에는 목록 출력
+	if (!exist_args(token))
 		print_envlist(token);
 	else
 	{
@@ -130,7 +128,7 @@ int	exec_env(t_token *token)
 			else if (flag == 4)
 				return (1);
 			else
-				ft_putendl_fd(ft_getenv(token->envp, "LOGNAME"), 1);
+				printf("%s\n", ft_getenv(token->envp, "LOGNAME"));
 		}
 		else
 			print_invalidargserror(token);

@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/22 15:55:25 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/29 17:25:42 by yunjcho          ###   ########seoul.kr  */
+/*   Updated: 2023/04/30 21:32:05 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,9 +75,9 @@ void	print_args(t_token *token, int target_idx)
 
 	tmp = join_all(token, target_idx);
 	if (target_idx == 1)
-		ft_putendl_fd(tmp, 1);
+		printf("%s\n", tmp);
 	else
-		ft_putstr_fd(tmp, 1);
+		printf("%s", tmp);
 	free(tmp);
 }
 

@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/16 19:57:20 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/04/28 21:21:18 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/30 21:56:52 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	exec_pwd(t_token *token)
 
 	(void) token;
 	getcwd(cwd_name, sizeof(cwd_name));
-	ft_putendl_fd(cwd_name, 1);
+	printf("%s\n", cwd_name);
 	return (1);
 }
 
@@ -27,7 +27,7 @@ void	exec_exit(t_token *token)
 	//TODO - 프로그램 종료시 반환값 전달 가능한지 확인 후 리턴값 없애기
 	//TODO - 프로그램 종료 실패 시 예외처리 추가?
 	(void) token;
-	ft_putstr_fd("exit\n", 1);
+	printf("exit\n");
 	exit(0);
 }
 
@@ -36,7 +36,6 @@ int	exec_unset(t_token *token)
 	t_env	*free_env;
 
 	free_env = pop_select_env(token->envp, token->command[1]);
-	printf("free_env key : %s, value : %s\n", free_env->key, free_env->val);
 	if (free_env)
 		free(free_env);
 	return (1);
