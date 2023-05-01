@@ -6,7 +6,7 @@
 /*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 20:42:23 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/01 17:07:37 by hyunwoju         ###   ########.fr       */
+/*   Updated: 2023/05/01 17:12:27 by hyunwoju         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	init_validkeyflag(t_token *token, int idx, char *tmp, int *flag)
 			printf("usage: pwd No need options and args\n");
 		else
 			printf("usage: logname\n");
-		return (-1);
+		return (*flag);
 		//exit (EXIT_FAILURE);//TODO - 추후 확인 후 수정 (return(-1))
 	}
 	return (*flag);
