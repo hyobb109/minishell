@@ -157,7 +157,7 @@ void	change_env(t_token *token, char *dest);
 int		exec_pwd(t_token *token);
 void	exec_exit(t_token *token);
 int		chdir_home(void);
-char	*make_dirstr(char *str);
+char	*make_dirstr(char *str, char *cwd_name, char *parent_dir, char *home_dir);
 int		exec_cd(t_token *token);
 char	**make_strmatrix(t_edeque *envp);
 char	**sorting_strsarr(t_edeque *envp);

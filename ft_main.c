@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 16:55:06 by hyunwoju          #+#    #+#             */
-/*   Updated: 2023/05/02 23:08:57 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/05/03 00:46:35 by yunjcho          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,6 @@ int	main(int ac, char **av, char **env)
 		
 	}
 	free_edeque(&envp);
-	rl_clear_history(); // free readline history list
+	// rl_clear_history(); // free readline history list
 	return (0);
 }

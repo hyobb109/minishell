@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 13:38:07 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/02 23:09:10 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/05/03 00:50:21 by yunjcho          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,13 +73,11 @@ void	append_export(t_token *token)
 	int		target_idx;
 	char	*key;
 	char	*value;
-	char	*tmp;
 
 	idx = 1;
 	target_idx = -1;
 	key = NULL;
 	value = NULL;
-	tmp = NULL;
 	while (token->command[idx])
 	{
 		target_idx = ft_strchr_idx(token->command[idx], '=');
@@ -90,7 +88,6 @@ void	append_export(t_token *token)
 		}
 		else
 		{
-			// printf("target idx : %d, %s equal exist\n", target_idx, token->command[idx]);
 			key = ft_substr(token->command[idx], 0, target_idx);
 			if (!ft_isalpha(key[0]) && key[0] != '_')//TODO - 유효한 키인지 확인 #, &, *, (, ), | 는 에러 / 숫자만 있어도 에러
 			{
@@ -105,7 +102,6 @@ void	append_export(t_token *token)
 					target_idx + 1, ft_strlen(token->command[idx])), "\"");
 			else // = 이 없음, key만 있음
 				value = ft_strdup("");
-			// printf("value : %s\n", value);
 			if (appending(token, key, value) == -1)
 			{
 				free(key);
