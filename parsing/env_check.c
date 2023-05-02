@@ -56,13 +56,20 @@ int	env_trans(char *str, t_edeque *envp, char *buf)
 	{
 		if (is_envkey(str, tmp->key, &key_len))
 		{
+			// " 가 있으면 버퍼를 ' '로 감싸줌
 			if (ft_strchr(tmp->val, '\"'))
 			{
-				// " 가 있으면 버퍼를 ' '로 감싸줌
+				// printf("val : %s, len : %ld\n", tmp->val, ft_strlen(tmp->val));
 				buf[0] = '\'';
 				ft_memcpy(&buf[1], tmp->val, ft_strlen(tmp->val));
 				buf[ft_strlen(tmp->val)] = '\'';
-				// ' 가 있으면 버퍼를  " "로 감싸줌
+			}
+			// ' 가 있으면 버퍼를  " "로 감싸줌
+			else if (ft_strchr(tmp->val, '\''))
+			{
+				buf[0] = '\"';
+				ft_memcpy(&buf[1], tmp->val, ft_strlen(tmp->val));
+				buf[ft_strlen(tmp->val)] = '\"';
 			}
 			else
 				ft_memcpy(buf,tmp->val,ft_strlen(tmp->val));
@@ -161,11 +168,13 @@ char	*expand_environ(char *str, t_token *token, int quote)
 			if (quote)
 				quote = CLOSED; // 따옴표 닫아줌 (환경변수 치환되면서 따옴표 제거됨)
 		}
+		if (quote == CLOSED && *str == '$')
+			continue;
 		buffer[len++] = *str;
 		if (*str == '\0')
 			break ;
 		str++;
-		// printf("str: %s, buf : %s, buf_len: %d\n", str, buffer, len);
+		printf("str:%s, buf : %s, buf_len: %d\n", str, buffer, len);
 	}
 	buffer[len] = '\0';
 	// printf("============\n");

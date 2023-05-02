@@ -35,7 +35,7 @@ static	int	check_error(long long res, int sign, char num)
 		if (res == 922337203685477580 && num >= '8')
 			return (0);
 	}
-	return (0);
+	return (res);
 }
 
 int	ft_atoi(const char *str)
@@ -60,10 +60,17 @@ int	ft_atoi(const char *str)
 		printf("minishell: exit: %s: numeric argument required\n", str);
 		return (255);
 	}
-	while (str[i] >= '0' && str[i] <= '9')
+	while (ft_isdigit(str[i]))
 	{
 		if (res >= 922337203685477580)
-			return (check_error(res, sign, str[i]));
+		{
+			res = check_error(res, sign, str[i]);
+			if (res == 0 || res == -1)
+			{
+				printf("minishell: exit: %s: numeric argument required\n", str);
+				return (255);
+			}
+		}
 		res = res * 10 + str[i] - '0';
 		i++;
 	}
