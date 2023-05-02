@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 16:33:30 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/02 21:49:16 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/05/03 00:47:08 by yunjcho          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,7 @@ void	parents_process(t_deque *cmd_deque)
 	t_token	*current_token;
 	int		(*fd)[2];
 	int		count;
-	int		idx;
 
-	idx = 0;
 	current_token = cmd_deque->head;
 	count = cmd_deque->cnt - 1;
 	//here_doc(cmd_deque);
