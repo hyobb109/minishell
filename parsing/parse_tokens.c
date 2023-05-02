@@ -21,21 +21,27 @@ int	is_blank(char c)
 
 int	is_builtin(char *cmd)
 {
-	if (!ft_strcmp(ft_strlowcase(cmd), "echo"))
-		return(1);
-	if (!ft_strcmp(ft_strlowcase(cmd), "pwd"))
-		return (1);
-	if (!ft_strcmp(ft_strlowcase(cmd), "env"))
-		return (1);
-	if (!ft_strcmp(cmd, "cd"))
-		return (1);
-	if (!ft_strcmp(cmd, "export"))
-		return (1);
-	if (!ft_strcmp(cmd, "unset"))
-		return (1);
-	if (!ft_strcmp(cmd, "exit"))
-		return (1);
-	return (0);
+	char	*tmp;
+	int		res;
+
+	res = 0;
+	tmp = ft_strdup(cmd);
+	if (!ft_strcmp(ft_strlowcase(tmp), "echo"))
+		res = 1;
+	else if (!ft_strcmp(ft_strlowcase(tmp), "pwd"))
+		res = 1;
+	else if (!ft_strcmp(ft_strlowcase(tmp), "env"))
+		res = 1;
+	else if (!ft_strcmp(cmd, "cd"))
+		res = 1;
+	else if (!ft_strcmp(cmd, "export"))
+		res = 1;
+	else if (!ft_strcmp(cmd, "unset"))
+		res = 1;
+	else if (!ft_strcmp(cmd, "exit"))
+		res = 1;
+	free(tmp);
+	return (res);
 }
 
 char	**parse_command(char *str, t_token *token)
@@ -123,5 +129,5 @@ void	make_cmdlst(char *str, t_deque *cmd_deque, t_edeque *envp)
 	}
 	// print_filelst(cmd_deque);
 	free_strs(strs);
-	// print_deque(cmd_deque);
+	print_deque(cmd_deque);
 }
