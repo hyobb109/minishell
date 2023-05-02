@@ -149,6 +149,7 @@ void	print_edeque(t_edeque *deque); // delete
 int		check_redir(char *str, t_token *token);
 int		get_filename(char *str, t_fdata *new, t_token *token);
 void	append_file(t_fdata **head, t_fdata *new);
+t_fdata	*change_heredoc(t_fdata **head, t_fdata *new);
 void	free_files(t_fdata **lst);
 void	print_filelst(t_deque *cmd_lst); // delete
 
