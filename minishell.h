@@ -150,7 +150,7 @@ int		check_redir(char *str, t_token *token);
 int		get_filename(char *str, t_fdata *new, t_token *token);
 void	append_file(t_fdata **head, t_fdata *new);
 void	free_files(t_fdata **lst);
-void	print_filelst(t_fdata *head); // delete
+void	print_filelst(t_deque *cmd_lst); // delete
 
 // parsing
 char	**ft_pipe_split(char *str);

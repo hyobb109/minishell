@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   file_lst.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 15:08:06 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/04/30 20:03:02 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/05/02 15:06:37 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,12 +112,18 @@ int	check_redir(char *str, t_token *token)
 }
 
 // delete!
-void	print_filelst(t_fdata *head)
+void	print_filelst(t_deque *cmd_lst)
 {
-	t_fdata *tmp = head;
-	while (tmp)
+	t_token *tmp = cmd_lst->head;
+
+	for (int i = 0; i < cmd_lst->cnt; i++)
 	{
-		printf("filename: %s, type: %d\n", tmp->filename, tmp->type);
+		t_fdata *files = tmp->files;
+		while (files)
+		{
+			printf("filename: %s, type: %d\n", files->filename, files->type);
+			files = files->next;
+		}
 		tmp = tmp->next;
 	}
 }

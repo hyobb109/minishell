@@ -6,7 +6,7 @@
 /*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:15:26 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/01 17:04:54 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/05/02 15:07:09 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ void	make_cmdlst(char *str, t_deque *cmd_deque, t_edeque *envp)
 		append_back(cmd_deque, token);
 		i++;
 	}
-	// print_filelst(cmd_deque->head->files);
+	// print_filelst(cmd_deque);
 	free_strs(strs);
 	// print_deque(cmd_deque);
 }
