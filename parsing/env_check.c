@@ -174,11 +174,11 @@ char	*expand_environ(char *str, t_token *token, int quote)
 		if (*str == '\0')
 			break ;
 		str++;
-		printf("str:%s, buf : %s, buf_len: %d\n", str, buffer, len);
+		// printf("str:%s, buf : %s, buf_len: %d\n", str, buffer, len);
 	}
 	buffer[len] = '\0';
 	// printf("============\n");
-	printf("environ expansion result : %s\n", buffer);
+	// printf("environ expansion result : %s\n", buffer);
 	// 버퍼에 환경변수 모두 치환된 결과 담김.
 	// 메모리 새로 할당하여 리턴.
 	return (ft_strdup(buffer));

@@ -82,7 +82,7 @@ char	**parse_command(char *str, t_token *token)
 		// printf("str[%d]: %c buffer: %s quote: %d\n", i, str[i], buffer, quote);
 	}
 	buffer[len] = '\0';
-	printf("buffer : %s\n", buffer);
+	// printf("buffer : %s\n", buffer);
 	free(str);
 	return (ft_split(buffer, BLANK));
 }
@@ -121,7 +121,7 @@ void	make_cmdlst(char *str, t_deque *cmd_deque, t_edeque *envp)
 		append_back(cmd_deque, token);
 		i++;
 	}
-	print_filelst(cmd_deque);
+	// print_filelst(cmd_deque);
 	free_strs(strs);
-	print_deque(cmd_deque);
+	// print_deque(cmd_deque);
 }
