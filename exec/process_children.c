@@ -1,5 +1,5 @@
 /* ************************************************************************** */
-/*                                                                            */
+/*                                                                             */
 /*                                                        :::      ::::::::   */
 /*   process_children.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
@@ -32,6 +32,7 @@ void	child_process(t_token *line, int count, int total, int (*fd)[2])
 
 	env = NULL;
 	manage_file(line);
+	manage_pipe(count, total, fd);
 	manage_io(line, count, total, fd);
 	if (line->state == BUILTIN)
 	{
