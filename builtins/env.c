@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 20:42:23 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/01 21:46:51 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/05/02 19:24:02 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ void	print_invalidargserror(t_token *token)
 	}
 	printf("%s: %s: %s\n", token->command[print_idx - 1], \
 		token->command[print_idx], strerror(ENOENT));
+	token->status = 127;
 	return ;
 }
 
@@ -126,8 +127,8 @@ int	exec_env(t_token *token)
 		{
 			if (flag == 1)
 				exec_pwd(token);
-			else if (flag == 4 || flag == 5)
-				return (1);
+			else if (flag == 5)
+				return (-1);
 			else if (flag == 2)
 				printf("%s\n", ft_getenv(token->envp, "LOGNAME"));
 			return (1);

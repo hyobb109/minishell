@@ -3,12 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 04:50:31 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/04/24 05:34:57 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/05/02 20:44:27 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "libft.h"
 
 static int	whitespace(char a)
 {
@@ -53,12 +55,22 @@ int	ft_atoi(const char *str)
 			sign = -1;
 		i++;
 	}
+	if (str[i] == '\0')
+	{
+		printf("minishell: exit: %s: numeric argument required\n", str);
+		return (255);
+	}
 	while (str[i] >= '0' && str[i] <= '9')
 	{
 		if (res >= 922337203685477580)
 			return (check_error(res, sign, str[i]));
 		res = res * 10 + str[i] - '0';
 		i++;
+	}
+	if (str[i] !='\0')
+	{
+		printf("minishell: exit: %s: numeric argument required\n", str);
+		return (255);
 	}
 	return (res * sign);
 }

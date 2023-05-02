@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_tokens.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:15:26 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/02 15:07:09 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/05/02 22:57:34 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ char	**parse_command(char *str, t_token *token)
 		// printf("str[%d]: %c buffer: %s quote: %d\n", i, str[i], buffer, quote);
 	}
 	buffer[len] = '\0';
-	// printf("buffer : %s\n", buffer);
+	printf("buffer : %s\n", buffer);
 	free(str);
 	return (ft_split(buffer, BLANK));
 }
@@ -92,11 +92,12 @@ static void	init_token(char *str, t_token *token, t_edeque *envp)
 {
 	token->envp = envp;
 	//TODO - infile/outfile
-	token->state = GENERAL;
+	token->func = GENERAL;
 	token->files = NULL;
 	token->command = parse_command(expand_environ(str, token, CLOSED), token);
 	if (is_builtin(token->command[0]))
-		token->state = BUILTIN;
+		token->func = BUILTIN;
+	token->status = 0;
 	token->prev = NULL;
 	token->next = NULL;
 }
@@ -120,7 +121,7 @@ void	make_cmdlst(char *str, t_deque *cmd_deque, t_edeque *envp)
 		append_back(cmd_deque, token);
 		i++;
 	}
-	// print_filelst(cmd_deque);
+	print_filelst(cmd_deque);
 	free_strs(strs);
-	// print_deque(cmd_deque);
+	print_deque(cmd_deque);
 }

@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 01:25:35 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/01 21:48:24 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/05/02 19:33:13 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,7 @@ int	exec_cd(t_token *token)
 		printf("%s: %s: %s\n", token->command[0], \
 			token->command[1], strerror(errno));
 		free(dest);
+		token->status = 1;
 		return (-1);
 	}
 	if (chdir(dest) == -1)
@@ -117,7 +118,8 @@ int	exec_cd(t_token *token)
 		printf("%s: %s: %s\n", token->command[0], \
 			token->command[1], strerror(errno));
 		free(dest);
-		return (-1);
+		token->status = 1;
+		return (1);
 	}
 	change_env(token, dest);
 	free (dest);

@@ -34,7 +34,7 @@ void	child_process(t_token *line, int count, int total, int (*fd)[2])
 	manage_file(line);
 	manage_pipe(count, total, fd);
 	manage_io(line, count, total, fd);
-	if (line->state == BUILTIN)
+	if (line->func == BUILTIN)
 	{
 		exec_builtins(line); //TODO - builtins return(-1); 처리
 		exit(0);

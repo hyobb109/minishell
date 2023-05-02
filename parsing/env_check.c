@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 05:41:25 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/05/01 22:00:38 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/05/02 23:20:50 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,17 @@ int	env_trans(char *str, t_edeque *envp, char *buf)
 	{
 		if (is_envkey(str, tmp->key, &key_len))
 		{
-			ft_memcpy(buf,tmp->val,ft_strlen(tmp->val));
-			return (key_len);
+			if (ft_strchr(tmp->val, '\"'))
+			{
+				// " 가 있으면 버퍼를 ' '로 감싸줌
+				buf[0] = '\'';
+				ft_memcpy(&buf[1], tmp->val, ft_strlen(tmp->val));
+				buf[ft_strlen(tmp->val)] = '\'';
+				// ' 가 있으면 버퍼를  " "로 감싸줌
+			}
+			else
+				ft_memcpy(buf,tmp->val,ft_strlen(tmp->val));
+			return (key_len);          
 		}
 		//못찾으면 다음 환경변수 검사
 		tmp = tmp->next;
@@ -160,7 +169,7 @@ char	*expand_environ(char *str, t_token *token, int quote)
 	}
 	buffer[len] = '\0';
 	// printf("============\n");
-	// printf("environ expansion result : %s\n", buffer);
+	printf("environ expansion result : %s\n", buffer);
 	// 버퍼에 환경변수 모두 치환된 결과 담김.
 	// 메모리 새로 할당하여 리턴.
 	return (ft_strdup(buffer));

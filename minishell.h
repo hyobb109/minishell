@@ -87,7 +87,7 @@ typedef struct s_token
 	int				new_fds[2];
 	struct s_token	*prev;
 	struct s_token	*next;
-	int				state; // builtin?
+	int				func; // builtin?
 	int				status; // exit code
 	int				infile_fd;
 	int				outfile_fd;
@@ -102,27 +102,12 @@ typedef struct s_deque
 	int		cnt;
 }	t_deque;
 
-typedef struct s_file
-{
-	char 	*filepath;
-	char	**env;
-	int		pre_fds[2];
-	int		new_fds[2];
-	t_token *cur_com;
-} t_file;
 
 typedef struct s_matrix
 {
 	int row;
 	int column;
 }	t_matrix;
-
-// quoting
-// void	assign_argument(char **str, char *av);
-// void	get_size(char **arguments, char *av);
-// void	get_size_step1(char *av, char *quote, int *size);
-// void	get_size_step2(char **arguments, char *av, int *size, int *index);
-// int		count_rows(char *argument);
 
 // deque
 void	init_deque(t_deque *deque);
@@ -149,7 +134,6 @@ void	print_edeque(t_edeque *deque); // delete
 int		check_redir(char *str, t_token *token);
 int		get_filename(char *str, t_fdata *new, t_token *token);
 void	append_file(t_fdata **head, t_fdata *new);
-t_fdata	*change_heredoc(t_fdata **head, t_fdata *new);
 void	free_files(t_fdata **lst);
 void	print_filelst(t_deque *cmd_lst); // delete
 

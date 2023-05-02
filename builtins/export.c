@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 13:38:07 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/29 23:01:45 by yunjcho          ###   ########seoul.kr  */
+/*   Updated: 2023/05/02 23:09:10 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	print_export(t_env	*print_env)
 {
 	printf("declare -x %s", print_env->key);
-	if (ft_strlen(print_env->val) > 0)
+	if (ft_strcmp(print_env->val, "\"\""))
 		printf("=\"%s\"", print_env->val);
 	printf("\n");
 }
@@ -35,22 +35,6 @@ void	print_exportlist(t_token *token)
 		idx++;
 	}
 	free_strs(sorting_strs);
-}
-
-int	is_validkey(char *key)
-{
-	int	idx;
-	
-	idx = 0;
-	while(key[idx])
-	{
-		if (!ft_isalnum(key[idx]) && key[idx] != '=')
-			return (0);
-		else if (idx == 0 && ft_isdigit(key[idx]))
-			return (0);
-		idx++;
-	}
-	return (1);
 }
 
 int	appending(t_token *token, char *key, char *value)
@@ -89,35 +73,39 @@ void	append_export(t_token *token)
 	int		target_idx;
 	char	*key;
 	char	*value;
+	char	*tmp;
 
 	idx = 1;
 	target_idx = -1;
 	key = NULL;
 	value = NULL;
+	tmp = NULL;
 	while (token->command[idx])
 	{
 		target_idx = ft_strchr_idx(token->command[idx], '=');
 		if (!target_idx)
 		{
 			printf("export: '%s': not a valid identifier\n", token->command[idx]); //TODO - 에러넘버 찾기
-			idx++;
+			token->status = 1;
 		}
 		else
 		{
 			// printf("target idx : %d, %s equal exist\n", target_idx, token->command[idx]);
-			key = ft_substr(token->command[idx], 0, target_idx - 0);
-			if (!is_validkey(key))//TODO - 유효한 키인지 확인 #, &, *, (, ), | 는 에러 / 숫자만 있어도 에러
+			key = ft_substr(token->command[idx], 0, target_idx);
+			if (!ft_isalpha(key[0]) && key[0] != '_')//TODO - 유효한 키인지 확인 #, &, *, (, ), | 는 에러 / 숫자만 있어도 에러
 			{
 				free(key);
 				printf("export: '%s': not a valid identifier\n", key); //TODO - 에러넘버 찾기
+				token->status = 1;
 				idx++;
 				continue ;
 			}
 			if (target_idx > 0) // = 이 있음
-				value = ft_substr(token->command[idx], \
-					target_idx + 1, ft_strlen(token->command[idx]));
+				value = ft_strjoin_three("\"", ft_substr(token->command[idx], \
+					target_idx + 1, ft_strlen(token->command[idx])), "\"");
 			else // = 이 없음, key만 있음
 				value = ft_strdup("");
+			// printf("value : %s\n", value);
 			if (appending(token, key, value) == -1)
 			{
 				free(key);

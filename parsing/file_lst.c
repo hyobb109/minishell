@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   file_lst.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 15:08:06 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/05/02 16:13:26 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/05/02 18:47:44 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,25 +37,6 @@ void	append_file(t_fdata **head, t_fdata *new)
 	while (last->next)
 		last = last->next;
 	last->next = new;
-}
-
-t_fdata	*change_heredoc(t_fdata **head, t_fdata *new)
-{
-	t_fdata	*file;
-	t_fdata *heredoc;
-	
-	file = *head;
-	while (file)
-	{
-		if (file->type == DELIMITER || file->type == Q_DELIMITER)
-		{
-			heredoc = file;
-			file = new;
-			return (heredoc);
-		}
-		file = file->next;
-	}
-	return (*head);
 }
 
 // 토큰 파일리스트에 파일 이름 복사해서 담고 증가시킨 str 인덱스 리턴

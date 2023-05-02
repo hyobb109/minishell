@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_parents.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 16:33:30 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/02 15:03:53 by hyunwoju         ###   ########.fr       */
+/*   Updated: 2023/05/02 21:49:16 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,21 +16,26 @@ void	only_builtins(t_deque *cmd_deque,  int (*fd)[2])
 {
 	int	stdin_fd;
 	int	stdout_fd;
+	int	result;
 
+	result = 0;
 	stdin_fd = dup(STDIN_FILENO);
 	stdout_fd = dup(STDOUT_FILENO);
-	manage_file(cmd_deque->head);
-	manage_io(cmd_deque->head, 0, 1, fd);
-	exec_builtins(cmd_deque->head);
-	if (cmd_deque->head->infile_fd)
+	result = exec_builtins(cmd_deque->head);
+	if (result != -1)
 	{
-		dup2(stdin_fd, STDIN_FILENO);
-		close(stdin_fd);
-	}
-	if (cmd_deque->head->outfile_fd)
-	{
-		dup2(stdout_fd, STDOUT_FILENO);
-		close(stdout_fd);
+		manage_file(cmd_deque->head);
+		manage_io(cmd_deque->head, 0, 1, fd);
+		if (cmd_deque->head->infile_fd)
+		{
+			dup2(stdin_fd, STDIN_FILENO);
+			close(stdin_fd);
+		}
+		if (cmd_deque->head->outfile_fd)
+		{
+			dup2(stdout_fd, STDOUT_FILENO);
+			close(stdout_fd);
+		}
 	}
 }
 
@@ -51,7 +56,7 @@ void	parents_process(t_deque *cmd_deque)
 		current_token = current_token->next;
 	}
 	fd = create_pipe(cmd_deque);
-	if (cmd_deque->cnt == 1 && cmd_deque->head->state == BUILTIN)
+	if (cmd_deque->cnt == 1 && cmd_deque->head->func == BUILTIN)
 	{
 		only_builtins(cmd_deque, fd); //TODO - builtins return(-1); 처리
 		return ;
@@ -137,6 +142,7 @@ void	find_child(t_deque *cmd_deque, int status, pid_t pid)
 		if (cur_point->pid == pid)
 		{
 			cur_point->status = status;
+			printf("exit status = %d\n", WEXITSTATUS(status));
 		}
 		cur_point = cur_point->next;
 	}
