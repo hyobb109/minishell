@@ -75,7 +75,14 @@ void	execute_line(t_token *line, char **env)
 	char	*current_path;
 	char	*part_path;
 	int		i;
+	struct stat filestat;
 	path_env = ft_getenv(line->envp, "PATH"); // value
+	if (!path_env)
+	{
+		ft_dup2(STDERR_FILENO, STDOUT_FILENO);
+		printf("%s: No such file or directory\n", line->command[0]);
+		exit (127);
+	}
 	path = ft_split(path_env, ':');
 	execve(line->command[0], line->command, env);
 	i = 0;
@@ -88,35 +95,50 @@ void	execute_line(t_token *line, char **env)
 		free(current_path);
 		++i;
 	}
+	// cmd -> path로 
+    stat(line->command[0], &filestat);
+	//printf("path %s\n", current_path);
+    if(S_ISDIR(filestat.st_mode))
+	{
+		ft_dup2(STDERR_FILENO, STDOUT_FILENO);
+		printf("%s: is a directory\n", line->command[0]);
+		exit(126);
+    }
+	if (access(current_path, X_OK) && access(current_path, F_OK) == 0)
+	{
+		ft_dup2(STDERR_FILENO, STDOUT_FILENO);
+		printf("%s: Permission denied\n", line->command[0]);
+		exit(126);
+	}
 	if (execve(current_path, line->command, env) == - 1)
 	{
-		dup2(STDERR_FILENO, STDOUT_FILENO);
+		ft_dup2(STDERR_FILENO, STDOUT_FILENO);
 		printf("%s: command not found\n", line->command[0]);
 	}
-	exit (1);
+	exit (127);
 }
 
 void	manage_io(t_token *line, int count, int total, int (*fd)[2])
 {
 	if (line->infile_fd)
 	{
-		dup2(line->infile_fd, STDIN_FILENO);
-		close(line->infile_fd);
+		ft_dup2(line->infile_fd, STDIN_FILENO);
+		ft_close(line->infile_fd);
 	}
 	else if (count != 0)
 	{
-		dup2(fd[count - 1][0], STDIN_FILENO);
-		close(fd[count - 1][0]);
+		ft_dup2(fd[count - 1][0], STDIN_FILENO);
+		ft_close(fd[count - 1][0]);
 	}
 	if (line->outfile_fd)
 	{
-		dup2(line->outfile_fd, STDOUT_FILENO);
-		close(line->outfile_fd);
+		ft_dup2(line->outfile_fd, STDOUT_FILENO);
+		ft_close(line->outfile_fd);
 	}
 	else if (count != total - 1)
 	{
-		dup2(fd[count][1], STDOUT_FILENO);
-		close(fd[count][1]);
+		ft_dup2(fd[count][1], STDOUT_FILENO);
+		ft_close(fd[count][1]);
 	}
 }
 
@@ -181,19 +203,19 @@ void	manage_pipe(int count, int total, int (*fd)[2])
 	{
 		if (!(count == idx) && !(count == idx + 1))
 		{
-			close(fd[idx][0]);
-			close(fd[idx][1]);
+			ft_close(fd[idx][0]);
+			ft_close(fd[idx][1]);
 		}
 		else
 		{
 			if (count == 0)
-				close(fd[0][0]);
+				ft_close(fd[0][0]);
 			else if (count == total - 1)
-				close(fd[count - 1][1]);
+				ft_close(fd[count - 1][1]);
 			else if (count == idx + 1)
-				close(fd[idx][1]);
+				ft_close(fd[idx][1]);
 			else if (count == idx)
-				close(fd[idx][0]);
+				ft_close(fd[idx][0]);
 		}
 		++idx;
 	}

@@ -6,7 +6,7 @@
 /*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 16:33:30 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/03 20:54:28 by hyunwoju         ###   ########.fr       */
+/*   Updated: 2023/05/03 22:28:31 by hyunwoju         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,13 @@ void	only_builtins(t_deque *cmd_deque,  int (*fd)[2])
 		manage_io(cmd_deque->head, 0, 1, fd);
 		if (cmd_deque->head->infile_fd)
 		{
-			dup2(stdin_fd, STDIN_FILENO);
-			close(stdin_fd);
+			ft_dup2(stdin_fd, STDIN_FILENO);
+			ft_close(stdin_fd);
 		}
 		if (cmd_deque->head->outfile_fd)
 		{
-			dup2(stdout_fd, STDOUT_FILENO);
-			close(stdout_fd);
+			ft_dup2(stdout_fd, STDOUT_FILENO);
+			ft_close(stdout_fd);
 		}
 	}
 }
@@ -132,7 +132,7 @@ void	open_here_doc(t_fdata *cur_file, int count)
 	ft_memset(cur_file->filename, 0, sizeof(char) * strlen(cur_file->filename));
 	ft_memcpy(cur_file->filename, here_doc_name, ft_strlen(here_doc_name));
 	free(here_doc_name);
-	//close(here_doc_fd);
+	//ft_close(here_doc_fd);
 }
 
 void	exec_here_doc(t_fdata *cur_file, char *here_doc_name)
@@ -156,7 +156,7 @@ void	exec_here_doc(t_fdata *cur_file, char *here_doc_name)
 		ft_putstr_fd(line, here_doc_fd);
 		free(line);
 	}
-	close(here_doc_fd);
+	ft_close(here_doc_fd);
 }
 
 void	check_file(t_token *line)
@@ -187,7 +187,7 @@ int	check_infile(char *filename)
 	fd = open(filename, O_RDONLY);
 	if (fd == -1)
 		return (TRUE);
-	close(fd);
+	ft_close(fd);
 	return (FALSE);
 }
 
@@ -198,7 +198,7 @@ int	check_outfile(char *filename)
 	fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	if (fd == -1)
 		return (TRUE);
-	close(fd);
+	ft_close(fd);
 	return (FALSE);
 }
 
@@ -242,8 +242,8 @@ void	close_pipe(int (*fd)[2], int count)
 	idx = 0;
 	while (idx < count)
 	{
-		close(fd[idx][0]);
-		close(fd[idx][1]);
+		ft_close(fd[idx][0]);
+		ft_close(fd[idx][1]);
 		++idx;
 	}
 }
@@ -282,7 +282,7 @@ int (*create_pipe(t_deque *cmd_deque))[2]
 	idx = 0;
 	while (idx < cmd_deque->cnt - 1)
 	{
-		pipe(fd[idx]);
+		ft_pipe(fd[idx]);
 		++idx;
 	}
 	return (fd);

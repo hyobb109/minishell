@@ -21,6 +21,7 @@
 # include <signal.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <sys/stat.h>
 
 # define PATH_MAX 4096
 # define ARG_MAX 262144
@@ -209,6 +210,12 @@ char	**strs_trim(char **before, int row);
 char	**make_envstrs(t_token *token);
 void	execute_line(t_token *line, char **env);
 void	manage_io(t_token *line, int count, int total, int (*fd)[2]);
+
+pid_t	ft_fork(void);
+int		ft_dup(int fd);
+int		ft_dup2(int old_fd, int new_fd);
+int		ft_close(int fd);
+int		ft_pipe(int fd[2]);
 
 //here_doc
 void	find_here_doc(t_deque *cmd_deque);

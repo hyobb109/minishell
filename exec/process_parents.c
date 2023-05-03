@@ -6,7 +6,7 @@
 /*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 16:33:30 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/03 20:49:13 by hyunwoju         ###   ########.fr       */
+/*   Updated: 2023/05/03 22:22:56 by hyunwoju         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ void	only_builtins(t_deque *cmd_deque,  int (*fd)[2])
 	int	result;
 
 	result = 0;
-	stdin_fd = dup(STDIN_FILENO);
-	stdout_fd = dup(STDOUT_FILENO);
+	stdin_fd = ft_dup(STDIN_FILENO);
+	stdout_fd = ft_dup(STDOUT_FILENO);
 	result = exec_builtins(cmd_deque->head);
 	if (result != -1)
 	{
@@ -28,13 +28,13 @@ void	only_builtins(t_deque *cmd_deque,  int (*fd)[2])
 		manage_io(cmd_deque->head, 0, 1, fd);
 		if (cmd_deque->head->infile_fd)
 		{
-			dup2(stdin_fd, STDIN_FILENO);
-			close(stdin_fd);
+			ft_dup2(stdin_fd, STDIN_FILENO);
+			ft_close(stdin_fd);
 		}
 		if (cmd_deque->head->outfile_fd)
 		{
-			dup2(stdout_fd, STDOUT_FILENO);
-			close(stdout_fd);
+			ft_dup2(stdout_fd, STDOUT_FILENO);
+			ft_close(stdout_fd);
 		}
 	}
 }
@@ -123,7 +123,7 @@ void	open_here_doc(t_token *cur_token, t_fdata *cur_file, int count)
 	free(count_to_char);
 	signal(SIGINT, SIG_IGN);
 	//here_doc_fd = open(here_doc_name, O_RDWR | O_CREAT, 0777);
-	pid = fork();
+	pid = ft_fork();
 	if (!pid)
 	{
 		exec_here_doc(cur_token, cur_file, here_doc_name);
@@ -132,7 +132,7 @@ void	open_here_doc(t_token *cur_token, t_fdata *cur_file, int count)
 	ft_memset(cur_file->filename, 0, sizeof(char) * strlen(cur_file->filename));
 	ft_memcpy(cur_file->filename, here_doc_name, ft_strlen(here_doc_name));
 	free(here_doc_name);
-	//close(here_doc_fd);
+	//ft_close(here_doc_fd);
 }
 
 void	exec_here_doc(t_token *cur_token, t_fdata *cur_file, char *here_doc_name)
@@ -164,7 +164,7 @@ void	exec_here_doc(t_token *cur_token, t_fdata *cur_file, char *here_doc_name)
 		if (cur_file->type == DELIMITER)
 			free(tmp);
 	}
-	close(here_doc_fd);
+	ft_close(here_doc_fd);
 }
 
 char	*check_env_var(char *line, t_edeque *envp)
@@ -220,7 +220,7 @@ int	check_infile(char *filename)
 	fd = open(filename, O_RDONLY);
 	if (fd == -1)
 		return (TRUE);
-	close(fd);
+	ft_close(fd);
 	return (FALSE);
 }
 
@@ -231,7 +231,7 @@ int	check_outfile(char *filename)
 	fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	if (fd == -1)
 		return (TRUE);
-	close(fd);
+	ft_close(fd);
 	return (FALSE);
 }
 
@@ -275,8 +275,8 @@ void	close_pipe(int (*fd)[2], int count)
 	idx = 0;
 	while (idx < count)
 	{
-		close(fd[idx][0]);
-		close(fd[idx][1]);
+		ft_close(fd[idx][0]);
+		ft_close(fd[idx][1]);
 		++idx;
 	}
 }
@@ -293,7 +293,7 @@ void	create_child(t_deque *cmd_deque, int (*fd)[2])
 	signal(SIGINT, signal_handler);
 	while (count < total)
 	{
-		cur_token->pid = fork();
+		cur_token->pid = ft_fork();
 		if (cur_token->pid == -1)
 			exit (1);
 		else if (!cur_token->pid)

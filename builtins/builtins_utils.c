@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 15:36:38 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/01 00:04:25 by yunjcho          ###   ########seoul.kr  */
+/*   Updated: 2023/05/03 22:10:25 by hyunwoju         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,10 @@ char	*ft_getenv(t_edeque *envp, char *key)
 	char	*value;
 
 	tmp = find_value(envp, key);
-	value = tmp->val;
-	return (value);
+	if (tmp)
+	{
+		value = tmp->val;
+		return (value);
+	}
+	return (NULL);
 }
