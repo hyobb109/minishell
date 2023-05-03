@@ -1,0 +1,17 @@
+# git rm -r --cached .vscode/
+.vscode/
+
+# Executables
+*.exe
+*.out
+*.app
+*.ipa
+
+*.swp
+*.c.swp
+*.o
+*.a
+a.out
+.DS_Store
+
+minishell
