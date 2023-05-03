@@ -212,9 +212,9 @@ void	manage_io(t_token *line, int count, int total, int (*fd)[2]);
 
 //here_doc
 void	find_here_doc(t_deque *cmd_deque);
-void	open_here_doc(t_fdata *cur_file, int count);
-void	exec_here_doc(t_fdata *cur_file, char *here_doc_name);
+void	open_here_doc(t_token *cur_token, t_fdata *cur_file, int count);
+void	exec_here_doc(t_token *cur_token, t_fdata *cur_file, char *here_doc_name);
 void	unlink_here_doc(t_deque *cmd_deque);
 char	*get_next_line(int fd);
-
+char	*check_env_var(char *line, t_edeque *envp);
 #endif

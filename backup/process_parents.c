@@ -6,7 +6,7 @@
 /*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 16:33:30 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/03 18:30:06 by hyunwoju         ###   ########.fr       */
+/*   Updated: 2023/05/03 20:54:28 by hyunwoju         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -229,7 +229,7 @@ void	find_child(t_deque *cmd_deque, int status, pid_t pid)
 		if (cur_point->pid == pid)
 		{
 			cur_point->status = status;
-			printf("exit status = %d\n", WEXITSTATUS(status));
+			//printf("exit status = %d\n", WEXITSTATUS(status));
 		}
 		cur_point = cur_point->next;
 	}

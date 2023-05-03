@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_check.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 05:41:25 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/05/03 19:59:23 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/05/03 20:21:56 by hyunwoju         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,23 +54,7 @@ int	env_trans(char *str, t_edeque *envp, char *buf)
 	{
 		if (is_envkey(str, tmp->key, &key_len))
 		{
-			// // " 가 있으면 버퍼를 ' '로 감싸줌
-			// if (ft_strchr(tmp->val, '\"'))
-			// {
-			// 	// printf("val : %s, len : %ld\n", tmp->val, ft_strlen(tmp->val));
-			// 	buf[0] = '\'';
-			// 	ft_memcpy(&buf[1], tmp->val, ft_strlen(tmp->val));
-			// 	buf[ft_strlen(tmp->val)] = '\'';
-			// }
-			// // ' 가 있으면 버퍼를  " "로 감싸줌
-			// else if (ft_strchr(tmp->val, '\''))
-			// {
-			// 	buf[0] = '\"';
-			// 	ft_memcpy(&buf[1], tmp->val, ft_strlen(tmp->val));
-			// 	buf[ft_strlen(tmp->val)] = '\"';
-			// }
-			// else
-				ft_memcpy(buf,tmp->val,ft_strlen(tmp->val));
+			ft_memcpy(buf,tmp->val,ft_strlen(tmp->val));
 			return (key_len);          
 		}
 		//못찾으면 다음 환경변수 검사

@@ -6,7 +6,7 @@
 /*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 16:33:30 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/03 19:13:12 by hyunwoju         ###   ########.fr       */
+/*   Updated: 2023/05/03 20:49:13 by hyunwoju         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ void	find_here_doc(t_deque *cmd_deque)
 		{
 			if (cur_file->type == DELIMITER || cur_file->type == Q_DELIMITER)
 			{
-				open_here_doc(cur_file, count);
+				open_here_doc(cur_token, cur_file, count);
 				++count;
 			}
 			cur_file = cur_file->next;
@@ -111,7 +111,7 @@ void	find_here_doc(t_deque *cmd_deque)
 	}
 }
 
-void	open_here_doc(t_fdata *cur_file, int count)
+void	open_here_doc(t_token *cur_token, t_fdata *cur_file, int count)
 {
 	//int	here_doc_fd;
 	char	*count_to_char;
@@ -126,7 +126,7 @@ void	open_here_doc(t_fdata *cur_file, int count)
 	pid = fork();
 	if (!pid)
 	{
-		exec_here_doc(cur_file, here_doc_name);
+		exec_here_doc(cur_token, cur_file, here_doc_name);
 	}
 	wait(NULL);
 	ft_memset(cur_file->filename, 0, sizeof(char) * strlen(cur_file->filename));
@@ -135,10 +135,11 @@ void	open_here_doc(t_fdata *cur_file, int count)
 	//close(here_doc_fd);
 }
 
-void	exec_here_doc(t_fdata *cur_file, char *here_doc_name)
+void	exec_here_doc(t_token *cur_token, t_fdata *cur_file, char *here_doc_name)
 {
 	int		here_doc_fd;
 	char	*line;
+	char	*tmp;
 
 	here_doc_fd = open(here_doc_name, O_RDWR | O_CREAT, 0777);
 	while (1)
@@ -153,10 +154,42 @@ void	exec_here_doc(t_fdata *cur_file, char *here_doc_name)
 				break ;
 			}
 		}
-		ft_putstr_fd(line, here_doc_fd);
+		
+		if (cur_file->type == DELIMITER)
+			tmp = check_env_var(line, cur_token->envp);
+		else
+			tmp = line;
+		ft_putstr_fd(tmp, here_doc_fd);
 		free(line);
+		if (cur_file->type == DELIMITER)
+			free(tmp);
 	}
 	close(here_doc_fd);
+}
+
+char	*check_env_var(char *line, t_edeque *envp)
+{
+	int		idx;
+	char	buf[ARG_MAX];
+	int		len;
+	
+	ft_memset(buf, 0, ARG_MAX);
+	idx = 0;
+	len = 0;
+	while (line[idx])
+	{
+		if (line[idx] == '$')
+		{
+			idx += env_trans(&line[idx + 1], envp, &buf[len]);
+			len = ft_strlen(buf);
+		}
+		else
+		{
+			buf[len++] = line[idx];
+		}
+		idx++;
+	}
+	return (ft_strdup(buf));
 }
 
 void	check_file(t_token *line)
