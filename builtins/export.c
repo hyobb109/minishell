@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 13:38:07 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/03 14:46:38 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/05/03 15:36:21 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	print_export(t_env	*print_env)
 {
 	printf("declare -x %s", print_env->key);
-	if (print_env->val != NULL)
+	if (print_env->val)
 		printf("=\"%s\"", print_env->val);
 	printf("\n");
 }
@@ -45,22 +45,46 @@ int	appending(t_token *token, char *key, char *value)
 	env_node = NULL;
 	free_str = NULL;
 	env_node = find_value(token->envp, key);
+	// printf("appending value: %s\n", value);
 	if (env_node)
 	{
-		if (!ft_strcmp(env_node->val, value))
-			return (-1);
-		free_str = env_node->val;
-		free(free_str);
-		env_node->val = ft_strdup(value);
+		if (!env_node->val)
+		{
+			if (value)
+			{
+				env_node->val = ft_strdup(value);
+				return (1);
+			}
+			else
+			{
+				// printf("check\n");
+				env_node->val = NULL;
+				return (0);
+			}
+		}
+		else if (env_node->val)
+		{
+			if (!ft_strcmp(env_node->val, value))
+				return (0);
+			else
+			{
+				free_str = env_node->val;
+				free(free_str);
+				env_node->val = ft_strdup(value);
+			}
+		}
 	}
 	else
 	{
+		// printf("!appending value: %s\n", value);
 		env_node = malloc(sizeof(t_env));
 		if (!env_node)
 			ft_error();
 		env_node->key = ft_strdup(key);
 		if (value)
 			env_node->val = ft_strdup(value);
+		else
+			env_node->val = NULL;
 		env_node->prev = NULL;
 		env_node->next = NULL;
 		append_back_env(token->envp, env_node);
@@ -103,16 +127,18 @@ void	append_export(t_token *token)
 					target_idx + 1, ft_strlen(token->command[idx]));
 			else // = 이 없음, key만 있음
 				value = NULL;
-			printf("value : %s\n", value);
+			// printf("value : %s\n", value);
 			if (appending(token, key, value) == -1)
 			{
 				free(key);
-				free(value);
+				if (value)
+					free(value);
 				idx++;
 				continue ;
 			}
 			free(key);
-			free(value);
+			if (value)
+				free(value);
 		}
 		idx++;
 	}

@@ -5,128 +5,64 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/25 01:25:35 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/03 02:43:30 by yunjcho          ###   ########seoul.kr  */
+/*   Created: 2023/05/03 16:28:59 by yunjcho           #+#    #+#             */
+/*   Updated: 2023/05/03 19:25:19 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char	*make_parentdir(char *cur_dir)
-{
-	int		idx;
-	char	*result;
-	char	*result2;
-	char	**tmp;
-
-	idx = 0;
-	result = ft_strdup("");
-	result2 = NULL;
-	tmp = ft_split(cur_dir, '/');
-	while (tmp[idx])
-		idx++;
-	if (idx != 1)
-	{
-		free(tmp[idx - 1]);
-		tmp[idx - 1] = 0;
-	}
-	else
-	{
-		result2 = tmp[idx - 1];
-		free(result2);
-		tmp[idx - 1] = ft_strdup("");
-	}
-	idx = 0;
-	while (tmp[idx])
-	{
-		result2 = ft_strjoin_three(result, "/", tmp[idx]);
-		free(result);
-		result = result2;
-		result2 = NULL;
-		idx++;
-	}
-	free_strs(tmp);
-	return (result);
-}
-
-char	*make_dirstr(char *str, char *cwd_name, char *parent_dir, char *home_dir) //절대 경로 & 상대 경로
-{
-	int		idx;
-	char	**tmp;
-	char	*result;
-	char	*result2;
-
-	idx = 0;
-	tmp = ft_split(str, '/'); //인자를 쪼갬
-	result = ft_strdup("");
-	result2 = NULL;
-	while (tmp[idx])
-	{
-		if (!ft_strcmp(tmp[idx], "~"))
-		{
-			result2 = ft_strjoin(result, home_dir);
-			free(result);
-			result = result2;
-			result2 = NULL;
-		}
-		else if (!ft_strcmp(tmp[idx], "."))
-		{
-			if (!ft_strcmp(result, ""))
-				result2 = ft_strjoin(result, cwd_name);
-			else
-				result2 = ft_strjoin_three(result, "/", cwd_name);
-			free(result);
-			result = result2;
-			result2 = NULL;
-		}
-		else if (!ft_strcmp(tmp[idx], "..")) //TODO - ../../ 처리
-		{
-			result2 = ft_strjoin(result, parent_dir);
-			free(result);
-			result = result2;
-			result2 = NULL;
-		}
-		else
-		{
-			result2 = ft_strjoin_three(result, "/", tmp[idx]);
-			free(result);
-			result = result2;
-			result2 = NULL;
-		}
-		idx++;
-	}
-	return (result);
-}
-
 char	*init_destpath(t_token *token, char *cwd_name)
 {
 	size_t	target_idx;
 	char	*home_dir;
-	char	*parent_dir;
+	char	*result;
+	char	*result2;
+	char	**tmp;
+	int		idx;
 
+	(void) cwd_name;
 	target_idx = -1;
 	home_dir = ft_getenv(token->envp, "HOME");
-	printf("home_dir : %s\n", home_dir);
-	parent_dir = make_parentdir(cwd_name); //현재 디렉토리를 쪼갬
-	printf("parent_dir : %s\n", parent_dir);
+	// printf("home_dir : %s\n", home_dir);
+	result = ft_strdup("");
+	result2 = NULL;
 	if (exist_args(token))
 	{
-		if (!ft_strcmp(token->command[1], "/"))
-			return (ft_strdup("/"));
-		else
-		{
-			target_idx = ft_strchr_idx(token->command[1], '/');
-			if (target_idx < 0)
-				return (ft_strjoin_three(cwd_name, "/", token->command[1]));
-			else if (target_idx == (ft_strlen(token->command[1]) - 1))
+		tmp = ft_split(token->command[1], '/');
+		idx = 0;
+		while (tmp[idx])
+		{ 
+			if (idx == 0)
 			{
-				printf("delete //\n");
-				token->command[1][ft_strlen(token->command[1]) - 1] = '\0';
-				return (ft_strjoin_three(cwd_name, "/", token->command[1]));
+				if (!ft_strcmp(tmp[0], "~"))
+					result2 = ft_strjoin(result, home_dir);
+				else
+					result2 = ft_strjoin_three(result, "/", tmp[idx]);
+				free(result);
+				result = result2;
+				result2 = NULL;
 			}
 			else
-				return (make_dirstr(token->command[1], cwd_name, parent_dir, home_dir));
+			{
+				result2 = ft_strjoin_three(result, "/", tmp[idx]);
+				free(result);
+				result = result2;
+				result2 = NULL;
+			}
+			idx++;
 		}
+		return (result);
+		//token->command[1] = ~/minishell -> /Users/hyunwoju/minishell/exec/a/b/c
+		//char **tmp = ft_split(token->command[1], '/');
+		// ~ -> /Users/hyunwoju if(tmp[0] == '~') -> home으로 치환 / 인덱스가 0이 아닐땐 치환X
+		//minishell -> mini
+		// if (!ft_strcmp(token->command[1], "~"))
+		// {
+		// 	result2 = ft_strjoin(result, home_dir);
+		// 	free(result);
+		// 	return (result2);
+		// }
 	}
 	else
 		return (ft_strdup(home_dir));
@@ -169,14 +105,6 @@ int	exec_cd(t_token *token)
 	getcwd(cwd_name, sizeof(cwd_name));
 	dest = init_destpath(token, cwd_name);
 	printf("dest : %s\n", dest);
-	if (access(dest, F_OK) == -1)
-	{
-		printf("minishell: %s: %s: %s\n", token->command[0], \
-			token->command[1], strerror(errno));
-		free(dest);
-		token->status = 1;
-		return (-1);
-	}
 	if (chdir(dest) == -1)
 	{
 		printf("minishell: %s: %s: %s\n", token->command[0], \
