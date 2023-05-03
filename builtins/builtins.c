@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/16 19:57:20 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/05/02 22:23:57 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/05/03 14:16:22 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ int	exec_builtins(t_token *token) //return값이 -1이면 실패
 {
 	char *tmp;
 
-	tmp = ft_strlowcase(token->command[0]);
+	tmp = ft_strlowcase(ft_strdup(token->command[0]));
 	if (!ft_strcmp(tmp, "echo"))
 		return (exec_echo(token));
 	else if (!ft_strcmp(tmp, "pwd"))

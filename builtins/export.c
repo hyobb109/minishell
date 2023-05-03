@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 13:38:07 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/03 00:50:21 by yunjcho          ###   ########seoul.kr  */
+/*   Updated: 2023/05/03 14:46:38 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	print_export(t_env	*print_env)
 {
 	printf("declare -x %s", print_env->key);
-	if (ft_strcmp(print_env->val, "\"\""))
+	if (print_env->val != NULL)
 		printf("=\"%s\"", print_env->val);
 	printf("\n");
 }
@@ -59,7 +59,8 @@ int	appending(t_token *token, char *key, char *value)
 		if (!env_node)
 			ft_error();
 		env_node->key = ft_strdup(key);
-		env_node->val = ft_strdup(value);
+		if (value)
+			env_node->val = ft_strdup(value);
 		env_node->prev = NULL;
 		env_node->next = NULL;
 		append_back_env(token->envp, env_node);
@@ -98,10 +99,11 @@ void	append_export(t_token *token)
 				continue ;
 			}
 			if (target_idx > 0) // = 이 있음
-				value = ft_strjoin_three("\"", ft_substr(token->command[idx], \
-					target_idx + 1, ft_strlen(token->command[idx])), "\"");
+				value = ft_substr(token->command[idx], \
+					target_idx + 1, ft_strlen(token->command[idx]));
 			else // = 이 없음, key만 있음
-				value = ft_strdup("");
+				value = NULL;
+			printf("value : %s\n", value);
 			if (appending(token, key, value) == -1)
 			{
 				free(key);
