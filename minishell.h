@@ -28,6 +28,7 @@
 # define WRITE 1
 # define TRUE 1
 # define FALSE 0
+# define BUFFER_SIZE 1024
 
 typedef enum e_flag {
 	ENVIRON = -2,
@@ -203,5 +204,10 @@ char	**strs_trim(char **before, int row);
 char	**make_envstrs(t_token *token);
 void	execute_line(t_token *line, char **env);
 void	manage_io(t_token *line, int count, int total, int (*fd)[2]);
+
+//here_doc
+void	find_here_doc(t_deque *cmd_deque);
+void	open_here_doc(t_fdata *cur_file, int count);
+char	*get_next_line(int fd);
 
 #endif

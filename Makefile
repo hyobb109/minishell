@@ -6,7 +6,7 @@
 #    By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/18 19:16:02 by yunjcho           #+#    #+#              #
-#    Updated: 2023/05/02 21:19:44 by yunjcho          ###   ########.fr        #
+#    Updated: 2023/05/03 15:11:56 by hyunwoju         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,6 +30,7 @@ parsing/edeque_init.c \
 parsing/file_lst.c \
 exec/process_children.c \
 exec/process_parents.c \
+exec/gnl.c \
 builtins/builtins_utils.c \
 builtins/builtins.c \
 builtins/echo.c \
