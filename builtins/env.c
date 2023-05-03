@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 20:42:23 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/02 19:24:02 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/05/03 14:45:26 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ void	print_envlist(t_token *token)
 	tmp = token->envp->head;
 	while (tmp)
 	{
-		if (!ft_strcmp(tmp->val, ""))
+		if (!tmp->val)
 		{
 			tmp = tmp->next;
 			continue ;

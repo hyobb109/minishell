@@ -28,6 +28,7 @@
 # define WRITE 1
 # define TRUE 1
 # define FALSE 0
+# define BUFFER_SIZE 1024
 
 typedef enum e_flag {
 	ENVIRON = -2,
@@ -131,21 +132,20 @@ t_env	*pop_select_env(t_edeque *deque, char *key);
 void	print_edeque(t_edeque *deque); // delete
 
 // file list
-int		check_redir(char *str, t_token *token);
-int		get_filename(char *str, t_fdata *new, t_token *token);
+void	check_redir(char **str, t_token *token);
+void	get_filename(char **str, t_fdata *new, t_token *token);
 void	append_file(t_fdata **head, t_fdata *new);
 void	free_files(t_fdata **lst);
 void	print_filelst(t_deque *cmd_lst); // delete
 
 // parsing
 char	**ft_pipe_split(char *str);
-char	**parse_command(char *str, t_token *token);
+char	**parse_command(char *str, t_token *token, int quote);
 int		syntax_error(char *str);
 void	make_cmdlst(char *str, t_deque *cmd_deque, t_edeque *envp);
 int		is_blank(char c);
 
 // environ
-char	*expand_environ(char *str, t_token *token, int quote);
 int		env_trans(char *str, t_edeque *envp, char *buf);
 int		search_env(char **str, char *buf, t_edeque *envp, int quote);
 
@@ -203,5 +203,11 @@ char	**strs_trim(char **before, int row);
 char	**make_envstrs(t_token *token);
 void	execute_line(t_token *line, char **env);
 void	manage_io(t_token *line, int count, int total, int (*fd)[2]);
+
+//here_doc
+void	find_here_doc(t_deque *cmd_deque);
+void	open_here_doc(t_fdata *cur_file, int count);
+void	unlink_here_doc(t_deque *cmd_deque);
+char	*get_next_line(int fd);
 
 #endif

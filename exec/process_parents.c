@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_parents.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 16:33:30 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/03 00:47:08 by yunjcho          ###   ########seoul.kr  */
+/*   Updated: 2023/05/03 15:32:52 by hyunwoju         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	parents_process(t_deque *cmd_deque)
 
 	current_token = cmd_deque->head;
 	count = cmd_deque->cnt - 1;
-	//here_doc(cmd_deque);
+	find_here_doc(cmd_deque);
 	while (current_token != NULL)
 	{
 		check_file(current_token);
@@ -63,12 +63,85 @@ void	parents_process(t_deque *cmd_deque)
 	close_pipe(fd, count);
 	free(fd);//pipe(fds) free()
 	wait_child(count, cmd_deque);
+	unlink_here_doc(cmd_deque);
 }
 
-//void	here_doc(t_deque *cmd_deque)
-//{
+void	unlink_here_doc(t_deque *cmd_deque)
+{
+	t_token	*cur_token;
+	t_fdata	*cur_file;
+
+	cur_token = cmd_deque->head;
+	while (cur_token != NULL)
+	{
+		cur_file = cur_token->files;
+		while (cur_file != NULL)
+		{
+			if (cur_file->type == DELIMITER || cur_file->type == Q_DELIMITER)
+			{
+				unlink(cur_file->filename);
+			}
+			cur_file = cur_file->next;
+		}
+		cur_token = cur_token->next;
+	}
+}
+
+void	find_here_doc(t_deque *cmd_deque)
+{
+	t_token	*cur_token;
+	t_fdata *cur_file;
+	int		count;
+
+	cur_token = cmd_deque->head;
+	count = 0;
+	while (cur_token != NULL)
+	{
+		cur_file = cur_token->files;
+		while (cur_file != NULL)
+		{
+			if (cur_file->type == DELIMITER || cur_file->type == Q_DELIMITER)
+			{
+				open_here_doc(cur_file, count);
+				++count;
+			}
+			cur_file = cur_file->next;
+		}
+		cur_token = cur_token->next;
+	}
+}
+
+void	open_here_doc(t_fdata *cur_file, int count)
+{
+	char	here_doc_fd;
+	char	*count_to_char;
+	char	*here_doc_name;
+	char	*line;
 	
-//}
+	count_to_char = ft_itoa(count);
+	here_doc_name = ft_strjoin("/tmp/here_doc_temp", count_to_char);
+	free(count_to_char);
+	here_doc_fd = open(here_doc_name, O_RDWR | O_CREAT, 0777);
+	while (1)
+	{
+		write(1, "> ", 2);
+		line = get_next_line(0);
+		if (!ft_strncmp(line, cur_file->filename, ft_strlen(cur_file->filename)))
+		{
+			if (*(line + ft_strlen(cur_file->filename)) == '\n')
+			{
+				free(line);
+				break ;
+			}
+		}
+		ft_putstr_fd(line, here_doc_fd);
+		free(line);
+	}
+	ft_memset(cur_file->filename, 0, sizeof(char) * strlen(cur_file->filename));
+	ft_memcpy(cur_file->filename, here_doc_name, ft_strlen(here_doc_name));
+	free(here_doc_name);
+	close(here_doc_fd);
+}
 
 void	check_file(t_token *line)
 {
