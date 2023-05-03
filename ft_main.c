@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_main.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: seulee2 <seulee2@42seoul.student.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 16:55:06 by hyunwoju          #+#    #+#             */
-/*   Updated: 2023/05/03 19:09:16 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/05/03 18:19:14 by seulee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,10 @@ int	main(int ac, char **av, char **env)
 	(void) av;
 	// env deque create
 	make_envlst(&envp, env);
+	//rl_catch_signals = 0;
 	while (1)
 	{
+		//ft_signal_set();
 		str = readline("minishell-0.0$ ");
 		if (!str)
 			exit(EXIT_FAILURE);

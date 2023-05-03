@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/16 19:57:20 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/05/03 14:16:22 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/05/03 15:38:52 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	exec_exit(t_token *token)
 	printf("exit\n");
 	if (cnt > 2)
 	{
-		printf("minishell: exit: too many arguments\n");
+		printf("minishell: %s: too many arguments\n", token->command[0]);
 		token->status = 1;
 		return ;
 	}
@@ -64,7 +64,7 @@ int	exec_unset(t_token *token)
 	{
 		if (!ft_isalpha(token->command[idx][0]) && token->command[idx][0] != '_')
 		{
-			printf("export: '%s': not a valid identifier\n", token->command[idx]); //TODO - 에러넘버 찾기
+			printf("minishell: %s: '%s': not a valid identifier\n", token->command[0], token->command[idx]); //TODO - 에러넘버 찾기
 			token->status = 1;
 		}
 		else
@@ -74,7 +74,8 @@ int	exec_unset(t_token *token)
 			if (free_env)
 			{
 				free(free_env->key);
-				free(free_env->val);
+				if (free_env->val)
+					free(free_env->val);
 				free(free_env);
 			}
 			// print_edeque(token->envp);

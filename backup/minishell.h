@@ -110,8 +110,6 @@ typedef struct s_matrix
 	int column;
 }	t_matrix;
 
-int		g_exit_status;
-
 // deque
 void	init_deque(t_deque *deque);
 void	init_element(t_token *element, char **parsed);
@@ -133,25 +131,22 @@ t_env	*pop_back_env(t_edeque *deque);
 t_env	*pop_select_env(t_edeque *deque, char *key);
 void	print_edeque(t_edeque *deque); // delete
 
-// signal
-void	signal_handler(int sig);
-void	ft_signal_set(void);
-
 // file list
-void	check_redir(char **str, t_token *token);
-void	get_filename(char **str, t_fdata *new, t_token *token);
+int		check_redir(char *str, t_token *token);
+int		get_filename(char *str, t_fdata *new, t_token *token);
 void	append_file(t_fdata **head, t_fdata *new);
 void	free_files(t_fdata **lst);
 void	print_filelst(t_deque *cmd_lst); // delete
 
 // parsing
 char	**ft_pipe_split(char *str);
-char	**parse_command(char *str, t_token *token, int quote);
+char	**parse_command(char *str, t_token *token);
 int		syntax_error(char *str);
 void	make_cmdlst(char *str, t_deque *cmd_deque, t_edeque *envp);
 int		is_blank(char c);
 
 // environ
+char	*expand_environ(char *str, t_token *token, int quote);
 int		env_trans(char *str, t_edeque *envp, char *buf);
 int		search_env(char **str, char *buf, t_edeque *envp, int quote);
 

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+         #
+#    By: seulee2 <seulee2@42seoul.student.kr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/18 19:16:02 by yunjcho           #+#    #+#              #
-#    Updated: 2023/05/03 18:01:04 by hyobicho         ###   ########.fr        #
+#    Updated: 2023/05/03 16:41:24 by seulee2          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,6 +28,7 @@ parsing/syntax_error.c \
 parsing/env_deque.c \
 parsing/edeque_init.c \
 parsing/file_lst.c \
+parsing/signal_func.c \
 exec/process_children.c \
 exec/process_parents.c \
 exec/gnl.c \
