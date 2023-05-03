@@ -6,7 +6,7 @@
 /*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 16:33:30 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/03 15:11:39 by hyunwoju         ###   ########.fr       */
+/*   Updated: 2023/05/03 15:32:52 by hyunwoju         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,28 @@ void	parents_process(t_deque *cmd_deque)
 	close_pipe(fd, count);
 	free(fd);//pipe(fds) free()
 	wait_child(count, cmd_deque);
+	unlink_here_doc(cmd_deque);
+}
+
+void	unlink_here_doc(t_deque *cmd_deque)
+{
+	t_token	*cur_token;
+	t_fdata	*cur_file;
+
+	cur_token = cmd_deque->head;
+	while (cur_token != NULL)
+	{
+		cur_file = cur_token->files;
+		while (cur_file != NULL)
+		{
+			if (cur_file->type == DELIMITER || cur_file->type == Q_DELIMITER)
+			{
+				unlink(cur_file->filename);
+			}
+			cur_file = cur_file->next;
+		}
+		cur_token = cur_token->next;
+	}
 }
 
 void	find_here_doc(t_deque *cmd_deque)

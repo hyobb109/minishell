@@ -208,6 +208,7 @@ void	manage_io(t_token *line, int count, int total, int (*fd)[2]);
 //here_doc
 void	find_here_doc(t_deque *cmd_deque);
 void	open_here_doc(t_fdata *cur_file, int count);
+void	unlink_here_doc(t_deque *cmd_deque);
 char	*get_next_line(int fd);
 
 #endif
