@@ -28,10 +28,10 @@ int	main(int ac, char **av, char **env)
 	(void) av;
 	// env deque create
 	make_envlst(&envp, env);
-	rl_catch_signals = 0;
+	//rl_catch_signals = 0;
 	while (1)
 	{
-		ft_signal_set();
+		//ft_signal_set();
 		str = readline("minishell-0.0$ ");
 		if (!str)
 			exit(EXIT_FAILURE);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_tokens.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:15:26 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/03 19:59:19 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/05/02 22:57:34 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,68 +44,53 @@ int	is_builtin(char *cmd)
 	return (res);
 }
 
-char	**parse_command(char *str, t_token *token, int quote)
+char	**parse_command(char *str, t_token *token)
 {
-	//	어차피 끝까지 볼거임
+	int		i;
 	int		len;
+	int		quote;
 	char	buffer[ARG_MAX];
 
 	// printf("**str: %s\n", str);
 	ft_memset(buffer, 0, ARG_MAX); // 버퍼 초기화
-	while (is_blank(*str))
-		str++;
-	quote = CLOSED;
+	i = 0;
+	// 처음 들어오는 공백 넘김
+	while (is_blank(str[i]))
+		i++;
+	quote = 0;
 	len = 0;
-	while (*str)
+	while (str[i])
 	{
-		if (quote == CLOSED && (*str == '\'' || *str == '\"'))
+		if (!quote && (str[i] == '\'' || str[i] == '\"'))
 		{
-			quote = *str;
+			quote = str[i];
 		}
-		else if (quote && *str == quote)
+		else if (quote && str[i] == quote)
 		{
-			quote = CLOSED;
+			quote = 0;
 		}
-		else if (quote == CLOSED && (*str == '<' || *str == '>'))
+		// echo hi >> "$USER hi $LANG" <$USER >>append1 >>ap'en'd2 <<"heredoc" <<h_noquote <"infile $USER" <infi 
+		// 리다이렉션 있으면 command 에 넣지 않고 분리하여 토큰 파일 리스트에 파일 이름과 형식 추가
+		else if (!quote && (str[i] == '<' || str[i] == '>'))
 		{
-			// 리다이렉션 있으면 파일리스트로 분리
-			// str 주소 넘겨줌
-			check_redir(&str, token);
-			// printf("str:%s, buf : %s, buf_len: %d\n", str, buffer, len);
-		}
-		else if ((quote == CLOSED && *str == '$') || (quote == '\"' && *str == '$'))
-		{
-			// $ 뒤가 알파벳이나 '_'일 때만 환경변수로 처리(변수 명 조건)
-			if (ft_isalpha(*(str + 1)) || *(str + 1) == '_')
-			{
-				len += search_env(&str, &buffer[len], token->envp, quote); // $ 위치부터 보내주기
-			}
-			else
-			{
-				str++;
-			}
-			if (quote)
-				quote = CLOSED; // 따옴표 닫아줌 (환경변수 치환되면서 따옴표 제거됨)
-		}
-		else if (!quote && is_blank(*str))
+			// printf("*str: %s\n", &str[i]);
+			i += check_redir(&str[i], token);
+		} 
+		else if (!quote && is_blank(str[i]))
 		{
 			buffer[len++] = BLANK; // 따옴표 밖 공백이면 자름
 		}
 		else
 		{
-			buffer[len++] = *str;
+			buffer[len++] = str[i];
 		}
-		if (*str == '\0')
-			break ;
-		str++;
+		i++;
+		// printf("str[%d]: %c buffer: %s quote: %d\n", i, str[i], buffer, quote);
 	}
 	buffer[len] = '\0';
-	// printf("============\n");
-	// printf("environ expansion result : %s\n", buffer);
-	// 버퍼에 환경변수 모두 치환된 결과 담김.
-	// 메모리 새로 할당하여 리턴.
+	// printf("buffer : %s\n", buffer);
+	free(str);
 	return (ft_split(buffer, BLANK));
-	// printf("res : %s\n", res);
 }
 
 // cmd 와 arg로 분리
@@ -115,7 +100,7 @@ static void	init_token(char *str, t_token *token, t_edeque *envp)
 	//TODO - infile/outfile
 	token->func = GENERAL;
 	token->files = NULL;
-	token->command = parse_command(str, token, CLOSED);
+	token->command = parse_command(expand_environ(str, token, CLOSED), token);
 	if (is_builtin(token->command[0]))
 		token->func = BUILTIN;
 	token->status = 0;
@@ -142,7 +127,7 @@ void	make_cmdlst(char *str, t_deque *cmd_deque, t_edeque *envp)
 		append_back(cmd_deque, token);
 		i++;
 	}
-	print_filelst(cmd_deque);
+	// print_filelst(cmd_deque);
 	free_strs(strs);
 	print_deque(cmd_deque);
 }
