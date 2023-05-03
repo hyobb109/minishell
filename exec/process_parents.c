@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_parents.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
+/*   By: seulee2 <seulee2@42seoul.student.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 16:33:30 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/03 15:32:52 by hyunwoju         ###   ########.fr       */
+/*   Updated: 2023/05/03 18:19:49 by seulee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -241,6 +241,7 @@ void	create_child(t_deque *cmd_deque, int (*fd)[2])
 	count = 0;
 	total = cmd_deque->cnt;
 	cur_token = cmd_deque->head;
+		signal(SIGINT, signal_handler);
 	while (count < total)
 	{
 		cur_token->pid = fork();
