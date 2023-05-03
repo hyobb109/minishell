@@ -190,13 +190,10 @@ void	manage_pipe(int count, int total, int (*fd)[2])
 				close(fd[0][0]);
 			else if (count == total - 1)
 				close(fd[count - 1][1]);
-			else
-			{
-				if (count == idx + 1)
-					close(fd[idx][1]);
-				else if (count == idx)
-					close(fd[idx][0]);
-			}
+			else if (count == idx + 1)
+				close(fd[idx][1]);
+			else if (count == idx)
+				close(fd[idx][0]);
 		}
 		++idx;
 	}

@@ -6,7 +6,7 @@
 /*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 16:33:30 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/03 19:13:12 by hyunwoju         ###   ########.fr       */
+/*   Updated: 2023/05/03 18:30:06 by hyunwoju         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ void	open_here_doc(t_fdata *cur_file, int count)
 	count_to_char = ft_itoa(count);
 	here_doc_name = ft_strjoin("/tmp/here_doc_temp", count_to_char);
 	free(count_to_char);
-	signal(SIGINT, SIG_IGN);
+	//signal(SIGINT, SIG_IGN);
 	//here_doc_fd = open(here_doc_name, O_RDWR | O_CREAT, 0777);
 	pid = fork();
 	if (!pid)
@@ -257,7 +257,6 @@ void	create_child(t_deque *cmd_deque, int (*fd)[2])
 	count = 0;
 	total = cmd_deque->cnt;
 	cur_token = cmd_deque->head;
-	signal(SIGINT, signal_handler);
 	while (count < total)
 	{
 		cur_token->pid = fork();
