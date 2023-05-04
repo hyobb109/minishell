@@ -32,7 +32,7 @@
 # define BUFFER_SIZE 1024
 
 typedef enum e_flag {
-	ENVIRON = -2,
+	EMPTY = -2,
 	BLANK,
 	CLOSED,
 	FREE //del
@@ -121,7 +121,6 @@ void	append_back(t_deque *deque, t_token *token);
 t_token	*pop_front(t_deque *deque);
 t_token	*pop_back(t_deque *deque);
 void	free_deque(t_deque *deque);
-int		deque_is_empty(t_deque *pdeque);
 void	print_deque(t_deque *deque); //delete
 
 //edeque

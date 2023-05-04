@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 16:33:30 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/04 20:27:31 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/05/04 20:44:52 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,16 +112,20 @@ void	find_here_doc(t_deque *cmd_deque)
 
 void	open_here_doc(t_token *cur_token, t_fdata *cur_file, int count)
 {
-	//int	here_doc_fd;
 	char	*count_to_char;
 	char	*here_doc_name;
 	pid_t	pid;
 	
-	count_to_char = ft_itoa(count);
-	here_doc_name = ft_strjoin("/tmp/here_doc_temp", count_to_char);
-	free(count_to_char);
-	signal(SIGINT, SIG_IGN);
-	//here_doc_fd = open(here_doc_name, O_RDWR | O_CREAT, 0777);
+	while (1)
+	{
+		count_to_char = ft_itoa(count);
+		here_doc_name = ft_strjoin("/tmp/here_doc_temp", count_to_char);
+		free(count_to_char);
+		if (access(here_doc_name, F_OK))
+			break ;
+		free(here_doc_name);
+		++count;
+	}
 	pid = ft_fork();
 	if (!pid)
 	{
@@ -131,7 +135,6 @@ void	open_here_doc(t_token *cur_token, t_fdata *cur_file, int count)
 	ft_memset(cur_file->filename, 0, sizeof(char) * strlen(cur_file->filename));
 	ft_memcpy(cur_file->filename, here_doc_name, ft_strlen(here_doc_name));
 	free(here_doc_name);
-	//ft_close(here_doc_fd);
 }
 
 void	exec_here_doc(t_token *cur_token, t_fdata *cur_file, char *here_doc_name)

@@ -6,7 +6,7 @@
 /*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 19:53:02 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/04/26 16:34:43 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/05/04 18:35:04 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,12 @@ static char	**result(char **res, char const *str, char c, int cnt)
 		j = 0;
 		while (j < len && str[j])
 		{
-			res[i][j] = str[j];
+			if (str[j] == -2)
+			{
+				res[i][j] = '\0';
+			}
+			else
+				res[i][j] = str[j];
 			j++;
 		}
 		res[i][j] = '\0';

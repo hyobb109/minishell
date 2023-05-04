@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_check.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 05:41:25 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/05/04 15:17:23 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/05/04 17:42:49 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ int	is_envkey(const char *s1, const char *s2, int *key_len)
 	str = (char *)s1;
 	key = (char *)s2;
 	i = 0;
-
 	// printf("str: %s, key: %s\n", s1, s2);
 	//환경변수 끝나는 조건 - 숫자나 알파벳이나 '_'가 아닌 것이 나올 때
 	while ((str[i] == '_' || ft_isalnum(str[i])) || key[i])
@@ -55,7 +54,7 @@ int	env_trans(char *str, t_edeque *envp, char *buf)
 	{
 		if (is_envkey(str, tmp->key, &key_len))
 		{
-			ft_memcpy(buf,tmp->val,ft_strlen(tmp->val));
+			ft_memcpy(buf, tmp->val, ft_strlen(tmp->val));
 			return (key_len);
 		}
 		//못찾으면 다음 환경변수 검사

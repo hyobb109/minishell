@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:15:26 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/04 20:20:16 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/05/04 20:45:34 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,10 @@ char	**parse_command(char *str, t_token *token, int quote)
 		{
 			quote = *str;
 			q_flag = TRUE;
+			if (*(str + 1) == quote)
+			{
+				buffer[len++] = EMPTY;
+			}
 		}
 		else if (quote && *str == quote)
 		{
@@ -83,7 +87,7 @@ char	**parse_command(char *str, t_token *token, int quote)
 			{
 				len += search_env(&str, &buffer[len], token->envp, quote); // $ 위치부터 보내주기
 			}
-			// TODO  $? => exit status 로 치환
+			// TODO  $? => g_exit_status itoa로 변환 뒤로 치환
 			// else if (*(str + 1) == '?')
 			// {
 			// }
