@@ -6,7 +6,7 @@
 /*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:15:26 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/04 18:30:02 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/05/04 18:34:32 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,14 +113,15 @@ char	**parse_command(char *str, t_token *token, int quote)
 	}
 	buffer[len] = '\0';
 	// printf("============\n");
-	printf("environ expansion result : %s\n", buffer);
+	// printf("environ expansion result : %s\n", buffer);
 	// 버퍼에 환경변수 모두 치환된 결과 담김, 공백으로 스플릿해서 리턴.
-	// if (q_flag == FALSE && cmds[0][0] == '\0')
-	// {
-	// 	free_strs(cmds);
-	// 	cmds = NULL;
-	// }
-	return (ft_split(buffer, BLANK));
+	cmds = ft_split(buffer, BLANK);
+	if (q_flag == FALSE && cmds[0][0] == '\0')
+	{
+		free_strs(cmds);
+		cmds = NULL;
+	}
+	return (cmds);
 }
 
 // cmd 와 arg로 분리
@@ -159,5 +160,5 @@ void	make_cmdlst(char *str, t_deque *cmd_deque, t_edeque *envp)
 	}
 	//print_filelst(cmd_deque);
 	free_strs(strs);
-	print_deque(cmd_deque);
+	// print_deque(cmd_deque);
 }
