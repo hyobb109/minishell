@@ -24,8 +24,8 @@ int	get_filename(char *str, t_fdata *new, t_token *token)
 			quote = str[i];
 			if (quote == '\"')
 				flag = quote;
-			if (new->type == DELIMITER)
-				new->type = Q_DELIMITER; // heredoc 에서 리미터에 따옴표 있으면 입력된 환경변수 치환 안하므로 따로 분류
+			if (new->type == LIMITER)
+				new->type = Q_LIMITER; // heredoc 에서 리미터에 따옴표 있으면 입력된 환경변수 치환 안하므로 따로 분류
 		}
 		else if (quote && str[i] == quote)
 		{
@@ -47,15 +47,15 @@ int	get_filename(char *str, t_fdata *new, t_token *token)
 	// 	if (quote == CLOSED && (*str == '\'' || *str == '\"'))
 	// 	{
 	// 		quote = *str;
-	// 		if (new->type == DELIMITER)
-	// 			new->type = Q_DELIMITER; // heredoc 에서 리미터에 따옴표 있으면 입력된 환경변수 치환 안하므로 따로 분류
+	// 		if (new->type == LIMITER)
+	// 			new->type = Q_LIMITER; // heredoc 에서 리미터에 따옴표 있으면 입력된 환경변수 치환 안하므로 따로 분류
 	// 	}
 	// 	else if (quote && *str == quote)
 	// 	{
 	// 		quote = CLOSED;
 	// 	}
 	// 	// $ 뒤가 알파벳이나 '_'일 때만 환경변수로 처리(변수 명 조건)
-	// 	else if ((new->type != DELIMITER && new->type != Q_DELIMITER) && ((quote == CLOSED && *str == '$') || (quote == '\"' && *str == '$')) && (ft_isalpha(*(str + 1)) || *(str + 1) == '_'))
+	// 	else if ((new->type != LIMITER && new->type != Q_LIMITER) && ((quote == CLOSED && *str == '$') || (quote == '\"' && *str == '$')) && (ft_isalpha(*(str + 1)) || *(str + 1) == '_'))
 	// 	{
 	// 		len += search_env(&str, &new->filename[len], token->envp, quote);
 	// 		if (quote)
@@ -73,7 +73,7 @@ int	get_filename(char *str, t_fdata *new, t_token *token)
 	// new->filename[len] = '\0';
 	
 	// 히어독 제외하고 파일 이름이 환경변수라면 치환해줌
-	if (new->filename[0] == '$' && new->type != DELIMITER && new->type != Q_DELIMITER)
+	if (new->filename[0] == '$' && new->type != LIMITER && new->type != Q_LIMITER)
 	{
 		ft_memset(buffer, 0, PATH_MAX);
 		env_trans(&new->filename[1], token->envp, buffer);
@@ -89,7 +89,7 @@ int	get_filename(char *str, t_fdata *new, t_token *token)
 	}
 	printf("file: %s\n", new->filename);
 	append_file(&token->files, new);
-	if (new->type == DELIMITER || new->type == Q_DELIMITER || new->type == APPEND)
+	if (new->type == LIMITER || new->type == Q_LIMITER || new->type == APPEND)
 		i++;
 	return (i);
 }

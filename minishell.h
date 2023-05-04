@@ -47,8 +47,8 @@ typedef enum e_ftype {
 	INFILE,
 	OUTFILE,
 	APPEND,
-	DELIMITER,
-	Q_DELIMITER
+	LIMITER,
+	Q_LIMITER
 }	t_ftype;
 
 typedef struct s_fdata

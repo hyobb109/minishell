@@ -155,7 +155,7 @@ void	manage_file(t_token *line)
 	while (cur_file != NULL)
 	{
 		append_flag = 0;
-		if (cur_file->type == INFILE || cur_file->type == DELIMITER || cur_file->type == Q_DELIMITER)
+		if (cur_file->type == INFILE || cur_file->type == LIMITER || cur_file->type == Q_LIMITER)
 		{
 			open_infile(cur_file->filename, &infile_fd);
 		}

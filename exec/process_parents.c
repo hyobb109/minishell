@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_parents.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 16:33:30 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/03 22:22:56 by hyunwoju         ###   ########.fr       */
+/*   Updated: 2023/05/04 13:23:32 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	unlink_here_doc(t_deque *cmd_deque)
 		cur_file = cur_token->files;
 		while (cur_file != NULL)
 		{
-			if (cur_file->type == DELIMITER || cur_file->type == Q_DELIMITER)
+			if (cur_file->type == LIMITER || cur_file->type == Q_LIMITER)
 			{
 				unlink(cur_file->filename);
 			}
@@ -100,7 +100,7 @@ void	find_here_doc(t_deque *cmd_deque)
 		cur_file = cur_token->files;
 		while (cur_file != NULL)
 		{
-			if (cur_file->type == DELIMITER || cur_file->type == Q_DELIMITER)
+			if (cur_file->type == LIMITER || cur_file->type == Q_LIMITER)
 			{
 				open_here_doc(cur_token, cur_file, count);
 				++count;
@@ -155,13 +155,13 @@ void	exec_here_doc(t_token *cur_token, t_fdata *cur_file, char *here_doc_name)
 			}
 		}
 		
-		if (cur_file->type == DELIMITER)
+		if (cur_file->type == LIMITER)
 			tmp = check_env_var(line, cur_token->envp);
 		else
 			tmp = line;
 		ft_putstr_fd(tmp, here_doc_fd);
 		free(line);
-		if (cur_file->type == DELIMITER)
+		if (cur_file->type == LIMITER)
 			free(tmp);
 	}
 	ft_close(here_doc_fd);

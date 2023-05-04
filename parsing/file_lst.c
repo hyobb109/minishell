@@ -6,7 +6,7 @@
 /*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 15:08:06 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/05/03 19:55:38 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/05/04 13:23:42 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,14 +58,14 @@ void	get_filename(char **str, t_fdata *new, t_token *token)
 		if (quote == CLOSED && (**str == '\'' || **str == '\"'))
 		{
 			quote = **str;
-			if (new->type == DELIMITER)
-				new->type = Q_DELIMITER; // heredoc 에서 리미터에 따옴표 있으면 환경변수 치환 안하므로 따로 분류
+			if (new->type == LIMITER)
+				new->type = Q_LIMITER; // heredoc 에서 리미터에 따옴표 있으면 환경변수 치환 안하므로 따로 분류
 		}
 		else if (quote && **str == quote)
 		{
 			quote = CLOSED;
 		}
-		else if ((new->type != DELIMITER && new->type != Q_DELIMITER) && ((quote == CLOSED && **str == '$') || (quote == '\"' && **str == '$')))
+		else if ((new->type != LIMITER && new->type != Q_LIMITER) && ((quote == CLOSED && **str == '$') || (quote == '\"' && **str == '$')))
 		{
 			if (ft_isalpha(*(*str + 1)) || *(*str + 1) == '_')
 			{
@@ -93,7 +93,7 @@ void	get_filename(char **str, t_fdata *new, t_token *token)
 	// printf("file: %s, \n", new->filename);
 	// printf("*str: %s\n", *str);
 	append_file(&token->files, new);
-	// if (new->type == DELIMITER || new->type == Q_DELIMITER || new->type == APPEND)
+	// if (new->type == LIMITER || new->type == Q_LIMITER || new->type == APPEND)
 	// 	*str += 1; // printf("files addr: %p, next: \n", token->files);
 }
 
@@ -111,7 +111,7 @@ void	check_redir(char **str, t_token *token)
 	// redirection flag check => << 와 >> 는 인덱스 2개씩 늘려줌
 	if (**str == '<' && *(*str + 1) == '<')
 	{
-		newfile->type = DELIMITER;
+		newfile->type = LIMITER;
 		*str += 1;
 	}
 	else if (**str == '>' && *(*str + 1) == '>')
