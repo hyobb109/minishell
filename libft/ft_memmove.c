@@ -6,7 +6,7 @@
 /*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/09 16:52:08 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/04/27 20:37:42 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/05/04 16:39:02 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	*ft_memmove(void *dst, const void *src, size_t len)
 {
 	char	*dst1;
 	char	*src1;
-	size_t			i;
+	size_t	i;
 
 	if (dst == NULL && src == NULL)
 		return (dst);
