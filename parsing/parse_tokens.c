@@ -6,7 +6,7 @@
 /*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:15:26 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/04 14:48:04 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/05/04 15:36:09 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ char	**parse_command(char *str, t_token *token, int quote)
 {
 	//	어차피 끝까지 볼거임
 	int		len;
+	int		q_flag;
+	char	**cmds;
 	char	buffer[ARG_MAX];
 
 	// printf("**str: %s\n", str);
@@ -55,12 +57,14 @@ char	**parse_command(char *str, t_token *token, int quote)
 	while (is_blank(*str))
 		str++;
 	quote = CLOSED;
+	q_flag = FALSE;
 	len = 0;
 	while (*str)
 	{
 		if (quote == CLOSED && (*str == '\'' || *str == '\"'))
 		{
 			quote = *str;
+			q_flag = TRUE;
 		}
 		else if (quote && *str == quote)
 		{
@@ -68,8 +72,7 @@ char	**parse_command(char *str, t_token *token, int quote)
 		}
 		else if (quote == CLOSED && (*str == '<' || *str == '>'))
 		{
-			// 리다이렉션 있으면 파일리스트로 분리
-			// str 주소 넘겨줌
+			// 리다이렉션 있으면 파일리스트로 분리, str 주소 넘겨줌
 			check_redir(&str, token);
 			// printf("str:%s, buf : %s, buf_len: %d\n", str, buffer, len);
 		}
@@ -80,8 +83,13 @@ char	**parse_command(char *str, t_token *token, int quote)
 			{
 				len += search_env(&str, &buffer[len], token->envp, quote); // $ 위치부터 보내주기
 			}
+			// TODO  $? => exit status 로 치환
+			// else if (*(str + 1) == '?')
+			// {
+			// }
 			else
 			{
+				// 변수명 조건 벗어나면 $ 뒤 한글자 무시
 				str++;
 			}
 			if (quote)
@@ -102,10 +110,11 @@ char	**parse_command(char *str, t_token *token, int quote)
 	buffer[len] = '\0';
 	// printf("============\n");
 	// printf("environ expansion result : %s\n", buffer);
-	// 버퍼에 환경변수 모두 치환된 결과 담김.
-	// 메모리 새로 할당하여 리턴.
-	return (ft_split(buffer, BLANK));
-	// printf("res : %s\n", res);
+	// 버퍼에 환경변수 모두 치환된 결과 담김, 공백으로 스플릿해서 리턴.
+	cmds = ft_split(buffer, BLANK);
+	if (q_flag == FALSE && cmds[0][0] == '\0')
+		free_strs(cmds);
+	return (cmds);
 }
 
 // cmd 와 arg로 분리
@@ -144,5 +153,5 @@ void	make_cmdlst(char *str, t_deque *cmd_deque, t_edeque *envp)
 	}
 	//print_filelst(cmd_deque);
 	free_strs(strs);
-	print_deque(cmd_deque);
+	// print_deque(cmd_deque);
 }
