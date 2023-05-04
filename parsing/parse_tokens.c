@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_tokens.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:15:26 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/04 15:36:09 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/05/04 15:41:38 by hyunwoju         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,10 @@ char	**parse_command(char *str, t_token *token, int quote)
 	// 버퍼에 환경변수 모두 치환된 결과 담김, 공백으로 스플릿해서 리턴.
 	cmds = ft_split(buffer, BLANK);
 	if (q_flag == FALSE && cmds[0][0] == '\0')
-		free_strs(cmds);
+	{
+		//free_strs(cmds);
+		cmds = NULL;
+	}
 	return (cmds);
 }
 
@@ -125,7 +128,7 @@ static void	init_token(char *str, t_token *token, t_edeque *envp)
 	token->func = GENERAL;
 	token->files = NULL;
 	token->command = parse_command(str, token, CLOSED);
-	if (is_builtin(token->command[0]))
+	if (token->command && is_builtin(token->command[0]))
 		token->func = BUILTIN;
 	token->status = 0;
 	token->prev = NULL;

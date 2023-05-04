@@ -42,13 +42,7 @@ void	child_process(t_token *line, int count, int total, int (*fd)[2])
 	else
 	{
 		env = make_envstrs(line);
-		if (line->command[0][0] != '\0')
-		{
-			ft_dup2(STDERR_FILENO, STDOUT_FILENO);
-			printf("minishell: %s: command not found\n", line->command[0]);
-			exit (127);
-		}
-		else
+		if (line->command != NULL)
 			execute_line(line, env);
 	}
 	exit (0);
