@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 13:38:07 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/03 15:36:21 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/05/04 16:51:08 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,15 +108,17 @@ void	append_export(t_token *token)
 		target_idx = ft_strchr_idx(token->command[idx], '=');
 		if (!target_idx)
 		{
+			ft_dup2(STDERR_FILENO, STDOUT_FILENO);
 			printf("export: '%s': not a valid identifier\n", token->command[idx]); //TODO - 에러넘버 찾기
 			token->status = 1;
 		}
 		else
 		{
 			key = ft_substr(token->command[idx], 0, target_idx);
-			if (!ft_isalpha(key[0]) && key[0] != '_')//TODO - 유효한 키인지 확인 #, &, *, (, ), | 는 에러 / 숫자만 있어도 에러
+			if ((!ft_isalpha(key[0]) && key[0] != '_') || ft_strchr_idx(key, ' ') > 0)//TODO - 유효한 키인지 확인 #, &, *, (, ), | 는 에러 / 숫자만 있어도 에러
 			{
 				free(key);
+				ft_dup2(STDERR_FILENO, STDOUT_FILENO);
 				printf("export: '%s': not a valid identifier\n", key); //TODO - 에러넘버 찾기
 				token->status = 1;
 				idx++;

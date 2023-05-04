@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 16:35:21 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/01 21:16:46 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/05/04 16:41:30 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char	*ft_strjoin_three(char *s1, char *s2, char *s3)
 	idx1 = 0;
 	idx2 = 0;
 	if (!s1 || !s2 || !s3)
-		ft_error(); // TODO - return?
+		ft_error();
 	str_len = 0;
 	str_len += ft_strlen(s1);
 	str_len += ft_strlen(s2);

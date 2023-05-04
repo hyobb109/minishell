@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 16:28:59 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/03 19:25:19 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/05/04 16:52:28 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ char	*init_destpath(t_token *token, char *cwd_name)
 	(void) cwd_name;
 	target_idx = -1;
 	home_dir = ft_getenv(token->envp, "HOME");
-	// printf("home_dir : %s\n", home_dir);
 	result = ft_strdup("");
 	result2 = NULL;
 	if (exist_args(token))
@@ -53,16 +52,6 @@ char	*init_destpath(t_token *token, char *cwd_name)
 			idx++;
 		}
 		return (result);
-		//token->command[1] = ~/minishell -> /Users/hyunwoju/minishell/exec/a/b/c
-		//char **tmp = ft_split(token->command[1], '/');
-		// ~ -> /Users/hyunwoju if(tmp[0] == '~') -> home으로 치환 / 인덱스가 0이 아닐땐 치환X
-		//minishell -> mini
-		// if (!ft_strcmp(token->command[1], "~"))
-		// {
-		// 	result2 = ft_strjoin(result, home_dir);
-		// 	free(result);
-		// 	return (result2);
-		// }
 	}
 	else
 		return (ft_strdup(home_dir));
@@ -104,9 +93,9 @@ int	exec_cd(t_token *token)
 
 	getcwd(cwd_name, sizeof(cwd_name));
 	dest = init_destpath(token, cwd_name);
-	printf("dest : %s\n", dest);
 	if (chdir(dest) == -1)
 	{
+		ft_dup2(STDERR_FILENO, STDOUT_FILENO);
 		printf("minishell: %s: %s: %s\n", token->command[0], \
 			token->command[1], strerror(errno));
 		free(dest);

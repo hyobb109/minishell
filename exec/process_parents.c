@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_parents.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 16:33:30 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/04 13:23:32 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/05/04 16:34:16 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,21 +21,18 @@ void	only_builtins(t_deque *cmd_deque,  int (*fd)[2])
 	result = 0;
 	stdin_fd = ft_dup(STDIN_FILENO);
 	stdout_fd = ft_dup(STDOUT_FILENO);
+	manage_file(cmd_deque->head);
+	manage_io(cmd_deque->head, 0, 1, fd);
 	result = exec_builtins(cmd_deque->head);
-	if (result != -1)
+	if (cmd_deque->head->infile_fd)
 	{
-		manage_file(cmd_deque->head);
-		manage_io(cmd_deque->head, 0, 1, fd);
-		if (cmd_deque->head->infile_fd)
-		{
-			ft_dup2(stdin_fd, STDIN_FILENO);
-			ft_close(stdin_fd);
-		}
-		if (cmd_deque->head->outfile_fd)
-		{
-			ft_dup2(stdout_fd, STDOUT_FILENO);
-			ft_close(stdout_fd);
-		}
+		ft_dup2(stdin_fd, STDIN_FILENO);
+		ft_close(stdin_fd);
+	}
+	if (cmd_deque->head->outfile_fd)
+	{
+		ft_dup2(stdout_fd, STDOUT_FILENO);
+		ft_close(stdout_fd);
 	}
 }
 

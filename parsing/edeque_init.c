@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 16:44:41 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/05/02 22:28:05 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/05/04 16:18:55 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,11 @@ void	make_envlst(t_edeque *envp, char **env)
 {
 	int		i;
 	t_env	*env_node;
-	//t_env	*oldpwd;
+	t_env	*oldpwd;
 	char	**tmp;
 
 	i = 0;
+	oldpwd = NULL;
 	init_edeque(envp);
 	while (env[i])
 	{

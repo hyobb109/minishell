@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 20:42:23 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/03 14:45:26 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/05/04 16:38:14 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,15 @@ int	init_validkeyflag(t_token *token, int idx, char *tmp, int *flag)
 	else
 	{
 		if (*flag == 1)
+		{
+			ft_dup2(STDERR_FILENO, STDOUT_FILENO);
 			printf("usage: pwd No need options and args\n");
+		}
 		else if (*flag == 3)
+		{
+			ft_dup2(STDERR_FILENO, STDOUT_FILENO);
 			printf("usage: logname\n");
+		}
 		*flag = 5;
 	}
 	return (*flag);
@@ -86,6 +92,7 @@ void	print_invalidargserror(t_token *token)
 		idx++;
 		print_idx++;
 	}
+	ft_dup2(STDERR_FILENO, STDOUT_FILENO);
 	printf("%s: %s: %s\n", token->command[print_idx - 1], \
 		token->command[print_idx], strerror(ENOENT));
 	token->status = 127;

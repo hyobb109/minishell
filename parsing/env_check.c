@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_check.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 05:41:25 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/05/04 13:53:08 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/05/04 15:17:23 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	env_trans(char *str, t_edeque *envp, char *buf)
 		if (is_envkey(str, tmp->key, &key_len))
 		{
 			ft_memcpy(buf,tmp->val,ft_strlen(tmp->val));
-			return (key_len);          
+			return (key_len);
 		}
 		//못찾으면 다음 환경변수 검사
 		tmp = tmp->next;
