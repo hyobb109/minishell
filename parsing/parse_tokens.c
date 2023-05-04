@@ -6,7 +6,7 @@
 /*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:15:26 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/04 16:04:12 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/05/04 18:30:02 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,10 @@ char	**parse_command(char *str, t_token *token, int quote)
 		{
 			quote = *str;
 			q_flag = TRUE;
+			if (*(str + 1) == quote)
+			{
+				buffer[len++] = EMPTY;
+			}
 		}
 		else if (quote && *str == quote)
 		{
@@ -83,7 +87,7 @@ char	**parse_command(char *str, t_token *token, int quote)
 			{
 				len += search_env(&str, &buffer[len], token->envp, quote); // $ 위치부터 보내주기
 			}
-			// TODO  $? => exit status 로 치환
+			// TODO  $? => g_exit_status itoa로 변환 뒤로 치환
 			// else if (*(str + 1) == '?')
 			// {
 			// }
@@ -109,15 +113,14 @@ char	**parse_command(char *str, t_token *token, int quote)
 	}
 	buffer[len] = '\0';
 	// printf("============\n");
-	// printf("environ expansion result : %s\n", buffer);
+	printf("environ expansion result : %s\n", buffer);
 	// 버퍼에 환경변수 모두 치환된 결과 담김, 공백으로 스플릿해서 리턴.
-	cmds = ft_split(buffer, BLANK);
-	if (q_flag == FALSE && cmds[0][0] == '\0')
-	{
-		free_strs(cmds);
-		cmds = NULL;
-	}
-	return (cmds);
+	// if (q_flag == FALSE && cmds[0][0] == '\0')
+	// {
+	// 	free_strs(cmds);
+	// 	cmds = NULL;
+	// }
+	return (ft_split(buffer, BLANK));
 }
 
 // cmd 와 arg로 분리
@@ -156,5 +159,5 @@ void	make_cmdlst(char *str, t_deque *cmd_deque, t_edeque *envp)
 	}
 	//print_filelst(cmd_deque);
 	free_strs(strs);
-	// print_deque(cmd_deque);
+	print_deque(cmd_deque);
 }

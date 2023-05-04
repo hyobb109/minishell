@@ -32,7 +32,7 @@
 # define BUFFER_SIZE 1024
 
 typedef enum e_flag {
-	ENVIRON = -2,
+	EMPTY = -2,
 	BLANK,
 	CLOSED,
 	FREE //del
