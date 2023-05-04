@@ -6,7 +6,7 @@
 /*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 14:23:22 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/26 14:56:29 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/05/04 17:37:51 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,12 +92,4 @@ t_token	*pop_back(t_deque *deque)
 		return (tmp);
 	}
 	return (0);
-}
-
-int	deque_is_empty(t_deque *pdeque)
-{
-	if (pdeque->head == NULL)
-		return TRUE;
-	else
-		return FALSE;
 }
