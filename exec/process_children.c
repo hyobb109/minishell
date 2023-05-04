@@ -96,8 +96,8 @@ void	execute_line(t_token *line, char **env)
 		free(current_path);
 		++i;
 	}
-	// cmd -> path로 
-    stat(line->command[0], &filestat);
+	// cmd -> path로
+    stat(current_path, &filestat);
     if(S_ISDIR(filestat.st_mode))
 	{
 		ft_dup2(STDERR_FILENO, STDOUT_FILENO);
