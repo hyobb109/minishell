@@ -81,7 +81,7 @@ void	execute_line(t_token *line, char **env)
 	if (!path_env)
 	{
 		ft_dup2(STDERR_FILENO, STDOUT_FILENO);
-		printf("%s: No such file or directory\n", line->command[0]);
+		printf("minishell: %s: No such file or directory\n", line->command[0]);
 		exit (127);
 	}
 	path = ft_split(path_env, ':');
@@ -98,7 +98,7 @@ void	execute_line(t_token *line, char **env)
 	}
 	// cmd -> path로
     stat(current_path, &filestat);
-    if(S_ISDIR(filestat.st_mode))
+    if(access(current_path, X_OK) && S_ISDIR(filestat.st_mode))
 	{
 		ft_dup2(STDERR_FILENO, STDOUT_FILENO);
 		printf("minishell: %s: is a directory\n", line->command[0]);
