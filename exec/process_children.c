@@ -43,8 +43,15 @@ void	child_process(t_token *line, int count, int total, int (*fd)[2])
 	{
 		env = make_envstrs(line);
 		if (line->command[0][0] != '\0')
+		{
+			ft_dup2(STDERR_FILENO, STDOUT_FILENO);
+			printf("minishell: %s: command not found\n", line->command[0]);
+			exit (127);
+		}
+		else
 			execute_line(line, env);
 	}
+	exit (0);
 }
 
 char	**make_envstrs(t_token *token)
@@ -97,24 +104,21 @@ void	execute_line(t_token *line, char **env)
 	}
 	// cmd -> path로 
     stat(line->command[0], &filestat);
-	//printf("path %s\n", current_path);
     if(S_ISDIR(filestat.st_mode))
 	{
 		ft_dup2(STDERR_FILENO, STDOUT_FILENO);
-		printf("%s: is a directory\n", line->command[0]);
+		printf("minishell: %s: is a directory\n", line->command[0]);
 		exit(126);
     }
 	if (access(current_path, X_OK) && access(current_path, F_OK) == 0)
 	{
 		ft_dup2(STDERR_FILENO, STDOUT_FILENO);
-		printf("%s: Permission denied\n", line->command[0]);
+		printf("minishell: %s: Permission denied\n", line->command[0]);
 		exit(126);
 	}
-	if (execve(current_path, line->command, env) == - 1)
-	{
-		ft_dup2(STDERR_FILENO, STDOUT_FILENO);
-		printf("%s: command not found\n", line->command[0]);
-	}
+	execve(current_path, line->command, env);
+	ft_dup2(STDERR_FILENO, STDOUT_FILENO);
+	printf("minishell: %s: command not found\n", line->command[0]);
 	exit (127);
 }
 

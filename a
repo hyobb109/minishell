@@ -1,0 +1,12 @@
+Makefile
+a
+backup
+builtins
+cat
+exec
+ft_main.c
+ft_main.o
+libft
+minishell
+minishell.h
+parsing

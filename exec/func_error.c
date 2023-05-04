@@ -6,13 +6,13 @@
 /*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 22:16:57 by hyunwoju          #+#    #+#             */
-/*   Updated: 2023/05/03 22:28:18 by hyunwoju         ###   ########.fr       */
+/*   Updated: 2023/05/04 15:14:47 by hyunwoju         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-pid_t	ft_fork()
+pid_t	ft_fork(void)
 {
 	pid_t	res;
 
