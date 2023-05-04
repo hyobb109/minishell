@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/16 19:57:20 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/05/03 20:54:55 by hyunwoju         ###   ########.fr       */
+/*   Updated: 2023/05/04 14:46:02 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,29 +26,29 @@ void	exec_exit(t_token *token)
 {
 	//TODO - 프로그램 종료시 반환값 전달 가능한지 확인 후 리턴값 없애기
 	//TODO - 프로그램 종료 실패 시 예외처리 추가?
-	int cnt = 0;
+	int cnt;
+	int	num;
+	int	str_flag;
 
+	cnt = 0;
 	while (token->command[cnt])
-	{
 		cnt++;
-	}
-	
 	printf("exit\n");
-	if (cnt > 2)
+	// 인자가 여러개여도 첫번째 인자가 숫자가 아니면 exit 함
+	str_flag = FALSE;
+	num = ft_atoi(token->command[1], &str_flag);
+	if (num < 0)
 	{
+		token->status = 256 + num % 256;
+	}
+	else if (num >= 0)
+		token->status = num % 256;
+	if (str_flag == FALSE && cnt > 2)
+	{
+		// 첫번째 인자가 str이 아니고 인자 2개 이상인 경우 에러 문구 출력하고 exit 안 함
 		printf("minishell: %s: too many arguments\n", token->command[0]);
 		token->status = 1;
 		return ;
-	}
-	else if (cnt == 2)
-	{
-		int num = ft_atoi(token->command[1]);
-		if (num < 0)
-		{
-			token->status = 256 + num % 256;
-		}
-		else
-			token->status = num % 256;
 	}
 	printf("status : %d\n", token->status);
 	exit(0);
