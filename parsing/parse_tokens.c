@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_tokens.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:15:26 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/04 15:41:38 by hyunwoju         ###   ########.fr       */
+/*   Updated: 2023/05/04 16:04:12 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ char	**parse_command(char *str, t_token *token, int quote)
 	cmds = ft_split(buffer, BLANK);
 	if (q_flag == FALSE && cmds[0][0] == '\0')
 	{
-		//free_strs(cmds);
+		free_strs(cmds);
 		cmds = NULL;
 	}
 	return (cmds);
