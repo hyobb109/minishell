@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_check.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 05:41:25 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/05/03 20:21:56 by hyunwoju         ###   ########.fr       */
+/*   Updated: 2023/05/04 13:53:08 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,14 @@ int	is_envkey(const char *s1, const char *s2, int *key_len)
 	key = (char *)s2;
 	i = 0;
 
-	//환경변수 끝나는 조건 - 숫자나 알파벳이 아닌 것이 나올 때
-	while (ft_isalnum(str[i]) || key[i])
+	// printf("str: %s, key: %s\n", s1, s2);
+	//환경변수 끝나는 조건 - 숫자나 알파벳이나 '_'가 아닌 것이 나올 때
+	while ((str[i] == '_' || ft_isalnum(str[i])) || key[i])
 	{
 		// 환경변수명과 키가 일치하지 않을 때, 그 잘못된 환경변수명만큼 길이만 늘려줌. ex) $USERa 면 5글자
 		if (str[i] != key[i])
 		{
-			while (ft_isalnum(str[i]))
+			while (str[i] == '_' || ft_isalnum(str[i]))
 				i++;
 				// printf("str: %s str[%zu]: %c\n", str, i, str[i]);
 			*key_len = i;
