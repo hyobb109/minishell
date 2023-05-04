@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_main.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seulee2 <seulee2@42seoul.student.kr>       +#+  +:+       +#+        */
+/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 16:55:06 by hyunwoju          #+#    #+#             */
-/*   Updated: 2023/05/03 18:19:14 by seulee2          ###   ########.fr       */
+/*   Updated: 2023/05/04 19:19:06 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ int	main(int ac, char **av, char **env)
 		if (syntax_error(str) == FALSE)
 		{
 			init_deque(&cmd_deque);
-			// print_edeque(&envp);
 			make_cmdlst(str, &cmd_deque, &envp);
 			parents_process(&cmd_deque);
 			free_deque(&cmd_deque);
@@ -49,6 +48,6 @@ int	main(int ac, char **av, char **env)
 		
 	}
 	free_edeque(&envp);
-	// rl_clear_history(); // free readline history list
+	rl_clear_history(); // free readline history list
 	return (0);
 }

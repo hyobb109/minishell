@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/22 15:55:25 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/01 21:56:57 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/05/04 20:42:20 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,23 +86,17 @@ int	check_option(char **arguments)
 	return (idx1);
 }
 
-void	print_args(t_token *token, int target_idx)
-{
-	char	*tmp;
-
-	tmp = join_all(token, target_idx);
-	if (target_idx == 1)
-		printf("%s\n", tmp);
-	else
-		printf("%s", tmp);
-	free(tmp);
-}
-
 int	exec_echo(t_token *token)
 {
-	int	target_idx;
+	int		target_idx;
+	char	*result;
 
 	target_idx = check_option(token->command);
-	print_args(token, target_idx);
+	result = join_all(token, target_idx);
+	if (target_idx == 1)
+		ft_putendl_fd(result, STDOUT_FILENO);
+	else
+		ft_putstr_fd(result, STDOUT_FILENO);
+	free(result);
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 16:28:59 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/04 16:52:28 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/05/04 18:58:49 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ char	*init_destpath(t_token *token, char *cwd_name)
 	home_dir = ft_getenv(token->envp, "HOME");
 	result = ft_strdup("");
 	result2 = NULL;
+	tmp = NULL;
 	if (exist_args(token))
 	{
 		tmp = ft_split(token->command[1], '/');
@@ -51,10 +52,14 @@ char	*init_destpath(t_token *token, char *cwd_name)
 			}
 			idx++;
 		}
+		free_strs(tmp);
 		return (result);
 	}
 	else
+	{
+		free_strs(tmp);
 		return (ft_strdup(home_dir));
+	}
 }
 
 void	change_env(t_token *token, char *dest)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   deque_init.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 14:32:42 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/04 14:49:31 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/05/04 19:40:50 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	print_deque(t_deque *deque)
 	// printf("token cnt: %d\n", deque->cnt);
 	while (tmp)
 	{
-		// printf("token[%d] %p env : %p, prev : %p, next : %p\n", i, tmp, tmp->env, tmp->prev, tmp->next);
+		printf("token[%d] %p prev : %p, next : %p\n", i, tmp, tmp->prev, tmp->next);
 		for (int n = 0; tmp->command[n]; n++)
 		{
 			printf("token[%d]'s command[%d] : %s\n", i, n, tmp->command[n]);

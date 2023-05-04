@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 16:33:30 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/04 16:34:16 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/05/04 20:27:31 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ void	parents_process(t_deque *cmd_deque)
 	int		(*fd)[2];
 	int		count;
 
+	fd = NULL;
 	current_token = cmd_deque->head;
 	count = cmd_deque->cnt - 1;
 	find_here_doc(cmd_deque);
@@ -50,12 +51,13 @@ void	parents_process(t_deque *cmd_deque)
 		check_file(current_token);
 		current_token = current_token->next;
 	}
-	fd = create_pipe(cmd_deque);
 	if (cmd_deque->cnt == 1 && cmd_deque->head->func == BUILTIN)
 	{
 		only_builtins(cmd_deque, fd); //TODO - builtins return(-1); 처리
+		unlink_here_doc(cmd_deque);
 		return ;
 	}
+	fd = create_pipe(cmd_deque);
 	create_child(cmd_deque, fd);
 	close_pipe(fd, count);
 	free(fd);//pipe(fds) free()

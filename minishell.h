@@ -180,7 +180,6 @@ void	print_invalidargserror(t_token *token);
 void	print_envlist(t_token *token);
 int		exec_env(t_token *token);
 int		exec_builtins(t_token *token);
-void	print_args(t_token *token, int target_idx);
 int		is_builtin(char *cmd);
 
 // pipe
@@ -224,4 +223,7 @@ void	exec_here_doc(t_token *cur_token, t_fdata *cur_file, char *here_doc_name);
 void	unlink_here_doc(t_deque *cmd_deque);
 char	*get_next_line(int fd);
 char	*check_env_var(char *line, t_edeque *envp);
+
+extern int g_exit_status;
+
 #endif

@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/16 19:57:20 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/05/04 16:50:35 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/05/04 20:21:58 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ int	exec_unset(t_token *token)
 		else
 		{
 			free_env = pop_select_env(token->envp, token->command[idx]);
-			// printf("free_env : %p, key : %s\n", free_env, token->command[idx]);
 			if (free_env)
 			{
 				free(free_env->key);
@@ -81,34 +80,36 @@ int	exec_unset(t_token *token)
 					free(free_env->val);
 				free(free_env);
 			}
-			// print_edeque(token->envp);
 		}
 		idx++;
 	}
 	return (1);
 }
 
-int	exec_builtins(t_token *token) //return값이 -1이면 실패
+int	exec_builtins(t_token *token)
 {
-	char *tmp;
+	int		result;
+	char	*tmp;
 
+	result = 0;
 	tmp = ft_strlowcase(ft_strdup(token->command[0]));
 	if (!ft_strcmp(tmp, "echo"))
-		return (exec_echo(token));
+		result = exec_echo(token);
 	else if (!ft_strcmp(tmp, "pwd"))
-		return (exec_pwd(token));
+		result = exec_pwd(token);
 	else if (!ft_strcmp(tmp, "env"))
-		return (exec_env(token));
+		result = exec_env(token);
 	else if (!ft_strcmp(token->command[0], "cd"))
-		return (exec_cd(token));
+		result = exec_cd(token);
 	else if (!ft_strcmp(token->command[0], "export"))
-		return (exec_export(token));
+		result = exec_export(token);
 	else if (!ft_strcmp(token->command[0], "unset"))
-		return (exec_unset(token));
+		result = exec_unset(token);
 	else if (!ft_strcmp(token->command[0], "exit"))
 	{
 		exec_exit(token);
-		return (1);
+		result = 1;
 	}
-	return (0);
+	free(tmp);
+	return (result);
 }

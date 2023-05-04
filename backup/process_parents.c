@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_parents.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 16:33:30 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/04 13:22:43 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/05/04 20:05:48 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ void	parents_process(t_deque *cmd_deque)
 		current_token = current_token->next;
 	}
 	fd = create_pipe(cmd_deque);
+	printf("cmd : %s\n", cmd_deque->head->command[0]);
 	if (cmd_deque->cnt == 1 && cmd_deque->head->func == BUILTIN)
 	{
 		only_builtins(cmd_deque, fd); //TODO - builtins return(-1); 처리
