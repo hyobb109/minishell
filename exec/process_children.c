@@ -76,7 +76,7 @@ void	execute_line(t_token *line, char **env)
 	char	*current_path;
 	char	*part_path;
 	int		i;
-	struct stat filestat;
+	//struct stat filestat;
 	path_env = ft_getenv(line->envp, "PATH"); // value
 	if (!path_env)
 	{
@@ -84,8 +84,35 @@ void	execute_line(t_token *line, char **env)
 		printf("minishell: %s: No such file or directory\n", line->command[0]);
 		exit (127);
 	}
+	printf("******line->command[0]******: %s\n", line->command[0]);
 	path = ft_split(path_env, ':');
-	execve(line->command[0], line->command, env);
+	//int result = ft_strchr_idx(line->command[0], '.');
+	//stat(line->command[0], &filestat);
+    //if(result >= 0 && S_ISDIR(filestat.st_mode))
+	//{
+	//	ft_dup2(STDERR_FILENO, STDOUT_FILENO, line->func);
+	//	printf("minishell: %s: is a directory\n", line->command[0]);
+	//	exit(126);
+    //}
+	//else if (result >= 0 && S_ISREG(filestat.st_mode))
+	//{
+	//	ft_dup2(STDERR_FILENO, STDOUT_FILENO, line->func);
+	//	printf("minishell: %s: Permission denied\n", line->command[0]);
+	//	exit(126);
+	//}
+		//printf("st_mode : %d\n", filestat.st_mode);
+		//if (result >= 0)
+		//{
+		//	if (chdir(line->command[0]) == -1)
+		//	{
+		//		ft_dup2(STDERR_FILENO, STDOUT_FILENO, line->func);
+		//		printf("minishell: %s: %s\n", line->command[0], strerror(errno));
+		//		exit(1);
+		//	}
+		//}
+		//ft_dup2(STDERR_FILENO, STDOUT_FILENO, line->func);
+		//printf("minishell: %s: No such file or directory\n", line->command[0]);
+		//exit(126);
 	i = 0;
 	while (path[i] != 0)
 	{
@@ -97,19 +124,15 @@ void	execute_line(t_token *line, char **env)
 		current_path = NULL;
 		++i;
 	}
-	// cmd -> path로
-    stat(current_path, &filestat);
-	//int res = access(current_path, F_OK);
-	//printf("%d\n", res);
-	// printf("%s\n", current_path);
-	// printf("%s\n", line->command[0]);
-	// printf("%s\n", line->command[1]);
-    if(S_ISDIR(filestat.st_mode))
-	{
-		ft_dup2(STDERR_FILENO, STDOUT_FILENO, line->func);
-		printf("minishell: %s: is a directory\n", line->command[0]);
-		exit(126);
-    }
+	printf("******current_path******: %s\n", current_path);
+	execve(line->command[0], line->command, env);
+    //stat(current_path, &filestat);
+    //if(S_ISDIR(filestat.st_mode))
+	//{
+	//	ft_dup2(STDERR_FILENO, STDOUT_FILENO, line->func);
+	//	printf("minishell: %s: is a directory\n", line->command[0]);
+	//	exit(126);
+    //}
 	if (access(current_path, X_OK) && access(current_path, F_OK) == 0)
 	{
 		ft_dup2(STDERR_FILENO, STDOUT_FILENO, line->func);

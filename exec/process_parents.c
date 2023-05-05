@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_parents.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 16:33:30 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/05 16:40:59 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/05/05 19:26:13 by hyunwoju         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -268,6 +268,7 @@ void	wait_child(int count, t_deque *cmd_deque)
 		find_child(cmd_deque, status, pid);
 		++idx;
 	}
+	g_exit_status = cmd_deque->tail->status;
 }
 
 void	find_child(t_deque *cmd_deque, int status, pid_t pid)
