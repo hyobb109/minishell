@@ -6,7 +6,7 @@
 /*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:16:54 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/01 16:30:28 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/05/05 20:09:07 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,15 @@ int	quote_error(char *str)
 	return (TRUE);
 }
 
+void	ft_memblank(char *str)
+{
+	while (*str)
+	{
+		*str = BLANK;
+		str++;
+	}
+}
+
 int	empty_error(char *str)
 {
 	char	flag;
@@ -48,6 +57,7 @@ int	empty_error(char *str)
 	// 파이프로 시작하는 건 heredoc 있어도 무조건 신택스에러
 	if (str[i] == '|')
 	{
+		g_exit_status = 258;
 		printf("minishell: syntax error\n");
 		return (TRUE);
 	}
@@ -69,11 +79,13 @@ int	empty_error(char *str)
 		}
 		else if (flag && (str[i] == '<' ||  str[i] == '>' || str[i] == '|'))
 		{
+			g_exit_status = 258;
 			printf("minishell: syntax error\n");
 			// 앞에 히어독이 있었으면 뒤에 끊어줌
 			if (heredoc == TRUE && !(*tmp == '<' && *(tmp + 1) == '<'))
 			{
-				*tmp = '\0';
+				ft_memblank(tmp);
+				// *tmp = '\0';
 				// printf("str: %s, flag: %c\n", str, flag);
 				return (FALSE);
 			}
@@ -102,10 +114,12 @@ int	empty_error(char *str)
 	// 문자열 끝났는데 플래그가 세워져있으면 에러
 	if (flag)
 	{
+		g_exit_status = 258;
 		printf("minishell: syntax error\n");
 		if (heredoc == TRUE)
 		{
-			*tmp = '\0';
+			ft_memblank(tmp);
+			// *tmp = '\0';
 			return (FALSE);
 		}
 		return (TRUE);
@@ -118,12 +132,18 @@ int	syntax_error(char *str)
 {
 	// 닫히지 않는 따옴표
 	if (quote_error(str))
+	{
+		g_exit_status = 258;
 		return (TRUE);
+	}
 	// TODO
 	// heredoc 있는 것 처리 다시 -> exit하지 않고 에러메시지만 띄움
 	// 비어있는 리다이렉션, 파이프  => 다시 해야함!!
 	if (empty_error(str))
+	{
+		g_exit_status = 258;
 		return (TRUE);
+	}
 	return (FALSE);
 }
 

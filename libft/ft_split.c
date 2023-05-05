@@ -6,7 +6,7 @@
 /*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 19:53:02 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/05/05 16:02:01 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/05/05 20:10:00 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,8 @@ static unsigned int	cntstr(char const *s, char c)
 	cnt = 0;
 	i = 0;
 	flag = 1;
-	if (s[0] == '\0')
-		return (1);
+	// if (s[0] == '\0')
+	// 	return (1);
 	while (s[i])
 	{
 		if (s[i] != c && flag)

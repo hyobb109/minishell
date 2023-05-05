@@ -6,7 +6,7 @@
 /*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:15:26 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/05 16:43:32 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/05/05 20:10:44 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,9 +110,17 @@ char	**parse_command(char *str, t_token *token, int quote)
 				len += search_env(&str, &buffer[len], token->envp, quote); // $ 위치부터 보내주기
 			}
 			// TODO  $? => g_exit_status itoa로 변환 뒤로 치환
-			// else if (*(str + 1) == '?')
-			// {
-			// }
+			else if (*(str + 1) == '?')
+			{
+				char *status = ft_itoa(g_exit_status);
+				// char *status = ft_itoa(127);
+				int num_len = ft_strlen(status);
+				ft_memcpy(&buffer[len], status, num_len);
+				len += num_len;
+				str++;
+				if (quote)
+					str++;
+			}
 			else
 			{
 				// 변수명 조건 벗어나면 $ 뒤 한글자 무시
@@ -136,10 +144,11 @@ char	**parse_command(char *str, t_token *token, int quote)
 		if (*str == '\0')
 			break ;
 		str++;
+		// printf("str: %s\n", str);
 	}
 	buffer[len] = '\0';
 	// printf("============\n");
-	// printf("environ expansion result : %s\n", buffer);
+	printf("environ expansion result : %s\n", buffer);
 	if (buffer[0])
 	{
 		cmds = ft_split(buffer, BLANK);
@@ -185,5 +194,5 @@ void	make_cmdlst(char *str, t_deque *cmd_deque, t_edeque *envp)
 	}
 	// print_filelst(cmd_deque);
 	free_strs(strs);
-	// print_deque(cmd_deque);
+	print_deque(cmd_deque);
 }
