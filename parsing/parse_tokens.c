@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_tokens.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:15:26 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/05 16:41:08 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/05/05 16:43:32 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,13 @@ void	check_empty_str(char **cmds)
 	i = 0;
 	while (cmds[i])
 	{
-		tmp = ft_strcpy(tmp, cmds[i]);
-		free(cmds[i]);
-		cmds[i] = tmp;
-		// printf("cmds[%d]: %s\n", i, cmds[i]);
+		if (ft_strchr(cmds[i], EMPTY))
+		{
+			tmp = ft_strcpy(tmp, cmds[i]);
+			free(cmds[i]);
+			cmds[i] = tmp;
+			// printf("cmds[%d]: %s\n", i, cmds[i]);
+		}
 		i++;
 	}
 }
@@ -136,7 +139,7 @@ char	**parse_command(char *str, t_token *token, int quote)
 	}
 	buffer[len] = '\0';
 	// printf("============\n");
-	printf("environ expansion result : %s\n", buffer);
+	// printf("environ expansion result : %s\n", buffer);
 	if (buffer[0])
 	{
 		cmds = ft_split(buffer, BLANK);
