@@ -6,7 +6,7 @@
 /*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 15:08:06 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/05/05 16:43:51 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/05/05 17:21:52 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ void	get_filename(char **str, t_fdata *new, t_token *token)
 	int		quote;
 	int		i;
 	int		len;
+	char	*tmp;
 
 	i = 0;
 	while (is_blank(**str))
@@ -89,13 +90,15 @@ void	get_filename(char **str, t_fdata *new, t_token *token)
 		// printf("*str: %s, file_buf: %s\n", *str, new->filename);
 	}
 	new->filename[len] = '\0';
-
-	// if (ft_strchr(new->filename, BLANK))
-	// {
-	// 	new->type = BLANK;
-	// 	new->filename = 
-	// }
+	// BLANK 다시 공백으로 치환
 	// printf("file: %s, \n", new->filename);
+	tmp = ft_strchr(new->filename, BLANK);
+	while (tmp)
+	{
+		new->type = BLANK;
+		*tmp = ' ';
+		tmp = ft_strchr(tmp, BLANK);
+	}
 	// printf("*str: %s\n", *str);
 	append_file(&token->files, new);
 	// if (new->type == LIMITER || new->type == Q_LIMITER || new->type == APPEND)

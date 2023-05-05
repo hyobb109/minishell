@@ -6,7 +6,7 @@
 /*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 05:41:25 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/05/05 14:45:31 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/05/05 16:50:00 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static void	check_blank(char *buf)
 }
 // $USER hyobicho
 // 달러 뒷글자부터 보면서 정상적인 환경변수인지 찾고, 찾으면 memcpy로 붙여 넣어주고 str의 길이를 리턴.
-int	env_trans(char *str, t_edeque *envp, char *buf)
+int	env_trans(char *str, t_edeque *envp, char *buf, int quote)
 {
 	t_env	*tmp;
 	int		key_len;
@@ -76,8 +76,9 @@ int	env_trans(char *str, t_edeque *envp, char *buf)
 		if (is_envkey(str, tmp->key, &key_len))
 		{
 			ft_memcpy(buf, tmp->val, ft_strlen(tmp->val));
-			// value 에서 공백은 BLANK로 바꿔줌
-			check_blank(buf);
+			// 따옴표 안에 없는 환경변수는 value 에서  공백은 BLANK로 바꿔줌
+			if (!quote)
+				check_blank(buf);
 			return (key_len);
 		}
 		//못찾으면 다음 환경변수 검사
@@ -104,7 +105,7 @@ int	search_env(char **str, char *buf, t_edeque *envp, int quote)
 	if (!quote)
 	{
 		// 따옴표가 없는 경우는 $USER 면 U 의 주소부터 보내서 검사함.
-		*str += env_trans(*str + 1, envp, &buf[0]);
+		*str += env_trans(*str + 1, envp, &buf[0], quote);
 		// printf("buf copied: %s\n", buf);
 	}
 	else
@@ -117,7 +118,7 @@ int	search_env(char **str, char *buf, t_edeque *envp, int quote)
 			if (**str == '$')
 			{
 				// printf("*str: %s\n", *str + 1);
-				key_len = env_trans(*str + 1, envp, &buf[i]);
+				key_len = env_trans(*str + 1, envp, &buf[i], quote);
 				// printf("ket_len: %d\n", key_len);
 				i = ft_strlen(buf);
 				*str += key_len; // $도 넘겨줘야하니까 key_len + 1 만큼 주소 넘겨줌
