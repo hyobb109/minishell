@@ -6,7 +6,7 @@
 /*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 15:08:06 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/05/05 14:48:02 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/05/05 16:43:51 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,11 @@ void	get_filename(char **str, t_fdata *new, t_token *token)
 	}
 	new->filename[len] = '\0';
 
+	// if (ft_strchr(new->filename, BLANK))
+	// {
+	// 	new->type = BLANK;
+	// 	new->filename = 
+	// }
 	// printf("file: %s, \n", new->filename);
 	// printf("*str: %s\n", *str);
 	append_file(&token->files, new);
