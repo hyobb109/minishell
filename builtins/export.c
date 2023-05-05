@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 13:38:07 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/04 16:51:08 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/05/05 16:39:42 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ int	appending(t_token *token, char *key, char *value)
 	env_node = NULL;
 	free_str = NULL;
 	env_node = find_value(token->envp, key);
-	// printf("appending value: %s\n", value);
 	if (env_node)
 	{
 		if (!env_node->val)
@@ -57,7 +56,6 @@ int	appending(t_token *token, char *key, char *value)
 			}
 			else
 			{
-				// printf("check\n");
 				env_node->val = NULL;
 				return (0);
 			}
@@ -76,7 +74,6 @@ int	appending(t_token *token, char *key, char *value)
 	}
 	else
 	{
-		// printf("!appending value: %s\n", value);
 		env_node = malloc(sizeof(t_env));
 		if (!env_node)
 			ft_error();
@@ -108,7 +105,7 @@ void	append_export(t_token *token)
 		target_idx = ft_strchr_idx(token->command[idx], '=');
 		if (!target_idx)
 		{
-			ft_dup2(STDERR_FILENO, STDOUT_FILENO);
+			ft_dup2(STDERR_FILENO, STDOUT_FILENO, token->func);
 			printf("export: '%s': not a valid identifier\n", token->command[idx]); //TODO - 에러넘버 찾기
 			token->status = 1;
 		}
@@ -118,7 +115,7 @@ void	append_export(t_token *token)
 			if ((!ft_isalpha(key[0]) && key[0] != '_') || ft_strchr_idx(key, ' ') > 0)//TODO - 유효한 키인지 확인 #, &, *, (, ), | 는 에러 / 숫자만 있어도 에러
 			{
 				free(key);
-				ft_dup2(STDERR_FILENO, STDOUT_FILENO);
+				ft_dup2(STDERR_FILENO, STDOUT_FILENO, token->func);
 				printf("export: '%s': not a valid identifier\n", key); //TODO - 에러넘버 찾기
 				token->status = 1;
 				idx++;
@@ -129,7 +126,6 @@ void	append_export(t_token *token)
 					target_idx + 1, ft_strlen(token->command[idx]));
 			else // = 이 없음, key만 있음
 				value = NULL;
-			// printf("value : %s\n", value);
 			if (appending(token, key, value) == -1)
 			{
 				free(key);

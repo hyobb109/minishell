@@ -162,7 +162,7 @@ int		search_env(char **str, char *buf, t_edeque *envp, int quote);
 int		exist_args(t_token *token);
 t_env	*find_value(t_edeque *envp, char *key);
 char	*ft_getenv(t_edeque *envp, char *key);
-void	change_env(t_token *token, char *dest);
+void	change_env(t_token *token, char *cwd_name);
 int		exec_pwd(t_token *token);
 void	exec_exit(t_token *token);
 int		chdir_home(void);
@@ -187,8 +187,8 @@ int		is_builtin(char *cmd);
 // pipe
 void	parents_process(t_deque *cmd_deque);
 void	check_file(t_token *line);
-int		check_infile(char *filename);
-int		check_outfile(char *filename);
+int		check_infile(char *filename, t_token *token);
+int		check_outfile(char *filename, t_token *token);
 void	wait_child(int count, t_deque *cmd_deque);
 void	find_child(t_deque *cmd_deque, int status, pid_t pid);
 void	close_pipe(int (*fd)[2], int count);
@@ -198,8 +198,8 @@ void	child_process(t_token *line, int count, int total, int (*fd)[2]);
 void	manage_pipe(int count, int total, int (*fd)[2]);
 void	manage_file(t_token *line);
 
-void	open_infile(char *filename, int *infile_fd);
-void	open_outfile(char *filename, int *outfile_fd, int append_flag);
+int		open_infile(char *filename, int *infile_fd, int func);
+int		open_outfile(char *filename, int *outfile_fd, int append_flag, int func);
 
 void	assign_argument(char **str, char *av);
 void	get_size(char **arguments, char *av);
@@ -213,9 +213,8 @@ void	execute_line(t_token *line, char **env);
 void	manage_io(t_token *line, int count, int total, int (*fd)[2]);
 
 pid_t	ft_fork(void);
-int		ft_dup(int fd);
-int		ft_dup2(int old_fd, int new_fd);
-int		ft_close(int fd);
+int		ft_dup2(int old_fd, int new_fd, int func);
+int		ft_close(int fd, int func);
 int		ft_pipe(int fd[2]);
 
 //here_doc

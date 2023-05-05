@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   func_error.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 22:16:57 by hyunwoju          #+#    #+#             */
-/*   Updated: 2023/05/04 15:14:47 by hyunwoju         ###   ########.fr       */
+/*   Updated: 2023/05/05 16:07:31 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,32 +22,22 @@ pid_t	ft_fork(void)
 	return (res);
 }
 
-int	ft_dup(int fd)
-{
-	int	res;
-
-	res = dup(fd);
-	if (res == -1)
-		ft_error();
-	return (res);
-}
-
-int	ft_dup2(int old_fd, int new_fd)
+int	ft_dup2(int old_fd, int new_fd, int func)
 {
 	int	res;
 
 	res = dup2(old_fd, new_fd);
-	if (res == -1)
+	if (res == -1 && func != BUILTIN)
 		ft_error();
 	return (res);
 }
 
-int	ft_close(int fd)
+int	ft_close(int fd, int func)
 {
 	int	res;
 
 	res = close(fd);
-	if (res == -1)
+	if (res == -1 && func != BUILTIN)
 		ft_error();
 	return (res);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_parents.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 16:33:30 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/05 16:16:47 by hyunwoju         ###   ########.fr       */
+/*   Updated: 2023/05/05 16:40:59 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,21 +19,24 @@ void	only_builtins(t_deque *cmd_deque,  int (*fd)[2])
 	int	result;
 
 	result = 0;
-	stdin_fd = ft_dup(STDIN_FILENO);
-	stdout_fd = ft_dup(STDOUT_FILENO);
-	manage_file(cmd_deque->head);
-	manage_io(cmd_deque->head, 0, 1, fd);
-	result = exec_builtins(cmd_deque->head);
-	if (cmd_deque->head->infile_fd)
+	stdin_fd = dup(STDIN_FILENO);
+	stdout_fd = dup(STDOUT_FILENO);
+	if (stdin_fd > -1 || stdout_fd > -1)
 	{
-		ft_dup2(stdin_fd, STDIN_FILENO);
-		ft_close(stdin_fd);
-	}
-	if (cmd_deque->head->outfile_fd)
-	{
-		ft_dup2(stdout_fd, STDOUT_FILENO);
-		ft_close(stdout_fd);
-	}
+		manage_file(cmd_deque->head);
+		manage_io(cmd_deque->head, 0, 1, fd);
+		result = exec_builtins(cmd_deque->head);
+		if (cmd_deque->head->infile_fd)
+		{
+			ft_dup2(stdin_fd, STDIN_FILENO, cmd_deque->head->func);
+			ft_close(stdin_fd, cmd_deque->head->func);
+		}
+		if (cmd_deque->head->outfile_fd)
+		{
+			ft_dup2(stdout_fd, STDOUT_FILENO, cmd_deque->head->func);
+			ft_close(stdout_fd, cmd_deque->head->func);
+		}
+	}	
 }
 
 void	parents_process(t_deque *cmd_deque)
@@ -54,6 +57,7 @@ void	parents_process(t_deque *cmd_deque)
 	if (cmd_deque->cnt == 1 && cmd_deque->head->func == BUILTIN)
 	{
 		only_builtins(cmd_deque, fd); //TODO - builtins return(-1); 처리
+		unlink_here_doc(cmd_deque);
 		return ;
 	}
 	create_child(cmd_deque, fd);
@@ -177,7 +181,7 @@ void	exec_here_doc(t_token *cur_token, t_fdata *cur_file, char *here_doc_name)
 		if (cur_file->type == LIMITER)
 			free(tmp);
 	}
-	ft_close(here_doc_fd);
+	ft_close(here_doc_fd, cur_token->func);
 	exit (0);
 }
 
@@ -215,37 +219,37 @@ void	check_file(t_token *line)
 	{
 		if (current_point->type == INFILE)
 		{
-			if (check_infile(current_point->filename))
+			if (check_infile(current_point->filename, line))
 				break ;
 		}
 		else if (current_point->type == OUTFILE)
 		{
-			if (check_outfile(current_point->filename))
+			if (check_outfile(current_point->filename, line))
 				break ;
 		}
 		current_point = current_point->next;
 	}
 }
 
-int	check_infile(char *filename)
+int	check_infile(char *filename, t_token *line)
 {
 	int	fd;
 
 	fd = open(filename, O_RDONLY);
 	if (fd == -1)
 		return (TRUE);
-	ft_close(fd);
+	ft_close(fd, line->func);
 	return (FALSE);
 }
 
-int	check_outfile(char *filename)
+int	check_outfile(char *filename, t_token *line)
 {
 	int	fd;
 
 	fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	if (fd == -1)
 		return (TRUE);
-	ft_close(fd);
+	ft_close(fd, line->func);
 	return (FALSE);
 }
 
@@ -289,8 +293,8 @@ void	close_pipe(int (*fd)[2], int count)
 	idx = 0;
 	while (idx < count)
 	{
-		ft_close(fd[idx][0]);
-		ft_close(fd[idx][1]);
+		ft_close(fd[idx][0], GENERAL);
+		ft_close(fd[idx][1], GENERAL);
 		++idx;
 	}
 }

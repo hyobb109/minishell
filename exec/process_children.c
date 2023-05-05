@@ -80,7 +80,7 @@ void	execute_line(t_token *line, char **env)
 	path_env = ft_getenv(line->envp, "PATH"); // value
 	if (!path_env)
 	{
-		ft_dup2(STDERR_FILENO, STDOUT_FILENO);
+		ft_dup2(STDERR_FILENO, STDOUT_FILENO, line->func);
 		printf("minishell: %s: No such file or directory\n", line->command[0]);
 		exit (127);
 	}
@@ -101,23 +101,23 @@ void	execute_line(t_token *line, char **env)
     stat(current_path, &filestat);
 	//int res = access(current_path, F_OK);
 	//printf("%d\n", res);
-	printf("%s\n", current_path);
-	printf("%s\n", line->command[0]);
-	printf("%s\n", line->command[1]);
+	// printf("%s\n", current_path);
+	// printf("%s\n", line->command[0]);
+	// printf("%s\n", line->command[1]);
     if(S_ISDIR(filestat.st_mode))
 	{
-		ft_dup2(STDERR_FILENO, STDOUT_FILENO);
+		ft_dup2(STDERR_FILENO, STDOUT_FILENO, line->func);
 		printf("minishell: %s: is a directory\n", line->command[0]);
 		exit(126);
     }
 	if (access(current_path, X_OK) && access(current_path, F_OK) == 0)
 	{
-		ft_dup2(STDERR_FILENO, STDOUT_FILENO);
+		ft_dup2(STDERR_FILENO, STDOUT_FILENO, line->func);
 		printf("minishell: %s: Permission denied\n", line->command[0]);
 		exit(126);
 	}
 	execve(current_path, line->command, env);
-	ft_dup2(STDERR_FILENO, STDOUT_FILENO);
+	ft_dup2(STDERR_FILENO, STDOUT_FILENO, line->func);
 	printf("minishell: %s: command not found\n", line->command[0]);
 	exit (127);
 }
@@ -126,23 +126,23 @@ void	manage_io(t_token *line, int count, int total, int (*fd)[2])
 {
 	if (line->infile_fd)
 	{
-		ft_dup2(line->infile_fd, STDIN_FILENO);
-		ft_close(line->infile_fd);
+		ft_dup2(line->infile_fd, STDIN_FILENO, line->func);
+		ft_close(line->infile_fd, line->func);
 	}
 	else if (count != 0)
 	{
-		ft_dup2(fd[count - 1][0], STDIN_FILENO);
-		ft_close(fd[count - 1][0]);
+		ft_dup2(fd[count - 1][0], STDIN_FILENO, line->func);
+		ft_close(fd[count - 1][0], line->func);
 	}
 	if (line->outfile_fd)
 	{
-		ft_dup2(line->outfile_fd, STDOUT_FILENO);
-		ft_close(line->outfile_fd);
+		ft_dup2(line->outfile_fd, STDOUT_FILENO, line->func);
+		ft_close(line->outfile_fd, line->func);
 	}
 	else if (count != total - 1)
 	{
-		ft_dup2(fd[count][1], STDOUT_FILENO);
-		ft_close(fd[count][1]);
+		ft_dup2(fd[count][1], STDOUT_FILENO, line->func);
+		ft_close(fd[count][1], line->func);
 	}
 }
 
@@ -161,13 +161,13 @@ void	manage_file(t_token *line)
 		append_flag = 0;
 		if (cur_file->type == INFILE || cur_file->type == LIMITER || cur_file->type == Q_LIMITER)
 		{
-			open_infile(cur_file->filename, &infile_fd);
+			open_infile(cur_file->filename, &infile_fd, line->func);
 		}
 		else if (cur_file->type == OUTFILE || cur_file->type == APPEND)
 		{
 			if (cur_file->type == APPEND)
 				append_flag = 1;
-			open_outfile(cur_file->filename, &outfile_fd, append_flag);
+			open_outfile(cur_file->filename, &outfile_fd, append_flag, line->func);
 		}
 		cur_file = cur_file->next;
 	}
@@ -175,7 +175,7 @@ void	manage_file(t_token *line)
 	line->outfile_fd = outfile_fd;
 }
 
-void	open_infile(char *filename, int *infile_fd)
+int	open_infile(char *filename, int *infile_fd, int func)
 {
 	*infile_fd = open(filename, O_RDONLY);
 	if (ft_strchr(filename, BLANK))
@@ -186,11 +186,15 @@ void	open_infile(char *filename, int *infile_fd)
 	if (*infile_fd == -1)
 	{
 		printf("%s: %s\n", filename, strerror(errno));
-		exit (1);
+		if (func != BUILTIN)
+			exit (1);
+		else
+			return (-1);
 	}
+	return (0);
 }
 
-void	open_outfile(char *filename, int *outfile_fd, int append_flag)
+int	open_outfile(char *filename, int *outfile_fd, int append_flag, int func)
 {
 	if (append_flag)
 		*outfile_fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0777);
@@ -204,8 +208,12 @@ void	open_outfile(char *filename, int *outfile_fd, int append_flag)
 	if (*outfile_fd == -1)
 	{
 		printf("%s: %s\n", filename, strerror(errno));
-		exit (1);
+		if (func != BUILTIN)
+			exit (1);
+		else
+			return (-1);
 	}
+	return (0);
 }
 
 void	manage_pipe(int count, int total, int (*fd)[2])
@@ -217,19 +225,19 @@ void	manage_pipe(int count, int total, int (*fd)[2])
 	{
 		if (!(count == idx) && !(count == idx + 1))
 		{
-			ft_close(fd[idx][0]);
-			ft_close(fd[idx][1]);
+			ft_close(fd[idx][0], GENERAL);
+			ft_close(fd[idx][1], GENERAL);
 		}
 		else
 		{
 			if (count == 0)
-				ft_close(fd[0][0]);
+				ft_close(fd[0][0], GENERAL);
 			else if (count == total - 1)
-				ft_close(fd[count - 1][1]);
+				ft_close(fd[count - 1][1], GENERAL);
 			else if (count == idx + 1)
-				ft_close(fd[idx][1]);
+				ft_close(fd[idx][1], GENERAL);
 			else if (count == idx)
-				ft_close(fd[idx][0]);
+				ft_close(fd[idx][0], GENERAL);
 		}
 		++idx;
 	}

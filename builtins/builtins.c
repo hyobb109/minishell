@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/16 19:57:20 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/05/04 20:21:58 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/05/05 16:37:54 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	exec_exit(t_token *token)
 		if (str_flag == FALSE && cnt > 2)
 		{
 			// 첫번째 인자가 str이 아니고 인자 2개 이상인 경우 에러 문구 출력하고 exit 안 함
-			ft_dup2(STDERR_FILENO, STDOUT_FILENO);
+			ft_dup2(STDERR_FILENO, STDOUT_FILENO, token->func);
 			printf("minishell: %s: too many arguments\n", token->command[0]);
 			token->status = 1;
 			return ;
@@ -66,7 +66,7 @@ int	exec_unset(t_token *token)
 	{
 		if (!ft_isalpha(token->command[idx][0]) && token->command[idx][0] != '_')
 		{
-			ft_dup2(STDERR_FILENO, STDOUT_FILENO);
+			ft_dup2(STDERR_FILENO, STDOUT_FILENO, token->func);
 			printf("minishell: %s: '%s': not a valid identifier\n", token->command[0], token->command[idx]); //TODO - 에러넘버 찾기
 			token->status = 1;
 		}
