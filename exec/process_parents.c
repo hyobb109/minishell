@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 16:33:30 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/05 17:06:00 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/05/05 19:13:49 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,7 +200,7 @@ char	*check_env_var(char *line, t_edeque *envp)
 	{
 		if (line[idx] == '$')
 		{
-			idx += env_trans(&line[idx + 1], envp, &buf[len]);
+			idx += env_trans(&line[idx + 1], envp, &buf[len], 1);
 			len = ft_strlen(buf);
 		}
 		else
