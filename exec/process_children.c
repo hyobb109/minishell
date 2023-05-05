@@ -94,6 +94,7 @@ void	execute_line(t_token *line, char **env)
 		if (!access(current_path, F_OK))
 			break ;
 		free(current_path);
+		current_path = NULL;
 		++i;
 	}
 	// cmd -> path로
