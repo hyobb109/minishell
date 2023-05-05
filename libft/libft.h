@@ -6,7 +6,7 @@
 /*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 16:51:52 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/05/04 16:50:57 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/05/05 16:12:19 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ void	*ft_memcpy(void *dst, const void *src, size_t n);
 void	*ft_memmove(void *dst, const void *src, size_t len);
 char	*ft_strchr(const char *s, int c);
 char	*ft_strrchr(const char *s, int c);
+char	*ft_strcpy(char *dest, char *src);
 char	*ft_strdup(const char *s1);
 void	*ft_memchr(const void *s, int c, size_t n);
 char	*ft_strjoin(char *s1, char *s2);

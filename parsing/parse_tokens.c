@@ -6,7 +6,7 @@
 /*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:15:26 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/05 14:27:04 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/05/05 16:23:12 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,22 @@ int	is_builtin(char *cmd)
 	return (res);
 }
 
+void	check_empty_str(char **cmds)
+{
+	char	*tmp;
+	int		i;
+
+	i = 0;
+	while (cmds[i])
+	{
+		tmp = ft_strcpy(tmp, cmds[i]);
+		free(cmds[i]);
+		cmds[i] = tmp;
+		// printf("cmds[%d]: %s\n", i, cmds[i]);
+		i++;
+	}
+}
+
 char	**parse_command(char *str, t_token *token, int quote)
 {
 	//	어차피 끝까지 볼거임
@@ -53,6 +69,7 @@ char	**parse_command(char *str, t_token *token, int quote)
 	char	buffer[ARG_MAX];
 
 	// printf("**str: %s\n", str);
+	cmds = NULL;
 	ft_memset(buffer, 0, ARG_MAX); // 버퍼 초기화
 	while (is_blank(*str))
 		str++;
@@ -69,6 +86,10 @@ char	**parse_command(char *str, t_token *token, int quote)
 		}
 		else if (quote && *str == quote)
 		{
+			if (*(str - 1) == quote)
+			{
+				buffer[len++] = EMPTY;
+			}
 			quote = CLOSED;
 			// buffer[len++] = *str;
 		}
@@ -96,6 +117,7 @@ char	**parse_command(char *str, t_token *token, int quote)
 			}
 			if (quote)
 			{
+
 				quote = CLOSED; // 따옴표 닫아줌 (환경변수 치환되면서 따옴표 제거됨)
 				// buffer[len++] = *str;
 			}
@@ -114,36 +136,16 @@ char	**parse_command(char *str, t_token *token, int quote)
 	}
 	buffer[len] = '\0';
 	// printf("============\n");
-	// printf("environ expansion result : %s\n", buffer);
-	// 버퍼에 환경변수 모두 치환된 결과 담김, 공백으로 스플릿해서 리턴.
-	cmds = ft_split(buffer, BLANK);
-	if (q_flag == FALSE && cmds[0][0] == '\0')
+	printf("environ expansion result : %s\n", buffer);
+	if (buffer[0])
 	{
-		free_strs(cmds);
-		cmds = NULL;
+		cmds = ft_split(buffer, BLANK);
+		check_empty_str(cmds);
 	}
+	// 버퍼에 환경변수 모두 치환된 결과 담김, 공백으로 스플릿해서 리턴.
 	return (cmds);
 }
 
-
-void	remove_quotes(char **cmds)
-{
-	char quote;
-	int	i;
-	int	j;
-
-	quote = 0;
-	i = 0;
-	while (cmds[i])
-	{
-		j = 0;
-		while (cmds[i][j])
-		{
-			/* code */
-		}
-		
-	}
-}
 // cmd 와 arg로 분리
 static void	init_token(char *str, t_token *token, t_edeque *envp)
 {

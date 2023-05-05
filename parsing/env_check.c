@@ -6,7 +6,7 @@
 /*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 05:41:25 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/05/05 14:23:01 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/05/05 14:45:31 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,20 @@ int	is_envkey(const char *s1, const char *s2, int *key_len)
 
 static void	check_blank(char *buf)
 {
-	int	i;
+	int		i;
+	char	quote;
 
 	i = 0;
+	quote = CLOSED;
 	while (buf[i])
 	{
-		if (is_blank(buf[i]))
+		if (quote == CLOSED && (buf[i] == '\'' || buf[i] == '\"'))
+		{
+			quote = buf[i];
+		}
+		else if (quote && buf[i] == quote)
+			quote = CLOSED;
+		else if (quote == CLOSED && is_blank(buf[i]))
 			buf[i] = BLANK;
 		i++;
 	}
