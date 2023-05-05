@@ -97,13 +97,7 @@ void	execute_line(t_token *line, char **env)
 		current_path = NULL;
 		++i;
 	}
-	// cmd -> path로
     stat(current_path, &filestat);
-	//int res = access(current_path, F_OK);
-	//printf("%d\n", res);
-	// printf("%s\n", current_path);
-	// printf("%s\n", line->command[0]);
-	// printf("%s\n", line->command[1]);
     if(S_ISDIR(filestat.st_mode))
 	{
 		ft_dup2(STDERR_FILENO, STDOUT_FILENO, line->func);
@@ -146,7 +140,7 @@ void	manage_io(t_token *line, int count, int total, int (*fd)[2])
 	}
 }
 
-void	manage_file(t_token *line)
+int	manage_file(t_token *line)
 {
 	t_fdata	*cur_file;
 	int		infile_fd;
@@ -161,18 +155,19 @@ void	manage_file(t_token *line)
 		append_flag = 0;
 		if (cur_file->type == INFILE || cur_file->type == LIMITER || cur_file->type == Q_LIMITER)
 		{
-			open_infile(cur_file->filename, &infile_fd, line->func);
+			return (open_infile(cur_file->filename, &infile_fd, line->func));
 		}
 		else if (cur_file->type == OUTFILE || cur_file->type == APPEND)
 		{
 			if (cur_file->type == APPEND)
 				append_flag = 1;
-			open_outfile(cur_file->filename, &outfile_fd, append_flag, line->func);
+			return (open_outfile(cur_file->filename, &outfile_fd, append_flag, line->func));
 		}
 		cur_file = cur_file->next;
 	}
 	line->infile_fd = infile_fd;
 	line->outfile_fd = outfile_fd;
+	return (0);
 }
 
 int	open_infile(char *filename, int *infile_fd, int func)
@@ -180,12 +175,15 @@ int	open_infile(char *filename, int *infile_fd, int func)
 	*infile_fd = open(filename, O_RDONLY);
 	if (ft_strchr(filename, BLANK))
 	{
-		printf("%s: %s\n", filename, "ambiguous redirect");
-		exit (1);
+		printf("minishell: %s: %s\n", filename, "ambiguous redirect");
+		if (func != BUILTIN)
+			exit (1);
+		else
+			return (-1);
 	}
 	if (*infile_fd == -1)
 	{
-		printf("%s: %s\n", filename, strerror(errno));
+		printf("minishell: %s: %s\n", filename, strerror(errno));
 		if (func != BUILTIN)
 			exit (1);
 		else
@@ -202,12 +200,15 @@ int	open_outfile(char *filename, int *outfile_fd, int append_flag, int func)
 		*outfile_fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	if (ft_strchr(filename, BLANK))
 	{
-		printf("%s: %s\n", filename, "ambiguous redirect");
-		exit (1);
+		printf("minishell: %s: %s\n", filename, "ambiguous redirect");
+		if (func != BUILTIN)
+			exit (1);
+		else
+			return (-1);
 	}
 	if (*outfile_fd == -1)
 	{
-		printf("%s: %s\n", filename, strerror(errno));
+		printf("minishell: %s: %s\n", filename, strerror(errno));
 		if (func != BUILTIN)
 			exit (1);
 		else

@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 16:33:30 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/05 16:40:59 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/05/05 17:06:00 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,11 @@ void	only_builtins(t_deque *cmd_deque,  int (*fd)[2])
 	stdout_fd = dup(STDOUT_FILENO);
 	if (stdin_fd > -1 || stdout_fd > -1)
 	{
-		manage_file(cmd_deque->head);
-		manage_io(cmd_deque->head, 0, 1, fd);
-		result = exec_builtins(cmd_deque->head);
+		if (manage_file(cmd_deque->head) != -1)
+		{
+			manage_io(cmd_deque->head, 0, 1, fd);
+			result = exec_builtins(cmd_deque->head);
+		}
 		if (cmd_deque->head->infile_fd)
 		{
 			ft_dup2(stdin_fd, STDIN_FILENO, cmd_deque->head->func);

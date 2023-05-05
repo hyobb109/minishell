@@ -196,7 +196,7 @@ void	create_child(t_deque *cmd_deque, int (*fd)[2]);
 int		(*create_pipe(t_deque *cmd_deque))[2];
 void	child_process(t_token *line, int count, int total, int (*fd)[2]);
 void	manage_pipe(int count, int total, int (*fd)[2]);
-void	manage_file(t_token *line);
+int		manage_file(t_token *line);
 
 int		open_infile(char *filename, int *infile_fd, int func);
 int		open_outfile(char *filename, int *outfile_fd, int append_flag, int func);
