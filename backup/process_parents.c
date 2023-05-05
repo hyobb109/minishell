@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 16:33:30 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/04 20:05:48 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/05/05 20:56:28 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -218,6 +218,7 @@ void	wait_child(int count, t_deque *cmd_deque)
 		find_child(cmd_deque, status, pid);
 		++idx;
 	}
+	g_exit_status = cmd_deque->tail->status;
 }
 
 void	find_child(t_deque *cmd_deque, int status, pid_t pid)

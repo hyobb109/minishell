@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/16 19:57:20 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/05/05 16:37:54 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/05/05 22:16:34 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,23 +37,24 @@ void	exec_exit(t_token *token)
 	if (exist_args(token))
 	{
 		num = ft_atoi(token->command[1], 0, 1, &str_flag);
+		printf("num: %d\n", num);
 		if (num < 0)
 		{
-			token->status = 256 + num % 256;
+			g_exit_status = (256 + num % 256) * 256;
 		}
 		else if (num >= 0)
-			token->status = num % 256;
+			g_exit_status = (num % 256) * 256;
 		if (str_flag == FALSE && cnt > 2)
 		{
 			// 첫번째 인자가 str이 아니고 인자 2개 이상인 경우 에러 문구 출력하고 exit 안 함
 			ft_dup2(STDERR_FILENO, STDOUT_FILENO, token->func);
 			printf("minishell: %s: too many arguments\n", token->command[0]);
-			token->status = 1;
+			g_exit_status = 256;
 			return ;
 		}
-		printf("status : %d\n", token->status);
+		printf("status : %d\n", g_exit_status);
 	}
-	exit(0);
+	exit(WEXITSTATUS(g_exit_status));
 }
 
 int	exec_unset(t_token *token)
@@ -68,7 +69,7 @@ int	exec_unset(t_token *token)
 		{
 			ft_dup2(STDERR_FILENO, STDOUT_FILENO, token->func);
 			printf("minishell: %s: '%s': not a valid identifier\n", token->command[0], token->command[idx]); //TODO - 에러넘버 찾기
-			token->status = 1;
+			g_exit_status = 256;
 		}
 		else
 		{

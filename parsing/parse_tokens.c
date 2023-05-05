@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_tokens.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:15:26 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/05 20:10:44 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/05/05 22:25:47 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,8 @@ char	**parse_command(char *str, t_token *token, int quote)
 			// TODO  $? => g_exit_status itoa로 변환 뒤로 치환
 			else if (*(str + 1) == '?')
 			{
-				char *status = ft_itoa(g_exit_status);
+				printf("exit: %d\n", g_exit_status);
+				char *status = ft_itoa(WEXITSTATUS(g_exit_status));
 				// char *status = ft_itoa(127);
 				int num_len = ft_strlen(status);
 				ft_memcpy(&buffer[len], status, num_len);

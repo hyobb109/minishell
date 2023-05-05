@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 16:28:59 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/05 16:38:54 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/05/05 21:56:37 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,17 +57,36 @@ void	change_env(t_token *token, char *cwd_name)
 	char	*free_path;
 	t_env	*old_pwd;
 	t_env	*cur_pwd;
+	// char	cwd_name[PATH_MAX];
 
 	old_pwd = NULL;
 	free_path = NULL;
 	old_pwd = find_value(token->envp, "OLDPWD");
-	free_path = old_pwd->val;
-	if (free_path)
+	printf("old_pwd_val: %p\n", old_pwd);
+	if (old_pwd)
+	{
+		free_path = old_pwd->val;
 		free(free_path);
+		free_path = NULL;
+		old_pwd->val = NULL;
+	}
+	else
+	{
+		old_pwd = malloc(sizeof(t_env));
+		old_pwd->val = ft_strdup(cwd_name);
+		old_pwd->key = ft_strdup("OLDPWD");
+		old_pwd->prev = NULL;
+		old_pwd->next = NULL;
+		append_back_env(token->envp, old_pwd);
+	}
 	cur_pwd = find_value(token->envp, "PWD");
+	printf("curr_pwd_val: %s\n", cur_pwd->val);
 	old_pwd->val = ft_strdup(cur_pwd->val);
-	free(cur_pwd->val);
+	printf("**old_pwd_val: %s\n", old_pwd->val);
+	if (cur_pwd->val)
+		free(cur_pwd->val);
 	cur_pwd->val = ft_strdup(cwd_name);
+	printf("**curr_pwd_val: %s\n", cur_pwd->val);
 }
 
 int	exec_cd(t_token *token)
@@ -95,10 +114,11 @@ int	exec_cd(t_token *token)
 		printf("minishell: %s: %s: %s\n", token->command[0], \
 			dest, strerror(errno));
 		free(dest);
-		token->status = 1;
+		g_exit_status = 256;
 		return (-1);
 	}
 	getcwd(cwd_name, sizeof(cwd_name));
+	printf("cwd: %s\n", cwd_name);
 	change_env(token, cwd_name);
 	free (dest);
 	return (1);

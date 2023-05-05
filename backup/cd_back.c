@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cd.c                                               :+:      :+:    :+:   */
+/*   cd_back.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 01:25:35 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/03 16:27:18 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/05/05 21:57:32 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,7 +177,7 @@ int	exec_cd(t_token *token)
 		printf("minishell: %s: %s: %s\n", token->command[0], \
 			token->command[1], strerror(errno));
 		// free(dest);
-		token->status = 1;
+		g_exit_status = 256;
 		return (1);
 	}
 	// change_env(token, dest);

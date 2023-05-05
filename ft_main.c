@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_main.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 16:55:06 by hyunwoju          #+#    #+#             */
-/*   Updated: 2023/05/05 20:19:09 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/05/05 20:52:41 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,8 @@ int	main(int ac, char **av, char **env)
 			printf("exit\n");
 			exit(g_exit_status);
 		}
-		if (!ft_strcmp(str, "$?"))
-			printf("%d\n", WEXITSTATUS(g_exit_status)); // 없어도 될 것 같음
 		tmp = ft_strdup(str);
-		if (syntax_error(tmp) == FALSE)
+		if (syntax_error(str) == FALSE)
 		{
 			init_deque(&cmd_deque);
 			// print_edeque(&envp);

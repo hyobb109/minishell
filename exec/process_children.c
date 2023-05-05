@@ -147,7 +147,7 @@ void	execute_line(t_token *line, char **env)
 
 void	manage_io(t_token *line, int count, int total, int (*fd)[2])
 {
-	if (line->infile_fd)
+	if (line->infile_fd == -1)
 	{
 		ft_dup2(line->infile_fd, STDIN_FILENO, line->func);
 		ft_close(line->infile_fd, line->func);
@@ -157,7 +157,7 @@ void	manage_io(t_token *line, int count, int total, int (*fd)[2])
 		ft_dup2(fd[count - 1][0], STDIN_FILENO, line->func);
 		ft_close(fd[count - 1][0], line->func);
 	}
-	if (line->outfile_fd)
+	if (line->outfile_fd == -1)
 	{
 		ft_dup2(line->outfile_fd, STDOUT_FILENO, line->func);
 		ft_close(line->outfile_fd, line->func);

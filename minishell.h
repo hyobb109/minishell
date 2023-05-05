@@ -138,6 +138,7 @@ void	signal_handler(int sig);
 void	ft_signal_set(void);
 void	signal_handler_child(int sig);
 void	ft_signal_child_set(void);
+void	signal_handler2(int sig);
 
 // file list
 void	check_redir(char **str, t_token *token);
@@ -218,7 +219,7 @@ int		ft_close(int fd, int func);
 int		ft_pipe(int fd[2]);
 
 //here_doc
-void	find_here_doc(t_deque *cmd_deque);
+int		find_here_doc(t_deque *cmd_deque);
 int		open_here_doc(t_token *cur_token, t_fdata *cur_file, int count);
 void	exec_here_doc(t_token *cur_token, t_fdata *cur_file, char *here_doc_name);
 void	unlink_here_doc(t_deque *cmd_deque);

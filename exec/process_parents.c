@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_parents.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 16:33:30 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/05 19:54:12 by hyunwoju         ###   ########.fr       */
+/*   Updated: 2023/05/05 20:49:21 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,8 @@ void	parents_process(t_deque *cmd_deque)
 
 	current_token = cmd_deque->head;
 	count = cmd_deque->cnt - 1;
-	find_here_doc(cmd_deque);
+	if (find_here_doc(cmd_deque))
+		return ;
 	while (current_token != NULL)
 	{
 		check_file(current_token);
@@ -90,7 +91,7 @@ void	unlink_here_doc(t_deque *cmd_deque)
 	}
 }
 
-void	find_here_doc(t_deque *cmd_deque)
+int	find_here_doc(t_deque *cmd_deque)
 {
 	t_token	*cur_token;
 	t_fdata *cur_file;
@@ -106,13 +107,14 @@ void	find_here_doc(t_deque *cmd_deque)
 			if (cur_file->type == LIMITER || cur_file->type == Q_LIMITER)
 			{
 				if (open_here_doc(cur_token, cur_file, count))
-					return ;
+					return (1);
 				++count;
 			}
 			cur_file = cur_file->next;
 		}
 		cur_token = cur_token->next;
 	}
+	return (0);
 }
 
 int	open_here_doc(t_token *cur_token, t_fdata *cur_file, int count)
@@ -120,7 +122,7 @@ int	open_here_doc(t_token *cur_token, t_fdata *cur_file, int count)
 	char	*count_to_char;
 	char	*here_doc_name;
 	pid_t	pid;
-	int		status;
+	// int		status;
 	
 	while (1)
 	{
@@ -132,6 +134,7 @@ int	open_here_doc(t_token *cur_token, t_fdata *cur_file, int count)
 		free(here_doc_name);
 		++count;
 	}
+	printf("heredoc name: %s\n", here_doc_name);
 	pid = ft_fork();
 	if (!pid)
 	{
@@ -139,14 +142,17 @@ int	open_here_doc(t_token *cur_token, t_fdata *cur_file, int count)
 		signal(SIGINT, SIG_DFL);
 		exec_here_doc(cur_token, cur_file, here_doc_name);
 	}
-	waitpid(-1, &status, 0);
-	if (WIFSIGNALED(status))
+	signal(SIGINT, signal_handler2);
+	waitpid(-1, &g_exit_status, 0);
+	ft_signal_set();
+	if (WIFSIGNALED(g_exit_status))
 	{
-		printf("signal exit\n");
+		// printf("%d\n", WTERMSIG(g_exit_status));
 		return (1);
 	}
 	ft_memset(cur_file->filename, 0, sizeof(char) * strlen(cur_file->filename));
 	ft_memcpy(cur_file->filename, here_doc_name, ft_strlen(here_doc_name));
+	printf("cur_filename: %s\n", cur_file->filename);
 	free(here_doc_name);
 	return (0);
 }
@@ -282,8 +288,10 @@ void	find_child(t_deque *cmd_deque, int status, pid_t pid)
 	{
 		if (cur_point->pid == pid)
 		{
-			cur_point->status = status;
-			printf("exit status = %d\n", WEXITSTATUS(status));
+			if (WIFSIGNALED(status))
+				cur_point->status = WTERMSIG(status);
+			else
+				cur_point->status = status;
 		}
 		cur_point = cur_point->next;
 	}
