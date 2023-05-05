@@ -98,7 +98,12 @@ void	execute_line(t_token *line, char **env)
 	}
 	// cmd -> path로
     stat(current_path, &filestat);
-    if(access(current_path, X_OK) && S_ISDIR(filestat.st_mode))
+	//int res = access(current_path, F_OK);
+	//printf("%d\n", res);
+	printf("%s\n", current_path);
+	printf("%s\n", line->command[0]);
+	printf("%s\n", line->command[1]);
+    if(S_ISDIR(filestat.st_mode))
 	{
 		ft_dup2(STDERR_FILENO, STDOUT_FILENO);
 		printf("minishell: %s: is a directory\n", line->command[0]);

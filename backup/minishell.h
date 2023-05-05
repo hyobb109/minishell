@@ -140,16 +140,15 @@ void	signal_handler_child(int sig);
 void	ft_signal_child_set(void);
 
 // file list
-int		check_redir(char *str, t_token *token);
-int		get_filename(char *str, t_fdata *new, t_token *token);
+void	check_redir(char **str, t_token *token);
+void	get_filename(char **str, t_fdata *new, t_token *token);
 void	append_file(t_fdata **head, t_fdata *new);
 void	free_files(t_fdata **lst);
 void	print_filelst(t_deque *cmd_lst); // delete
 
 // parsing
 char	**ft_pipe_split(char *str);
-char	*expand_environ(char *str, t_token *token, int quote);
-char	**parse_command(char *str, t_token *token);
+char	**parse_command(char *str, t_token *token, int quote);
 int		syntax_error(char *str);
 void	make_cmdlst(char *str, t_deque *cmd_deque, t_edeque *envp);
 int		is_blank(char c);
@@ -182,6 +181,7 @@ void	print_invalidargserror(t_token *token);
 void	print_envlist(t_token *token);
 int		exec_env(t_token *token);
 int		exec_builtins(t_token *token);
+void	print_args(t_token *token, int target_idx);
 int		is_builtin(char *cmd);
 
 // pipe
@@ -225,7 +225,4 @@ void	exec_here_doc(t_token *cur_token, t_fdata *cur_file, char *here_doc_name);
 void	unlink_here_doc(t_deque *cmd_deque);
 char	*get_next_line(int fd);
 char	*check_env_var(char *line, t_edeque *envp);
-
-extern int g_exit_status;
-
 #endif
