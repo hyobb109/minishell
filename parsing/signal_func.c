@@ -6,7 +6,7 @@
 /*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 18:06:46 by seulee2           #+#    #+#             */
-/*   Updated: 2023/05/05 14:04:17 by hyunwoju         ###   ########.fr       */
+/*   Updated: 2023/05/05 16:17:47 by hyunwoju         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,11 @@ void	signal_handler_child(int sig)
 	if (sig == SIGINT)
 	{
 		printf("child SIGINT\n");
+		rl_replace_line("", 0);
+        write(1, "\b\b", 2);
+        rl_done = 1;
+        rl_on_new_line();
+        rl_redisplay();
 		exit(0);
 	}
 }

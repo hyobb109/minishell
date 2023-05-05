@@ -6,7 +6,7 @@
 /*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 16:55:06 by hyunwoju          #+#    #+#             */
-/*   Updated: 2023/05/05 14:26:08 by hyunwoju         ###   ########.fr       */
+/*   Updated: 2023/05/05 16:37:30 by hyunwoju         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,15 @@ int	main(int ac, char **av, char **env)
 	// env deque create
 	make_envlst(&envp, env);
 	rl_catch_signals = 0;
+	ft_signal_set();
 	while (1)
 	{
-		ft_signal_set();
 		str = readline("minishell-0.0$ ");
 		if (!str)
+		{
+			printf("exit\n");
 			exit(EXIT_FAILURE);
+		}
 		if (syntax_error(str) == FALSE)
 		{
 			init_deque(&cmd_deque);
@@ -46,7 +49,6 @@ int	main(int ac, char **av, char **env)
 		if (*str)
 			add_history(str);
 		free(str);
-		
 	}
 	free_edeque(&envp);
 	// rl_clear_history(); // free readline history list

@@ -6,7 +6,7 @@
 /*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 16:33:30 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/05 14:25:24 by hyunwoju         ###   ########.fr       */
+/*   Updated: 2023/05/05 16:16:47 by hyunwoju         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,8 @@ int	open_here_doc(t_token *cur_token, t_fdata *cur_file, int count)
 	pid = ft_fork();
 	if (!pid)
 	{
-		signal(SIGINT, signal_handler_child);
+		//rl_catch_signals = 0;
+		signal(SIGINT, SIG_DFL);
 		exec_here_doc(cur_token, cur_file, here_doc_name);
 	}
 	waitpid(-1, &status, 0);
@@ -155,6 +156,10 @@ void	exec_here_doc(t_token *cur_token, t_fdata *cur_file, char *here_doc_name)
 	{
 		write(1, "> ", 2);
 		line = get_next_line(0);
+		if (!line)
+		{
+			exit(0);
+		}
 		if (!ft_strncmp(line, cur_file->filename, ft_strlen(cur_file->filename)))
 		{
 			if (*(line + ft_strlen(cur_file->filename)) == '\n')

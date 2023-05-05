@@ -178,6 +178,11 @@ void	manage_file(t_token *line)
 void	open_infile(char *filename, int *infile_fd)
 {
 	*infile_fd = open(filename, O_RDONLY);
+	if (ft_strchr(filename, BLANK))
+	{
+		printf("%s: %s\n", filename, "ambiguous redirect");
+		exit (1);
+	}
 	if (*infile_fd == -1)
 	{
 		printf("%s: %s\n", filename, strerror(errno));
@@ -191,6 +196,11 @@ void	open_outfile(char *filename, int *outfile_fd, int append_flag)
 		*outfile_fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0777);
 	else
 		*outfile_fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0777);
+	if (ft_strchr(filename, BLANK))
+	{
+		printf("%s: %s\n", filename, "ambiguous redirect");
+		exit (1);
+	}
 	if (*outfile_fd == -1)
 	{
 		printf("%s: %s\n", filename, strerror(errno));
