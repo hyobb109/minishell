@@ -6,7 +6,7 @@
 /*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 14:03:02 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/05 16:21:56 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/05/06 13:48:24 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ char	*ft_strcpy(char *dest, char *src)
 	int		i;
 	int		j;
 	int		src_len;
-
 
 	i = 0;
 	j = 0;
