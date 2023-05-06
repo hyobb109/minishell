@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 16:44:41 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/05/06 18:30:53 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/05/06 19:54:18 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,22 +39,34 @@ void	make_envlst(t_edeque *envp, char **env)
 	t_env	*env_node;
 	t_env	*oldpwd;
 	char	**tmp;
+	char	cwd_name[PATH_MAX];
 
 	i = 0;
 	oldpwd = NULL;
 	init_edeque(envp);
 	if (!env[0])
 	{
-		return ;
+		env_node = malloc(sizeof(t_env));
+		if (!env_node)
+			ft_error();
+		env_node->key = ft_strdup("PWD");
+		getcwd(cwd_name, sizeof(cwd_name));
+		env_node->val = ft_strdup(cwd_name);
+		env_node->prev = NULL;
+		env_node->next = NULL;
+		append_back_env(envp, env_node);
+		i = 1;
 	}
 	// printf("env[%d]: %s\n", 0, env[0]);
 	while (env[i])
 	{
-		// printf("env[%d]: %s\n", i, env[i]);
+		// printf("env[%d]: %s, %p\n", i, env[i], env[i]);
 		env_node = malloc(sizeof(t_env));
 		if (!env_node)
 			ft_error();
 		tmp = ft_split(env[i], '=');
+		if (!tmp)
+			break;
 		env_node->key = ft_strdup(tmp[0]);
 		env_node->val = ft_strdup(tmp[1]);
 		env_node->prev = NULL;

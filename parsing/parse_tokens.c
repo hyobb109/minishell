@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:15:26 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/06 14:02:10 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/05/06 20:12:02 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,7 @@ char	**parse_command(char *str, t_token *token, int quote)
 				// char *status = ft_itoa(127);
 				int num_len = ft_strlen(status);
 				ft_memcpy(&buffer[len], status, num_len);
+				free(status);
 				len += num_len;
 				str++;
 				if (quote)

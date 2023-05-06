@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strchr_idx.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 19:18:53 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/05 15:35:14 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/05/06 21:10:50 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,12 @@ int	ft_strchr_idx(char *str, char c)
 
 	idx = 0;
 	if (!str)
-		return (-1);
+		return (-100);
 	while (str[idx])
 	{
 		if (str[idx] == c)
 			return (idx);
 		idx++;
 	}
-	return (-1);
+	return (-100);
 }

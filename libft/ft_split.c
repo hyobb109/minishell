@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 19:53:02 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/05/06 13:47:55 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/05/06 19:33:09 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,8 @@ char	**ft_split(char const *s, char c)
 	int				i;
 
 	i = 0;
+	if (s[0] == '\0')
+		return (0);
 	while (s[i] == c && c != '\0')
 		i++;
 	cnt = cntstr(&s[i], c);

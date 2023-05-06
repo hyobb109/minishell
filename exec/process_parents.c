@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 16:33:30 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/06 14:56:35 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/05/06 20:26:14 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ void	only_builtins(t_deque *cmd_deque,  int (*fd)[2])
 	// exec_builtins(cmd_deque->head);
 	if (manage_file(cmd_deque->head))
 	{
-		printf("infile :%d, outfile:%d\n", cmd_deque->head->infile_fd, cmd_deque->head->outfile_fd);
 		manage_io(cmd_deque->head, 0, 1, fd);
 		result = exec_builtins(cmd_deque->head);
 	}

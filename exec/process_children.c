@@ -100,11 +100,13 @@ void	execute_line(t_token *line, char **env)
 	// 절대경로 실패
 	stat(line->command[0], &filestat); // line->command[0] path 의 정보 filestat 에 저장
 	stat(current_path, &filestat2);
-	printf("pth: %s\n", current_path);
+	// printf("pth: %s\n", current_path);
+			int	cmd_idx = ft_strchr_idx(line->command[0], '/');
+		int	len = ft_strlen(line->command[0]);
 	// if (S_ISDIR(filestat.st_mode) && !S_ISREG(filestat2.st_mode)) // 디렉토리인지 확인
 	if (S_ISDIR(filestat.st_mode) || S_ISDIR(filestat2.st_mode)) // 디렉토리인지 확인
 	{
-		if (!S_ISDIR(filestat.st_mode))
+		if (ft_strchr_idx(line->command[0], '.') != 0)
 			execve(current_path, line->command, env);
 		ft_dup2(STDERR_FILENO, STDOUT_FILENO, line->func);
 		printf("**minishell: %s: is a directory\n", line->command[0]);
@@ -112,11 +114,12 @@ void	execute_line(t_token *line, char **env)
 	}
 	else // 디렉토리가 아니라면 line->command[0] 는 일반파일, 명령어, 파일없음 셋 중 하나.
 	{
-		if (line->command[0][ft_strlen(line->command[0]) - 1] == '/') // 맨 끝 '/' 유무 확인
+		if (cmd_idx + 1 == len) // 맨 끝 '/' 유무 확인
 		{
 			ft_dup2(STDERR_FILENO, STDOUT_FILENO, line->func);
-			line->command[0][ft_strlen(line->command[0]) - 1] = '\0'; // '/' 을 '\0' 로 대체해서 파일 검사 시 '/' 제거 효과.
-			if (!access(line->command[0], F_OK)) // 파일 유무 확인
+			char *file_tmp = ft_strdup(line->command[0]);
+			file_tmp[len - 1] = '\0';  // '/' 을 '\0' 로 대체해서 파일 검사 시 '/' 제거 효과.
+			if (!access(file_tmp, F_OK)) // 파일 유무 확인
 			{
 				printf("***minishell: %s: Not a directory\n", line->command[0]);
 				exit (126);
@@ -126,6 +129,7 @@ void	execute_line(t_token *line, char **env)
 				printf("****minishell: %s: No such file or directory\n", line->command[0]);
 				exit (127);
 			}
+			free(file_tmp);
 		}
 		else // 맨 끝에 '/' 없다면
 		{
@@ -174,7 +178,6 @@ void	execute_line(t_token *line, char **env)
 
 void	manage_io(t_token *line, int count, int total, int (*fd)[2])
 {
-	printf("infile :%d, outfile:%d\n", line->infile_fd, line->outfile_fd);
 	if (line->infile_fd)
 	{
 		ft_dup2(line->infile_fd, STDIN_FILENO, line->func);

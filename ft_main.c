@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 16:55:06 by hyunwoju          #+#    #+#             */
-/*   Updated: 2023/05/05 20:52:41 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/05/06 20:32:19 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	main(int ac, char **av, char **env)
 			exit(g_exit_status);
 		}
 		tmp = ft_strdup(str);
-		if (syntax_error(str) == FALSE)
+		if (syntax_error(tmp) == FALSE)
 		{
 			init_deque(&cmd_deque);
 			// print_edeque(&envp);

@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 12:30:29 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/04/27 21:41:00 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/05/06 20:46:35 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,17 @@ char	*ft_strjoin(char *s1, char *s2)
 		ft_error();
 	i = 0;
 	j = 0;
-	while (s1[j])
-		res[i++] = s1[j++];
-	j = 0;
-	while (s2[j])
-		res[i++] = s2[j++];
+	if (s1)
+	{
+		while (s1[j])
+			res[i++] = s1[j++];
+	}
+	if (s2)
+	{
+		j = 0;
+		while (s2[j])
+			res[i++] = s2[j++];
+	}
 	res[i] = '\0';
-	s1 = 0;
 	return (res);
 }
