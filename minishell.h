@@ -39,6 +39,7 @@ typedef enum e_flag {
 }	t_flag;
 
 typedef enum e_state {
+	P_BUILTIN,
 	BUILTIN,
 	GENERAL
 }	t_state;

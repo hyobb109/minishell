@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 16:33:30 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/05 20:49:21 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/05/06 14:56:35 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,26 +18,28 @@ void	only_builtins(t_deque *cmd_deque,  int (*fd)[2])
 	int	stdout_fd;
 	int	result;
 
+	(void)fd;
 	result = 0;
 	stdin_fd = dup(STDIN_FILENO);
 	stdout_fd = dup(STDOUT_FILENO);
-	if (stdin_fd > -1 || stdout_fd > -1)
+	// manage_file(cmd_deque->head);
+	// manage_io(cmd_deque->head, 0, 1, fd);
+	// exec_builtins(cmd_deque->head);
+	if (manage_file(cmd_deque->head))
 	{
-		if (manage_file(cmd_deque->head) != -1)
-		{
-			manage_io(cmd_deque->head, 0, 1, fd);
-			result = exec_builtins(cmd_deque->head);
-		}
-		if (cmd_deque->head->infile_fd)
-		{
-			ft_dup2(stdin_fd, STDIN_FILENO, cmd_deque->head->func);
-			ft_close(stdin_fd, cmd_deque->head->func);
-		}
-		if (cmd_deque->head->outfile_fd)
-		{
-			ft_dup2(stdout_fd, STDOUT_FILENO, cmd_deque->head->func);
-			ft_close(stdout_fd, cmd_deque->head->func);
-		}
+		printf("infile :%d, outfile:%d\n", cmd_deque->head->infile_fd, cmd_deque->head->outfile_fd);
+		manage_io(cmd_deque->head, 0, 1, fd);
+		result = exec_builtins(cmd_deque->head);
+	}
+	if (cmd_deque->head->infile_fd)
+	{
+		ft_dup2(stdin_fd, STDIN_FILENO, cmd_deque->head->func);
+		ft_close(stdin_fd, cmd_deque->head->func);
+	}
+	if (cmd_deque->head->outfile_fd)
+	{
+		ft_dup2(stdout_fd, STDOUT_FILENO, cmd_deque->head->func);
+		ft_close(stdout_fd, cmd_deque->head->func);
 	}	
 }
 
@@ -59,6 +61,7 @@ void	parents_process(t_deque *cmd_deque)
 	fd = create_pipe(cmd_deque);
 	if (cmd_deque->cnt == 1 && cmd_deque->head->func == BUILTIN)
 	{
+		cmd_deque->head->func = P_BUILTIN;
 		only_builtins(cmd_deque, fd); //TODO - builtins return(-1); 처리
 		unlink_here_doc(cmd_deque);
 		return ;

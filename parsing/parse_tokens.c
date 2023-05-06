@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:15:26 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/05 22:25:47 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/05/06 14:02:10 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,7 +149,7 @@ char	**parse_command(char *str, t_token *token, int quote)
 	}
 	buffer[len] = '\0';
 	// printf("============\n");
-	printf("environ expansion result : %s\n", buffer);
+	// printf("environ expansion result : %s\n", buffer);
 	if (buffer[0])
 	{
 		cmds = ft_split(buffer, BLANK);
@@ -195,5 +195,5 @@ void	make_cmdlst(char *str, t_deque *cmd_deque, t_edeque *envp)
 	}
 	// print_filelst(cmd_deque);
 	free_strs(strs);
-	print_deque(cmd_deque);
+	// print_deque(cmd_deque);
 }
