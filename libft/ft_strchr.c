@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/09 19:43:51 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/05/06 17:57:24 by hyunwoju         ###   ########.fr       */
+/*   Created: Invalid date        by                   #+#    #+#             */
+/*   Updated: 2023/05/06 18:34:21 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "libft.h"
 
@@ -17,6 +18,8 @@ char	*ft_strchr(const char *s, int c)
 	char	c1;
 	ssize_t	i;
 
+	if (!s)
+		return (0);
 	c1 = (char)c;
 	i = 0;
 	if (!s)

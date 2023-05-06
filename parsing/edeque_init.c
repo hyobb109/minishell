@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 16:44:41 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/05/04 16:18:55 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/05/06 18:30:53 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,14 @@ void	make_envlst(t_edeque *envp, char **env)
 	i = 0;
 	oldpwd = NULL;
 	init_edeque(envp);
+	if (!env[0])
+	{
+		return ;
+	}
+	// printf("env[%d]: %s\n", 0, env[0]);
 	while (env[i])
 	{
+		// printf("env[%d]: %s\n", i, env[i]);
 		env_node = malloc(sizeof(t_env));
 		if (!env_node)
 			ft_error();
@@ -57,7 +63,10 @@ void	make_envlst(t_edeque *envp, char **env)
 		append_back_env(envp, env_node);
 		i++;
 	}
-	// print_edeque(envp);
+	// printf("env[0] key: %s, value: %s\n", envp->head->key, envp->head->val);
+	// for (int j = 0; env[j]; j++)
+	// 	printf("env[%d]: %s\n", j, env[j]);
+	// printf("env[%d]: %s\n", 1, env[1]);
 }
 
 // delete!!

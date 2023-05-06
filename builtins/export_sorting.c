@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 15:40:01 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/27 21:06:46 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/05/06 18:11:55 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ char	**make_strmatrix(t_edeque *envp)
 	t_env	*tmp;
 
 	idx = 0;
+	if (!envp)
+		return (NULL);
 	string_arr = malloc(sizeof(char *) * (envp->cnt + 1));
 	if (!string_arr)
 		exit(EXIT_FAILURE);
@@ -42,6 +44,8 @@ char	**sorting_strsarr(t_edeque *envp)
 	idx = 0;
 	tmp = NULL;
 	sorting_arr = make_strmatrix(envp);
+	if (!envp)
+		return (NULL);
 	while (sorting_arr[idx + 1])
 	{
 		if (ft_strcmp(sorting_arr[idx], sorting_arr[idx + 1]) > 0)
