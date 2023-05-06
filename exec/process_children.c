@@ -79,24 +79,23 @@ void	execute_line(t_token *line, char **env)
 	struct stat filestat;
 	struct stat filestat2;
 	path_env = ft_getenv(line->envp, "PATH"); // value
-	if (!path_env)
+	if (path_env)
 	{
-		ft_dup2(STDERR_FILENO, STDOUT_FILENO, line->func);
-		printf("*minishell: %s: No such file or directory\n", line->command[0]);
-		exit (127);
+		path = ft_split(path_env, ':');
+		i = 0;
+		while (path[i] != 0)
+		{
+			part_path = ft_strjoin(path[i], "/");
+			current_path = ft_strjoin(part_path, line->command[0]);
+			if (!access(current_path, F_OK))
+				break ;
+			free(current_path);
+			current_path = NULL;
+			++i;
+		}
 	}
-	path = ft_split(path_env, ':');
-	i = 0;
-	while (path[i] != 0)
-	{
-		part_path = ft_strjoin(path[i], "/");
-		current_path = ft_strjoin(part_path, line->command[0]);
-		if (!access(current_path, F_OK))
-			break ;
-		free(current_path);
+	else
 		current_path = NULL;
-		++i;
-	}
 	execve(line->command[0], line->command, env); // 절대경로 로 들어왔을 때
 	// 절대경로 실패
 	stat(line->command[0], &filestat); // line->command[0] path 의 정보 filestat 에 저장
