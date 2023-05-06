@@ -77,6 +77,7 @@ void	execute_line(t_token *line, char **env)
 	char	*part_path;
 	int		i;
 	struct stat filestat;
+	struct stat filestat2;
 	path_env = ft_getenv(line->envp, "PATH"); // value
 	if (!path_env)
 	{
@@ -84,7 +85,6 @@ void	execute_line(t_token *line, char **env)
 		printf("minishell: %s: No such file or directory\n", line->command[0]);
 		exit (127);
 	}
-	printf("******line->command[0]******: %s\n", line->command[0]);
 	path = ft_split(path_env, ':');
 	i = 0;
 	while (path[i] != 0)
@@ -97,49 +97,76 @@ void	execute_line(t_token *line, char **env)
 		current_path = NULL;
 		++i;
 	}
-	printf("******current_path******: %s\n", current_path);
-	execve(line->command[0], line->command, env);
-	char *result = ft_strnstr(line->command[0], "./", ft_strlen(line->command[0]));
-	printf("res: %s, %p\n", result, result);
-	stat(line->command[0], &filestat);
-	if (result && S_ISREG(filestat.st_mode) && access(line->command[0], X_OK) == -1)
+	execve(line->command[0], line->command, env); // 절대경로 로 들어왔을 때
+	// 절대경로 실패
+	stat(line->command[0], &filestat); // line->command[0] path 의 정보 filestat 에 저장
+	stat(current_path, &filestat2);
+	if (S_ISDIR(filestat.st_mode) && !S_ISREG(filestat2.st_mode)) // 디렉토리인지 확인
 	{
-		ft_dup2(STDERR_FILENO, STDOUT_FILENO, line->func);
-		printf("minishell: %s: Permission denied\n", line->command[0]);
-		exit(126);
+		printf("is a directory\n");
+		exit (126);
 	}
-    else if(result && S_ISDIR(filestat.st_mode))
+	else // 디렉토리가 아니라면 line->command[0] 는 일반파일, 명령어, 파일없음 셋 중 하나.
 	{
-		ft_dup2(STDERR_FILENO, STDOUT_FILENO, line->func);
-		printf("minishell: %s: is a directory\n", line->command[0]);
-		exit(126);
-    }
-	if (access(line->command[0], X_OK) == -1)
-	{
-		if (!result)
+		if (line->command[0][ft_strlen(line->command[0]) - 1] == '/') // 맨 끝 '/' 유무 확인
 		{
-			ft_dup2(STDERR_FILENO, STDOUT_FILENO, line->func);
-			printf("minishell: %s: No such file or directory\n", line->command[0]);
-			exit(127);
+			line->command[0][ft_strlen(line->command[0]) - 1] = '\0'; // '/' 을 '\0' 로 대체해서 파일 검사 시 '/' 제거 효과.
+			if (!access(line->command[0], F_OK)) // 파일 유무 확인
+			{
+				printf("Not a directory\n");
+				exit (126);
+			}
+			else // 파일이 없다면
+			{
+				printf("No such file or directory\n");
+				exit (127);
+			}
+		}
+		else // 맨 끝에 '/' 없다면
+		{
+
+			if ((!access(current_path, F_OK) || !access(line->command[0], F_OK)) && !ft_strchr(line->command[0], '/')) // current_path, line->command 둘 중 하나라도 파일이 있다면
+			{
+				execve(current_path, line->command, env); // current_path 로 파일 실행.
+				// current_path 실패
+				if (!access(current_path, F_OK)) // current_path 에 파일이 있다면
+				{
+					printf("Permission denied\n");
+					exit (126);
+				}
+				else // current_path 에 파일이 없다면
+				{
+					printf("command not found\n");
+					exit (127);
+				}
+			}
+			else // 둘 다 파일이 없거나 '/' 문자가 있다면
+			{
+				if (ft_strchr(current_path, '/') || ft_strchr(line->command[0], '/'))
+				{
+					if (S_ISREG(filestat.st_mode))
+					{
+						printf("Permission denied\n");
+						exit (126);
+					}
+					printf("No such file or directory\n");
+					exit (127);
+				}
+				else
+				{
+					printf("command not found\n");
+					exit (127);
+				}
+			}
 		}
 	}
-    //stat(current_path, &filestat);
-    //if(S_ISDIR(filestat.st_mode))
-	//{
-	//	ft_dup2(STDERR_FILENO, STDOUT_FILENO, line->func);
-	//	printf("minishell: %s: is a directory\n", line->command[0]);
-	//	exit(126);
-    //}
-	if (access(current_path, X_OK) && access(current_path, F_OK) == 0)
-	{
-		ft_dup2(STDERR_FILENO, STDOUT_FILENO, line->func);
-		printf("minishell: %s: Permission denied\n", line->command[0]);
-		exit(126);
-	}
-	execve(current_path, line->command, env);
-	ft_dup2(STDERR_FILENO, STDOUT_FILENO, line->func);
-	printf("minishell: %s: command not found\n", line->command[0]);
+	printf("No such file or directory\n");
 	exit (127);
+	//execve(current_path, line->command, env);
+	//ft_dup2(STDERR_FILENO, STDOUT_FILENO, line->func);
+	//printf("minishell: %s: command not found\n", line->command[0]);
+	//exit (127);
+
 }
 
 void	manage_io(t_token *line, int count, int total, int (*fd)[2])

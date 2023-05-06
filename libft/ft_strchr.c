@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/09 19:43:51 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/04/17 16:18:38 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/05/06 17:57:24 by hyunwoju         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ char	*ft_strchr(const char *s, int c)
 
 	c1 = (char)c;
 	i = 0;
+	if (!s)
+		return (0);
 	while (s[i])
 	{
 		if (c1 == s[i])
