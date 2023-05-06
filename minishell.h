@@ -112,7 +112,7 @@ typedef struct s_matrix
 	int column;
 }	t_matrix;
 
-int	g_exit_status;
+extern int	g_exit_status;
 
 // deque
 void	init_deque(t_deque *deque);

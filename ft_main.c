@@ -12,10 +12,7 @@
 
 #include "minishell.h"
 
-void	leack_check(void)
-{
-	system("leaks $PPID");
-}
+int	g_exit_status = 0;
 
 int	main(int ac, char **av, char **env)
 {
@@ -23,7 +20,6 @@ int	main(int ac, char **av, char **env)
 	char		*tmp;
 	t_deque		cmd_deque;
 	t_edeque	envp;
-	// atexit(leack_check);
 
 	(void) ac;
 	(void) av;
