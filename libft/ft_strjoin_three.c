@@ -22,7 +22,7 @@ char	*ft_strjoin_three(char *s1, char *s2, char *s3)
 	idx1 = 0;
 	idx2 = 0;
 	if (!s1 || !s2 || !s3)
-		ft_error();
+		ft_error(); // 고쳐야 할 듯!?
 	str_len = ft_strlen(s1) + ft_strlen(s2) + ft_strlen(s3);
 	result = malloc(sizeof(char) * (str_len + 1));
 	if (!result)
