@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/16 19:57:20 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/05/05 22:16:34 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/05/06 14:09:53 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ int	exec_builtins(t_token *token)
 	char	*tmp;
 
 	result = 0;
+	g_exit_status = 0;
 	tmp = ft_strlowcase(ft_strdup(token->command[0]));
 	if (!ft_strcmp(tmp, "echo"))
 		result = exec_echo(token);

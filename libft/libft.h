@@ -6,7 +6,7 @@
 /*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 16:51:52 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/05/05 16:12:19 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/05/06 13:53:13 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,6 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <stdio.h>
-
-typedef struct s_list
-{
-	void			*content;
-	struct s_list	*next;
-}	t_list;
 
 int		ft_isalpha(int c);
 int		ft_isdigit(int c);

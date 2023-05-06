@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 13:38:07 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/05 16:39:42 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/05/06 14:16:12 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,22 @@ void	print_exportlist(t_token *token)
 		idx++;
 	}
 	free_strs(sorting_strs);
+}
+
+int	is_validkey(char *key)
+{
+	int	idx;
+	
+	idx = 0;
+	while(key[idx])
+	{
+		if (!ft_isalnum(key[idx]) && key[idx] != '=' && key[idx] != '_')
+			return (0);
+		else if (idx == 0 && ft_isdigit(key[idx]))
+			return (0);
+		idx++;
+	}
+	return (1);
 }
 
 int	appending(t_token *token, char *key, char *value)
@@ -112,7 +128,7 @@ void	append_export(t_token *token)
 		else
 		{
 			key = ft_substr(token->command[idx], 0, target_idx);
-			if ((!ft_isalpha(key[0]) && key[0] != '_') || ft_strchr_idx(key, ' ') > 0)//TODO - 유효한 키인지 확인 #, &, *, (, ), | 는 에러 / 숫자만 있어도 에러
+			if ((!is_validkey(key)) || ft_strchr_idx(key, ' ') > 0)//TODO - 유효한 키인지 확인 #, &, *, (, ), | 는 에러 / 숫자만 있어도 에러
 			{
 				free(key);
 				ft_dup2(STDERR_FILENO, STDOUT_FILENO, token->func);

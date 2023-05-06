@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 16:28:59 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/05 21:56:37 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/05/06 13:52:53 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,13 +80,13 @@ void	change_env(t_token *token, char *cwd_name)
 		append_back_env(token->envp, old_pwd);
 	}
 	cur_pwd = find_value(token->envp, "PWD");
-	printf("curr_pwd_val: %s\n", cur_pwd->val);
+	// printf("curr_pwd_val: %s\n", cur_pwd->val);
 	old_pwd->val = ft_strdup(cur_pwd->val);
-	printf("**old_pwd_val: %s\n", old_pwd->val);
+	// printf("**old_pwd_val: %s\n", old_pwd->val);
 	if (cur_pwd->val)
 		free(cur_pwd->val);
 	cur_pwd->val = ft_strdup(cwd_name);
-	printf("**curr_pwd_val: %s\n", cur_pwd->val);
+	// printf("**curr_pwd_val: %s\n", cur_pwd->val);
 }
 
 int	exec_cd(t_token *token)

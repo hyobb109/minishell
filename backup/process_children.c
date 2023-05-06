@@ -171,8 +171,7 @@ void	execute_line(t_token *line, char **env)
 
 void	manage_io(t_token *line, int count, int total, int (*fd)[2])
 {
-	printf("infile :%d, outfile:%d\n", line->infile_fd, line->outfile_fd);
-	if (line->infile_fd)
+	if (line->infile_fd == -1)
 	{
 		ft_dup2(line->infile_fd, STDIN_FILENO, line->func);
 		ft_close(line->infile_fd, line->func);
@@ -182,7 +181,7 @@ void	manage_io(t_token *line, int count, int total, int (*fd)[2])
 		ft_dup2(fd[count - 1][0], STDIN_FILENO, line->func);
 		ft_close(fd[count - 1][0], line->func);
 	}
-	if (line->outfile_fd)
+	if (line->outfile_fd == -1)
 	{
 		ft_dup2(line->outfile_fd, STDOUT_FILENO, line->func);
 		ft_close(line->outfile_fd, line->func);
@@ -209,19 +208,19 @@ int	manage_file(t_token *line)
 		append_flag = 0;
 		if (cur_file->type == INFILE || cur_file->type == LIMITER || cur_file->type == Q_LIMITER)
 		{
-			open_infile(cur_file->filename, &infile_fd, line->func);
+			return (open_infile(cur_file->filename, &infile_fd, line->func));
 		}
 		else if (cur_file->type == OUTFILE || cur_file->type == APPEND)
 		{
 			if (cur_file->type == APPEND)
 				append_flag = 1;
-			open_outfile(cur_file->filename, &outfile_fd, append_flag, line->func);
+			return (open_outfile(cur_file->filename, &outfile_fd, append_flag, line->func));
 		}
 		cur_file = cur_file->next;
 	}
 	line->infile_fd = infile_fd;
 	line->outfile_fd = outfile_fd;
-	return (1);
+	return (0);
 }
 
 int	open_infile(char *filename, int *infile_fd, int func)
@@ -230,20 +229,20 @@ int	open_infile(char *filename, int *infile_fd, int func)
 	if (ft_strchr(filename, BLANK))
 	{
 		printf("minishell: %s: %s\n", filename, "ambiguous redirect");
-		if (func != P_BUILTIN)
+		if (func != BUILTIN)
 			exit (1);
 		else
-			return (0);
+			return (-1);
 	}
 	if (*infile_fd == -1)
 	{
 		printf("minishell: %s: %s\n", filename, strerror(errno));
-		if (func != P_BUILTIN)
+		if (func != BUILTIN)
 			exit (1);
 		else
-			return (0);
+			return (-1);
 	}
-	return (1);
+	return (0);
 }
 
 int	open_outfile(char *filename, int *outfile_fd, int append_flag, int func)
@@ -252,23 +251,23 @@ int	open_outfile(char *filename, int *outfile_fd, int append_flag, int func)
 		*outfile_fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0777);
 	else
 		*outfile_fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0777);
-	// if (ft_strchr(filename, BLANK))
-	// {
-	// 	printf("minishell: %s: %s\n", filename, "ambiguous redirect");
-	// 	if (func != P_BUILTIN)
-	// 		exit (1);
-	// 	else
-	// 		return (0);
-	// }
+	if (ft_strchr(filename, BLANK))
+	{
+		printf("minishell: %s: %s\n", filename, "ambiguous redirect");
+		if (func != BUILTIN)
+			exit (1);
+		else
+			return (-1);
+	}
 	if (*outfile_fd == -1)
 	{
 		printf("minishell: %s: %s\n", filename, strerror(errno));
-		if (func != P_BUILTIN)
+		if (func != BUILTIN)
 			exit (1);
 		else
-			return (0);
+			return (-1);
 	}
-	return (1);
+	return (0);
 }
 
 void	manage_pipe(int count, int total, int (*fd)[2])
