@@ -65,9 +65,7 @@ void	check_empty_str(char **cmds)
 
 char	**parse_command(char *str, t_token *token, int quote)
 {
-	//	어차피 끝까지 볼거임
 	int		len;
-	int		q_flag;
 	char	**cmds;
 	char	buffer[ARG_MAX];
 
@@ -77,15 +75,12 @@ char	**parse_command(char *str, t_token *token, int quote)
 	while (is_blank(*str))
 		str++;
 	quote = CLOSED;
-	q_flag = FALSE;
 	len = 0;
 	while (*str)
 	{
 		if (quote == CLOSED && (*str == '\'' || *str == '\"'))
 		{
 			quote = *str;
-			q_flag = TRUE;
-			// buffer[len++] = *str;
 		}
 		else if (quote && *str == quote)
 		{
@@ -94,7 +89,6 @@ char	**parse_command(char *str, t_token *token, int quote)
 				buffer[len++] = EMPTY;
 			}
 			quote = CLOSED;
-			// buffer[len++] = *str;
 		}
 		else if (quote == CLOSED && (*str == '<' || *str == '>'))
 		{
@@ -109,7 +103,7 @@ char	**parse_command(char *str, t_token *token, int quote)
 			{
 				len += search_env(&str, &buffer[len], token->envp, quote); // $ 위치부터 보내주기
 			}
-			// TODO  $? => g_exit_status itoa로 변환 뒤로 치환
+			// $? => g_exit_status itoa로 변환 뒤로 치환
 			else if (*(str + 1) == '?')
 			{
 				printf("exit: %d\n", g_exit_status);
@@ -129,9 +123,7 @@ char	**parse_command(char *str, t_token *token, int quote)
 			}
 			if (quote)
 			{
-
 				quote = CLOSED; // 따옴표 닫아줌 (환경변수 치환되면서 따옴표 제거됨)
-				// buffer[len++] = *str;
 			}
 		}
 		else if (!quote && is_blank(*str))

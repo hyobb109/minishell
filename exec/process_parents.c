@@ -16,10 +16,8 @@ void	only_builtins(t_deque *cmd_deque,  int (*fd)[2])
 {
 	int	stdin_fd;
 	int	stdout_fd;
-	int	result;
 
 	(void)fd;
-	result = 0;
 	stdin_fd = dup(STDIN_FILENO);
 	stdout_fd = dup(STDOUT_FILENO);
 	// manage_file(cmd_deque->head);
@@ -29,7 +27,7 @@ void	only_builtins(t_deque *cmd_deque,  int (*fd)[2])
 	{
 		printf("infile :%d, outfile:%d\n", cmd_deque->head->infile_fd, cmd_deque->head->outfile_fd);
 		manage_io(cmd_deque->head, 0, 1, fd);
-		result = exec_builtins(cmd_deque->head);
+		exec_builtins(cmd_deque->head);
 	}
 	if (cmd_deque->head->infile_fd)
 	{

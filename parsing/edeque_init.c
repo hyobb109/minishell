@@ -37,11 +37,9 @@ void	make_envlst(t_edeque *envp, char **env)
 {
 	int		i;
 	t_env	*env_node;
-	t_env	*oldpwd;
 	char	**tmp;
 
 	i = 0;
-	oldpwd = NULL;
 	init_edeque(envp);
 	if (!env[0])
 	{

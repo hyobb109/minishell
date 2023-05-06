@@ -43,11 +43,9 @@ void	append_file(t_fdata **head, t_fdata *new)
 void	get_filename(char **str, t_fdata *new, t_token *token)
 {
 	int		quote;
-	int		i;
 	int		len;
 	char	*tmp;
 
-	i = 0;
 	while (is_blank(**str))
 		*str += 1;
 	len = 0;

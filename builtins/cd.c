@@ -14,14 +14,12 @@
 
 char	*init_destpath(t_token *token, char *cwd_name)
 {
-	size_t	target_idx;
 	char	*result;
 	char	*result2;
 	char	**tmp;
 	int		idx;
 
 	(void) cwd_name;
-	target_idx = -1;
 	result = ft_strdup("");
 	result2 = NULL;
 	tmp = NULL;
