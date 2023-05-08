@@ -6,7 +6,7 @@
 /*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 17:37:37 by hyunwoju          #+#    #+#             */
-/*   Updated: 2023/05/08 17:37:45 by hyunwoju         ###   ########.fr       */
+/*   Updated: 2023/05/08 18:36:48 by hyunwoju         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	wait_child(int count, t_deque *cmd_deque)
 {
 	int		idx;
-	int 	status;
+	int		status;
 	pid_t	pid;
 
 	idx = 0;
@@ -32,7 +32,7 @@ void	wait_child(int count, t_deque *cmd_deque)
 
 void	find_child(t_deque *cmd_deque, int status, pid_t pid)
 {
-	t_token *cur_point;
+	t_token	*cur_point;
 
 	cur_point = cmd_deque->head;
 	while (cur_point != NULL)
