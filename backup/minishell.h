@@ -34,7 +34,8 @@
 typedef enum e_flag {
 	EMPTY = -2,
 	BLANK,
-	CLOSED
+	CLOSED,
+	FREE //del
 }	t_flag;
 
 typedef enum e_state {
@@ -60,13 +61,11 @@ typedef struct s_fdata
 
 
 // delete
-typedef struct s_syntax
+typedef struct s_fd
 {
-	char	flag;
-	int		heredoc;
-	int		i;
-	char	*tmp;
-}	t_syntax;
+	char	filename[PATH_MAX];
+	int		type;
+}	t_fd;
 
 typedef struct s_env
 {
@@ -137,8 +136,10 @@ void	print_edeque(t_edeque *deque); // delete
 
 // signal
 void	signal_handler(int sig);
-void	signal_handler_heredoc(int sig);
 void	ft_signal_set(void);
+void	signal_handler_child(int sig);
+void	ft_signal_child_set(void);
+void	signal_handler2(int sig);
 
 // file list
 void	check_redir(char **str, t_token *token);
@@ -187,7 +188,6 @@ int		is_builtin(char *cmd);
 
 // pipe
 void	parents_process(t_deque *cmd_deque);
-void	only_builtins(t_deque *cmd_deque, int (*fd)[2]);
 void	check_file(t_token *line);
 int		check_infile(char *filename, t_token *token);
 int		check_outfile(char *filename, t_token *token);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_main.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 16:55:06 by hyunwoju          #+#    #+#             */
-/*   Updated: 2023/05/05 20:52:41 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/05/08 16:25:12 by hyunwoju         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ int	main(int ac, char **av, char **env)
 			// print_edeque(&envp);
 			make_cmdlst(tmp, &cmd_deque, &envp);
 			parents_process(&cmd_deque);
+			unlink_here_doc(&cmd_deque);
 			free_deque(&cmd_deque);
 		}
 		free(tmp);
