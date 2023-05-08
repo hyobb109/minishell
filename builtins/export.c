@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 13:38:07 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/08 22:34:59 by yunjcho          ###   ########seoul.kr  */
+/*   Updated: 2023/05/08 23:10:58 by yunjcho          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,17 +38,41 @@ int	appending(t_token *token, char *key, char *value)
 	return (1);
 }
 
+void	make_keyvalue(t_token *token, int target_idx, int idx)
+{
+	char	*key;
+	char	*value;
+
+	key = NULL;
+	value = NULL;
+	key = ft_substr(token->command[idx], 0, target_idx);
+	if ((!is_validkey(key)) || ft_strchr_idx(key, ' ') > 0)
+	{
+		ft_dup2(STDERR_FILENO, STDOUT_FILENO, token->func);
+		printf("export: '%s': not a valid identifier\n", key);
+		g_exit_status = 256;
+	}
+	else
+	{
+		if (target_idx > 0)
+			value = ft_substr(token->command[idx], \
+				target_idx + 1, ft_strlen(token->command[idx]));
+		else
+			value = NULL;
+		appending(token, key, value);
+	}
+	free(key);
+	if (value)
+		free(value);
+}
+
 int	append_export(t_token *token)
 {
 	int		idx;
 	int		target_idx;
-	char	*key;
-	char	*value;
 
 	idx = 1;
 	target_idx = -1;
-	key = NULL;
-	value = NULL;
 	while (token->command[idx])
 	{
 		target_idx = ft_strchr_idx(token->command[idx], '=');
@@ -60,27 +84,7 @@ int	append_export(t_token *token)
 			g_exit_status = 256;
 		}
 		else
-		{
-			key = ft_substr(token->command[idx], 0, target_idx);
-			if ((!is_validkey(key)) || ft_strchr_idx(key, ' ') > 0)
-			{
-				ft_dup2(STDERR_FILENO, STDOUT_FILENO, token->func);
-				printf("export: '%s': not a valid identifier\n", key);
-				g_exit_status = 256;
-			}
-			else
-			{
-				if (target_idx > 0)
-					value = ft_substr(token->command[idx], \
-						target_idx + 1, ft_strlen(token->command[idx]));
-				else
-					value = NULL;
-				appending(token, key, value);
-			}
-			free(key);
-			if (value)
-				free(value);
-		}
+			make_keyvalue(token, target_idx, idx);
 		idx++;
 	}
 	return (1);
