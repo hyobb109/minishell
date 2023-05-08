@@ -42,13 +42,9 @@ void	make_envlst(t_edeque *envp, char **env)
 	i = 0;
 	init_edeque(envp);
 	if (!env[0])
-	{
 		return ;
-	}
-	// printf("env[%d]: %s\n", 0, env[0]);
 	while (env[i])
 	{
-		// printf("env[%d]: %s\n", i, env[i]);
 		env_node = malloc(sizeof(t_env));
 		if (!env_node)
 			ft_error();
@@ -61,10 +57,6 @@ void	make_envlst(t_edeque *envp, char **env)
 		append_back_env(envp, env_node);
 		i++;
 	}
-	// printf("env[0] key: %s, value: %s\n", envp->head->key, envp->head->val);
-	// for (int j = 0; env[j]; j++)
-	// 	printf("env[%d]: %s\n", j, env[j]);
-	// printf("env[%d]: %s\n", 1, env[1]);
 }
 
 // delete!!

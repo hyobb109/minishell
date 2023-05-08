@@ -94,20 +94,31 @@ t_env	*pop_back_env(t_edeque *deque)
 	return (0);
 }
 
-t_env	*pop_select_env(t_edeque *deque, char *key)
+t_env	*pop_mid_env(t_env *tmp, t_edeque *deque)
 {
-	t_env	*tmp;
 	t_env	*backup_prev;
 	t_env	*backup_next;
 
+	backup_prev = tmp->prev;
+	backup_next = tmp->next;
+	tmp->prev->next = backup_next;
+	tmp->next->prev = backup_prev;
+	tmp->prev = NULL;
+	tmp->next = NULL;
+	deque->cnt--;
+	return (tmp);
+}
+
+t_env	*pop_select_env(t_edeque *deque, char *key)
+{
+	t_env	*tmp;
+
 	tmp = NULL;
-	backup_prev = NULL;
-	backup_next = NULL;
 	if (deque->head == NULL || !deque || key == NULL)
 		return (NULL);
 	if (deque->cnt)
 	{
-		tmp =  find_value(deque, key);
+		tmp = find_value(deque, key);
 		if (!tmp)
 			return (NULL);
 		else if (tmp == deque->head)
@@ -115,16 +126,7 @@ t_env	*pop_select_env(t_edeque *deque, char *key)
 		else if (tmp == deque->tail)
 			return (pop_back_env(deque));
 		else
-		{
-			backup_prev = tmp->prev;
-			backup_next = tmp->next;
-			tmp->prev->next = backup_next;
-			tmp->next->prev = backup_prev;
-			tmp->prev = NULL;
-			tmp->next = NULL;
-			deque->cnt--;
-		}
-		return (tmp);
+			return (pop_mid_env(tmp, deque));
 	}
 	return (NULL);
 }

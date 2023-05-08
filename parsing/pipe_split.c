@@ -14,9 +14,9 @@
 
 static int	token_len(char *str)
 {
-	int	i;
-	int				flag_quote;
-	char			quote;
+	int		i;
+	int		flag_quote;
+	char	quote;
 
 	flag_quote = 0;
 	quote = 0;
@@ -78,8 +78,6 @@ static int	cnt_pipe(char *str)
 	quote = 0;
 	flag_quote = 0;
 	i = 0;
-
-	// 플래그가 1일때는 파이프 검사를 건너뛰기
 	while (str[i])
 	{
 		if (flag_quote == 0 && (str[i] == '\'' || str[i] == '\"'))

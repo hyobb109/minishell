@@ -23,7 +23,7 @@ void	signal_handler(int sig)
 	}
 }
 
-void	signal_handler2(int sig)
+void	signal_handler_heredoc(int sig)
 {
 	if (sig == SIGINT)
 	{
@@ -32,42 +32,8 @@ void	signal_handler2(int sig)
 	}
 }
 
-// void	signal_handler_child(int sig)
-// {
-// 	if (sig == SIGINT)
-// 	{
-// 		printf("child SIGINT\n");
-// 		rl_replace_line("", 0);
-//         write(1, "\b\b", 2);
-//         rl_done = 1;
-//         rl_on_new_line();
-//         rl_redisplay();
-// 		exit(0);
-// 	}
-// }
-
-// void	signal_handler_parent(int sig)
-// {
-// 	if (sig == SIGINT)
-// 	{
-// 		signal(SIGINT, SIG_IGN);
-// 	}
-// }
-
-// void	ft_signal_parent(void)
-// {
-// 	signal(SIGINT, signal_handler_parent);	
-// }
 void	ft_signal_set(void)
 {
 	signal(SIGINT, signal_handler);
 	signal(SIGQUIT, SIG_IGN);
 }
-
-// void	ft_signal_child_set(void)
-// {
-// 	printf("sig child set\n");
-// 	signal(SIGINT, signal_handler_child);
-// }
-
-

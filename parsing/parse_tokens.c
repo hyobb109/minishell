@@ -57,7 +57,6 @@ void	check_empty_str(char **cmds)
 			tmp = ft_strcpy(tmp, cmds[i]);
 			free(cmds[i]);
 			cmds[i] = tmp;
-			// printf("cmds[%d]: %s\n", i, cmds[i]);
 		}
 		i++;
 	}
@@ -66,49 +65,40 @@ void	check_empty_str(char **cmds)
 char	**parse_command(char *str, t_token *token, int quote)
 {
 	int		len;
+	int		q_flag;
 	char	**cmds;
 	char	buffer[ARG_MAX];
 
-	// printf("**str: %s\n", str);
 	cmds = NULL;
-	ft_memset(buffer, 0, ARG_MAX); // 버퍼 초기화
+	ft_memset(buffer, 0, ARG_MAX);
 	while (is_blank(*str))
 		str++;
 	quote = CLOSED;
+	q_flag = FALSE;
 	len = 0;
 	while (*str)
 	{
-		if (quote == CLOSED && (*str == '\'' || *str == '\"'))
+		if (!quote && (*str == '\'' || *str == '\"'))
 		{
 			quote = *str;
+			q_flag = TRUE;
 		}
 		else if (quote && *str == quote)
 		{
 			if (*(str - 1) == quote)
-			{
 				buffer[len++] = EMPTY;
-			}
 			quote = CLOSED;
 		}
-		else if (quote == CLOSED && (*str == '<' || *str == '>'))
-		{
-			// 리다이렉션 있으면 파일리스트로 분리, str 주소 넘겨줌
+		else if (!quote && (*str == '<' || *str == '>'))
 			check_redir(&str, token);
-			// printf("str:%s, buf : %s, buf_len: %d\n", str, buffer, len);
-		}
-		else if ((quote == CLOSED && *str == '$') || (quote == '\"' && *str == '$'))
+		else if ((!quote && *str == '$') || (quote == '\"' && *str == '$'))
 		{
-			// $ 뒤가 알파벳이나 '_'일 때만 환경변수로 처리(변수 명 조건)
 			if (ft_isalpha(*(str + 1)) || *(str + 1) == '_')
-			{
-				len += search_env(&str, &buffer[len], token->envp, quote); // $ 위치부터 보내주기
-			}
-			// $? => g_exit_status itoa로 변환 뒤로 치환
+				len += search_env(&str, &buffer[len], token->envp, quote);
 			else if (*(str + 1) == '?')
 			{
 				printf("exit: %d\n", g_exit_status);
 				char *status = ft_itoa(WEXITSTATUS(g_exit_status));
-				// char *status = ft_itoa(127);
 				int num_len = ft_strlen(status);
 				ft_memcpy(&buffer[len], status, num_len);
 				len += num_len;
@@ -117,37 +107,24 @@ char	**parse_command(char *str, t_token *token, int quote)
 					str++;
 			}
 			else
-			{
-				// 변수명 조건 벗어나면 $ 뒤 한글자 무시
 				str++;
-			}
 			if (quote)
-			{
-				quote = CLOSED; // 따옴표 닫아줌 (환경변수 치환되면서 따옴표 제거됨)
-			}
+				quote = CLOSED;
 		}
 		else if (!quote && is_blank(*str))
-		{
-			buffer[len++] = BLANK; // 따옴표 밖 공백이면 자름
-		}
+			buffer[len++] = BLANK;
 		else
-		{
 			buffer[len++] = *str;
-		}
 		if (*str == '\0')
 			break ;
 		str++;
-		// printf("str: %s\n", str);
 	}
 	buffer[len] = '\0';
-	// printf("============\n");
-	// printf("environ expansion result : %s\n", buffer);
 	if (buffer[0])
 	{
 		cmds = ft_split(buffer, BLANK);
 		check_empty_str(cmds);
 	}
-	// 버퍼에 환경변수 모두 치환된 결과 담김, 공백으로 스플릿해서 리턴.
 	return (cmds);
 }
 
