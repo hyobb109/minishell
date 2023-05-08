@@ -69,6 +69,82 @@ char	**make_envstrs(t_token *token)
 	return (strs);
 }
 
+// void	execute_line(t_token *line, char **env)
+// {
+// 	char	*path_env;
+// 	char	**path;
+// 	char	*current_path;
+// 	char	*part_path;
+// 	int		i;
+// 	struct stat filestat;
+// 	path_env = ft_getenv(line->envp, "PATH"); // value
+// 	char	*is_path;
+// 	// '/' 있는지 먼저 확인
+// 	is_path = ft_strchr(line->command[0], '/');
+// 	if (path_env)
+// 	{
+// 		path = ft_split(path_env, ':');
+// 		i = 0;
+// 		while (path[i] != 0)
+// 		{
+// 			part_path = ft_strjoin(path[i], "/");
+// 			current_path = ft_strjoin(part_path, line->command[0]);
+// 			if (!access(current_path, F_OK))
+// 				break ;
+// 			free(current_path);
+// 			free(part_path);
+// 			part_path = NULL;
+// 			current_path = NULL;
+// 			++i;
+// 		}
+// 	}
+// 	else
+// 		current_path = NULL;
+// 	printf("path: %s\n", current_path);
+// 	// '/'가 없고 path에서 못찾으면 127에러
+// 	if (!is_path && !current_path)
+// 	{
+// 		ft_dup2(STDERR_FILENO, STDOUT_FILENO, line->func);
+// 		printf("!!minishell: %s: command not found\n", line->command[0]);
+// 		exit(127);
+// 	}
+// 	// '/'가없고 경로 찾았을 때 실행 
+// 	if (!is_path && current_path)
+// 	{
+// 		execve(current_path, line->command, env);
+// 	}
+// 	// '/bin/ls' or './ls' or '/ls' or 'ls/'
+// 	if (is_path)
+// 	{
+// 		execve(line->command[0], line->command, env); // 절대경로 들어온 경우 잘 끝남
+// 	}
+// 	stat(line->command[0], &filestat); // line->command[0] path 의 정보 filestat 에 저장
+// 	// 디렉토리면
+// 	if (S_ISDIR(filestat.st_mode))
+// 	{
+// 		ft_dup2(STDERR_FILENO, STDOUT_FILENO, line->func);
+// 		printf("##minishell: %s: Is a directory\n", line->command[0]);
+// 		exit(126);
+// 	}
+// 	else if (S_ISREG(filestat.st_mode) && access(line->command[0], X_OK)) // 파일이고 실행 권한이 없으면
+// 	{
+// 		ft_dup2(STDERR_FILENO, STDOUT_FILENO, line->func);
+// 		printf("^^minishell: %s: Permission denied\n", line->command[0]);
+// 		exit (126);
+// 	}
+// 	// 없는 파일, 디렉토리면
+// 	if (access(line->command[0], F_OK))
+// 	{
+// 		ft_dup2(STDERR_FILENO, STDOUT_FILENO, line->func);
+// 		printf("~~minishell: %s: No such file or directory\n", line->command[0]);
+// 		exit (127);
+// 	}
+// 	// 파일이 있는데 파일 이름 뒤에 /가 오면 => 어떻게 해야할지??? S_ISREG 에 안 걸림..
+// 	ft_dup2(STDERR_FILENO, STDOUT_FILENO, line->func);
+// 	printf("**minishell: %s: Not a directory\n", line->command[0]);
+// 	exit(126);
+// }
+
 void	execute_line(t_token *line, char **env)
 {
 	char	*path_env;
@@ -77,78 +153,72 @@ void	execute_line(t_token *line, char **env)
 	char	*part_path;
 	int		i;
 	struct stat filestat;
+	int 		target_idx;
+	
+	i = 0;
 	path_env = ft_getenv(line->envp, "PATH"); // value
-	char	*is_path;
-	// '/' 있는지 먼저 확인
-	is_path = ft_strchr(line->command[0], '/');
-	if (path_env)
+	target_idx = ft_strchr_idx(line->command[0], '/');
+	if (!target_idx)
 	{
-		path = ft_split(path_env, ':');
-		i = 0;
-		while (path[i] != 0)
-		{
-			part_path = ft_strjoin(path[i], "/");
-			current_path = ft_strjoin(part_path, line->command[0]);
-			if (!access(current_path, F_OK))
-				break ;
-			free(current_path);
-			free(part_path);
-			part_path = NULL;
-			current_path = NULL;
-			++i;
-		}
+		execve(line->command[0], line->command, env);
+		printf("~minishell: %s: %s\n", line->command[0], strerror(errno));
+		exit(1);
 	}
 	else
-		current_path = NULL;
-	printf("path: %s\n", current_path);
-	// '/'가 없고 path에서 못찾으면 127에러
-	if (!is_path && !current_path)
 	{
-		ft_dup2(STDERR_FILENO, STDOUT_FILENO, line->func);
-		printf("!!minishell: %s: command not found\n", line->command[0]);
-		exit(127);
+		target_idx = ft_strchr_idx(line->command[0], '.');
+		if (!target_idx)
+		{
+			stat(line->command[0], &filestat);
+			if (S_ISDIR(filestat.st_mode))
+			{
+				printf("!!minishell: %s: is a directory\n", line->command[0]);
+				exit(127);
+			}
+			else
+			{
+				if (access(line->command[0], F_OK | X_OK) != 0)
+				{
+					printf("!!!minishell: %s: %s\n", line->command[0], strerror(errno));
+					exit(127);
+				}
+			}
+		}
+		else
+		{
+			path = ft_split(path_env, ':');
+			i = 0;
+			while (path[i] != 0)
+			{
+				part_path = ft_strjoin(path[i], "/");
+				current_path = ft_strjoin(part_path, line->command[0]);
+				if (!access(current_path, F_OK))
+					execve(current_path, line->command, env);
+				free(current_path);
+				free(part_path);
+				part_path = NULL;
+				current_path = NULL;
+				++i;
+			}
+
+		}
 	}
-	// '/'가없고 경로 찾았을 때 실행 
-	if (!is_path && current_path)
-	{
-		execve(current_path, line->command, env);
-	}
-	// '/bin/ls' or './ls' or '/ls' or 'ls/'
-	if (is_path)
-	{
-		execve(line->command[0], line->command, env); // 절대경로 들어온 경우 잘 끝남
-	}
-	stat(line->command[0], &filestat); // line->command[0] path 의 정보 filestat 에 저장
-	// 디렉토리면
+	stat(line->command[0], &filestat);
 	if (S_ISDIR(filestat.st_mode))
 	{
-		ft_dup2(STDERR_FILENO, STDOUT_FILENO, line->func);
-		printf("##minishell: %s: Is a directory\n", line->command[0]);
-		exit(126);
+		printf("#minishell: %s: is a directory\n", line->command[0]);
+		exit(127);
 	}
-	else if (S_ISREG(filestat.st_mode)) // 파일일 때
+	else
 	{
-		// 실행 권한이 없으면
-		if (access(line->command[0], X_OK))
+		if (access(line->command[0], F_OK | X_OK) != 0)
 		{
-			ft_dup2(STDERR_FILENO, STDOUT_FILENO, line->func);
-			printf("^^minishell: %s: Permission denied\n", line->command[0]);
-			exit (126);
+			printf("##minishell: %s: %s\n", line->command[0], strerror(errno));
+			exit(127);
 		}
-		// 실행 권한이 있으면 그냥 exit?
-		exit (0);
 	}
-	// 없는 파일, 디렉토리면
-	if (access(line->command[0], F_OK))
-	{
-		ft_dup2(STDERR_FILENO, STDOUT_FILENO, line->func);
-		printf("~~minishell: %s: No such file or directory\n", line->command[0]);
-		exit (127);
-	}
-	// 파일이 있는데 파일 이름 뒤에 /가 오면 => 어떻게 해야할지??? S_ISREG 에 안 걸림..
-	ft_dup2(STDERR_FILENO, STDOUT_FILENO, line->func);
-	printf("**minishell: %s: Not a directory\n", line->command[0]);
-	exit(126);
+	ft_putendl_fd(line->command[0], 2);
+	exit(EXIT_FAILURE);
 }
 
 void	manage_io(t_token *line, int count, int total, int (*fd)[2])
