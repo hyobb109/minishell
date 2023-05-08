@@ -168,7 +168,7 @@ int		search_env(char **str, char *buf, t_edeque *envp, t_vars v);
 int		exist_args(t_token *token);
 t_env	*find_value(t_edeque *envp, char *key);
 char	*ft_getenv(t_edeque *envp, char *key);
-void	change_env(t_token *token, char *cwd_name);
+int		change_env(t_token *token, char *cwd_name);
 int		exec_pwd(void);
 void	exec_exit(t_token *token);
 int		chdir_home(void);
@@ -191,6 +191,8 @@ int		exec_builtins(t_token *token);
 int		is_builtin(char *cmd);
 int		exec_unset(t_token *token);
 char	*swapfree_strs(char *result, char *result2);
+t_env	*init_envelem(char *key, char *value);
+int		is_validkey(char *key);
 
 // pipe
 void	parents_process(t_deque *cmd_deque);
