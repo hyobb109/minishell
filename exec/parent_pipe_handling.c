@@ -6,15 +6,15 @@
 /*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 17:40:43 by hyunwoju          #+#    #+#             */
-/*   Updated: 2023/05/08 17:41:03 by hyunwoju         ###   ########.fr       */
+/*   Updated: 2023/05/08 18:36:07 by hyunwoju         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int (*create_pipe(t_deque *cmd_deque))[2]
+int	(*create_pipe(t_deque *cmd_deque))[2]
 {
-	int (*fd)[2];
+	int	(*fd)[2];
 	int	idx;
 
 	if (cmd_deque->cnt == 1)

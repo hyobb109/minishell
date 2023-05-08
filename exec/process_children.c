@@ -1,12 +1,12 @@
 /* ************************************************************************** */
-/*                                                                             */
+/*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   process_children.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 19:37:29 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/01 22:27:32 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/05/08 18:37:57 by hyunwoju         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	child_process(t_token *line, int count, int total, int (*fd)[2])
 {
-	char **env;
+	char	**env;
 
 	env = NULL;
 	manage_file(line);
