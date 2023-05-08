@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_parents.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 16:33:30 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/06 14:56:35 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/05/08 16:16:46 by hyunwoju         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,6 @@ void	only_builtins(t_deque *cmd_deque,  int (*fd)[2])
 	(void)fd;
 	stdin_fd = dup(STDIN_FILENO);
 	stdout_fd = dup(STDOUT_FILENO);
-	// manage_file(cmd_deque->head);
-	// manage_io(cmd_deque->head, 0, 1, fd);
-	// exec_builtins(cmd_deque->head);
 	if (manage_file(cmd_deque->head))
 	{
 		printf("infile :%d, outfile:%d\n", cmd_deque->head->infile_fd, cmd_deque->head->outfile_fd);
