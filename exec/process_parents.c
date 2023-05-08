@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_parents.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 16:33:30 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/08 17:41:33 by hyunwoju         ###   ########.fr       */
+/*   Updated: 2023/05/08 18:14:33 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,25 +110,27 @@ void	unlink_here_doc(t_deque *cmd_deque)
 
 char	*check_env_var(char *line, t_edeque *envp)
 {
+	t_vars	v;
 	int		idx;
 	char	buf[ARG_MAX];
 	int		len;
 	
 	ft_memset(buf, 0, ARG_MAX);
-	idx = 0;
-	len = 0;
-	while (line[idx])
+	v.i = 0;
+	v.len = 0;
+	v.flag = 0;
+	while (line[v.i])
 	{
-		if (line[idx] == '$')
+		if (line[v.i] == '$')
 		{
-			idx += env_trans(&line[idx + 1], envp, &buf[len], 1);
-			len = ft_strlen(buf);
+			v.i += env_trans(&line[v.i + 1], envp, &buf[v.len], v);
+			v.len = ft_strlen(buf);
 		}
 		else
 		{
-			buf[len++] = line[idx];
+			buf[v.len++] = line[v.i];
 		}
-		idx++;
+		v.i++;
 	}
 	return (ft_strdup(buf));
 }

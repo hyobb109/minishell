@@ -6,7 +6,7 @@
 /*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 05:41:25 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/05/05 16:50:00 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/05/08 17:58:33 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static void	check_blank(char *buf)
 	}
 }
 
-int	env_trans(char *str, t_edeque *envp, char *buf, int quote)
+int	env_trans(char *str, t_edeque *envp, char *buf, t_vars v)
 {
 	t_env	*tmp;
 	int		key_len;
@@ -69,7 +69,7 @@ int	env_trans(char *str, t_edeque *envp, char *buf, int quote)
 		if (is_envkey(str, tmp->key, &key_len))
 		{
 			ft_memcpy(buf, tmp->val, ft_strlen(tmp->val));
-			if (!quote)
+			if (!v.flag && !v.quote)
 				check_blank(buf);
 			return (key_len);
 		}
@@ -78,21 +78,21 @@ int	env_trans(char *str, t_edeque *envp, char *buf, int quote)
 	return (key_len);
 }
 
-int	search_env(char **str, char *buf, t_edeque *envp, int quote)
+int	search_env(char **str, char *buf, t_edeque *envp, t_vars v)
 {
 	int	i;
 	int	key_len;
 
-	if (!quote)
-		*str += env_trans(*str + 1, envp, &buf[0], quote);
+	if (!v.quote)
+		*str += env_trans(*str + 1, envp, &buf[0], v);
 	else
 	{
 		i = 0;
-		while (**str != quote)
+		while (**str != v.quote)
 		{
 			if (**str == '$')
 			{
-				key_len = env_trans(*str + 1, envp, &buf[i], quote);
+				key_len = env_trans(*str + 1, envp, &buf[i], v);
 				i = ft_strlen(buf);
 			}
 			else

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_tokens.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:15:26 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/08 18:03:53 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/05/06 14:02:10 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,70 +62,80 @@ void	check_empty_str(char **cmds)
 	}
 }
 
-char	**parse_command(char *str, t_token *token)
+char	**parse_command(char *str, t_token *token, int quote)
 {
-	t_vars	v;
+	int		len;
+	int		q_flag;
+	char	**cmds;
 	char	buffer[ARG_MAX];
 
-	v.quote = CLOSED;
-	v.len = 0;
-	v.flag = 0;
+	cmds = NULL;
 	ft_memset(buffer, 0, ARG_MAX);
 	while (is_blank(*str))
 		str++;
+	quote = CLOSED;
+	q_flag = FALSE;
+	len = 0;
 	while (*str)
 	{
-		if (!v.quote && (*str == '\'' || *str == '\"'))
-			v.quote = *str;
-		else if (v.quote && *str == v.quote)
+		if (!quote && (*str == '\'' || *str == '\"'))
 		{
-			if (*(str - 1) == v.quote)
-				buffer[v.len++] = EMPTY;
-			v.quote = CLOSED;
+			quote = *str;
+			q_flag = TRUE;
 		}
-		else if (!v.quote && (*str == '<' || *str == '>'))
+		else if (quote && *str == quote)
+		{
+			if (*(str - 1) == quote)
+				buffer[len++] = EMPTY;
+			quote = CLOSED;
+		}
+		else if (!quote && (*str == '<' || *str == '>'))
 			check_redir(&str, token);
-		else if ((!v.quote && *str == '$') || (v.quote == '\"' && *str == '$'))
+		else if ((!quote && *str == '$') || (quote == '\"' && *str == '$'))
 		{
 			if (ft_isalpha(*(str + 1)) || *(str + 1) == '_')
-				v.len += search_env(&str, &buffer[v.len], token->envp, v);
+				len += search_env(&str, &buffer[len], token->envp, quote);
 			else if (*(str + 1) == '?')
 			{
 				printf("exit: %d\n", g_exit_status);
 				char *status = ft_itoa(WEXITSTATUS(g_exit_status));
 				int num_len = ft_strlen(status);
-				ft_memcpy(&buffer[v.len], status, num_len);
-				v.len += num_len;
+				ft_memcpy(&buffer[len], status, num_len);
+				len += num_len;
 				str++;
-				if (v.quote)
+				if (quote)
 					str++;
 			}
 			else
 				str++;
-			if (v.quote)
-				v.quote = CLOSED;
+			if (quote)
+				quote = CLOSED;
 		}
-		else if (!v.quote && is_blank(*str))
-			buffer[v.len++] = BLANK;
+		else if (!quote && is_blank(*str))
+			buffer[len++] = BLANK;
 		else
-			buffer[v.len++] = *str;
+			buffer[len++] = *str;
 		if (*str == '\0')
 			break ;
 		str++;
 	}
-	buffer[v.len] = '\0';
-	if (!buffer[0])
-		return (NULL);
-	return (ft_split(buffer, BLANK));
+	buffer[len] = '\0';
+	if (buffer[0])
+	{
+		cmds = ft_split(buffer, BLANK);
+		check_empty_str(cmds);
+	}
+	return (cmds);
 }
 
+// cmd 와 arg로 분리
 static void	init_token(char *str, t_token *token, t_edeque *envp)
 {
 	token->envp = envp;
+	//TODO - infile/outfile
 	token->func = GENERAL;
 	token->files = NULL;
-	token->command = parse_command(str, token);
-	check_empty_str(token->command);
+	token->command = parse_command(str, token, CLOSED);
 	if (token->command && is_builtin(token->command[0]))
 		token->func = BUILTIN;
 	token->status = 0;
@@ -140,6 +150,7 @@ void	make_cmdlst(char *str, t_deque *cmd_deque, t_edeque *envp)
 	int			i;
 
 	i = 0;
+	// quotes 안에 | 따로 처리 필요
 	strs = ft_pipe_split(str);
 	while (strs[i])
 	{

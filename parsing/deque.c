@@ -6,33 +6,11 @@
 /*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 14:23:22 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/04 17:37:51 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/05/08 17:11:57 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-// void	append_front(t_deque *deque, char *command)
-// {
-// 	t_token	*new_element;
-
-// 	new_element = (t_token *)malloc(sizeof(t_token));
-// 	if (!new_element)
-// 		return ;
-// 	init_element(new_element, command);
-// 	if (!deque->head)
-// 	{
-// 		deque->head = new_element;
-// 		deque->tail = new_element;
-// 	}
-// 	else
-// 	{
-// 		deque->head->prev = new_element;
-// 		new_element->next = deque->head;
-// 		deque->head = new_element;
-// 	}
-// 	deque->cnt++;
-// }
 
 void	append_back(t_deque *deque, t_token *token)
 {

@@ -34,7 +34,7 @@
 typedef enum e_flag {
 	EMPTY = -2,
 	BLANK,
-	CLOSED
+	CLOSED,
 }	t_flag;
 
 typedef enum e_state {
@@ -58,8 +58,6 @@ typedef struct s_fdata
 	struct	s_fdata	*next;
 }	t_fdata;
 
-
-// delete
 typedef struct s_syntax
 {
 	char	flag;
@@ -67,6 +65,14 @@ typedef struct s_syntax
 	int		i;
 	char	*tmp;
 }	t_syntax;
+
+typedef struct s_vars
+{
+	int		i;
+	int		len;
+	int		flag;
+	char	quote;
+}	t_vars;
 
 typedef struct s_env
 {
@@ -149,15 +155,14 @@ void	print_filelst(t_deque *cmd_lst); // delete
 
 // parsing
 char	**ft_pipe_split(char *str);
-char	*expand_environ(char *str, t_token *token, int quote);
-char	**parse_command(char *str, t_token *token, int quote);
+char	**parse_command(char *str, t_token *token);
 int		syntax_error(char *str);
 void	make_cmdlst(char *str, t_deque *cmd_deque, t_edeque *envp);
 int		is_blank(char c);
 
 // environ
-int		env_trans(char *str, t_edeque *envp, char *buf, int quote);
-int		search_env(char **str, char *buf, t_edeque *envp, int quote);
+int		env_trans(char *str, t_edeque *envp, char *buf, t_vars v);
+int		search_env(char **str, char *buf, t_edeque *envp, t_vars v);
 
 // builtins
 int		exist_args(t_token *token);

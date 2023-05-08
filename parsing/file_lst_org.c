@@ -6,7 +6,7 @@
 /*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 15:08:06 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/05/08 17:55:19 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/05/08 17:16:52 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,40 +41,47 @@ void	append_file(t_fdata **head, t_fdata *new)
 
 void	get_filename(char **str, t_fdata *new, t_token *token)
 {
-	t_vars	v;
+	int		quote;
+	int		len;
+	char	*tmp;
 
 	while (is_blank(**str))
 		*str += 1;
-	v.len = 0;
-	v.quote = 0;
-	v.flag = 1;
+	len = 0;
+	quote = 0;
 	while (**str)
 	{
-		if (!v.quote && (is_blank(**str) || **str == '<' || **str == '>'))
+		if (!quote && (is_blank(**str) || **str == '<' || **str == '>'))
 			break ;
-		if (!v.quote && (**str == '\'' || **str == '\"'))
+		if (!quote && (**str == '\'' || **str == '\"'))
 		{
-			v.quote = **str;
+			quote = **str;
 			if (new->type == LIMITER)
 				new->type = Q_LIMITER;
 		}
-		else if (v.quote && **str == v.quote)
-			v.quote = CLOSED;
+		else if (quote && **str == quote)
+			quote = CLOSED;
 		else if ((new->type != LIMITER && new->type != Q_LIMITER) && \
-				((!v.quote && **str == '$') || (v.quote == '\"' && **str == '$')))
+				((!quote && **str == '$') || (quote == '\"' && **str == '$')))
 		{
 			if (ft_isalpha(*(*str + 1)) || *(*str + 1) == '_')
-				v.len += search_env(str, &new->filename[v.len], token->envp, v);
+				len += search_env(str, &new->filename[len], token->envp, quote);
 			else
 				*str += 1;
-			if (v.quote)
-				v.quote = CLOSED;
+			if (quote)
+				quote = CLOSED;
 		}
 		else
-			new->filename[v.len++] = **str;
+			new->filename[len++] = **str;
 		*str += 1;
 	}
-	new->filename[v.len] = '\0';
+	new->filename[len] = '\0';
+	tmp = ft_strchr(new->filename, BLANK);
+	while (tmp)
+	{
+		*tmp = ' ';
+		tmp = ft_strchr(tmp, BLANK);
+	}
 	append_file(&token->files, new);
 }
 
