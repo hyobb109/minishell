@@ -126,11 +126,17 @@ void	execute_line(t_token *line, char **env)
 		printf("##minishell: %s: Is a directory\n", line->command[0]);
 		exit(126);
 	}
-	else if (S_ISREG(filestat.st_mode) && access(line->command[0], X_OK)) // 파일이고 실행 권한이 없으면
+	else if (S_ISREG(filestat.st_mode)) // 파일일 때
 	{
-		ft_dup2(STDERR_FILENO, STDOUT_FILENO, line->func);
-		printf("^^minishell: %s: Permission denied\n", line->command[0]);
-		exit (126);
+		// 실행 권한이 없으면
+		if (access(line->command[0], X_OK))
+		{
+			ft_dup2(STDERR_FILENO, STDOUT_FILENO, line->func);
+			printf("^^minishell: %s: Permission denied\n", line->command[0]);
+			exit (126);
+		}
+		// 실행 권한이 있으면 그냥 exit?
+		exit (0);
 	}
 	// 없는 파일, 디렉토리면
 	if (access(line->command[0], F_OK))
