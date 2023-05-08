@@ -140,7 +140,7 @@ int	open_here_doc(t_token *cur_token, t_fdata *cur_file, int count)
 		signal(SIGINT, SIG_DFL);
 		exec_here_doc(cur_token, cur_file, here_doc_name);
 	}
-	signal(SIGINT, signal_handler2);
+	signal(SIGINT, signal_handler_heredoc);
 	waitpid(-1, &g_exit_status, 0);
 	ft_signal_set();
 	if (WIFSIGNALED(g_exit_status))
