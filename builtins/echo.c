@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/22 15:55:25 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/04 20:42:20 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/05/08 17:59:49 by yunjcho          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,49 +14,30 @@
 
 char	*join_all(t_token *token, int idx)
 {
-	char	*home;
 	char	*result;
 	char	*result2;
 
-	home = ft_getenv(token->envp, "HOME");
 	result = ft_strdup("");
 	result2 = NULL;
 	while (token->command[idx])
 	{
-		if (idx == 1 && !ft_strcmp(token->command[1], "~")) //-n옵션이 무효한 경우
-		{
-			result2 = ft_strjoin(result, home);
-			free(result);
-			result = result2;
-			result2 = NULL;
-		}
-		else if (idx >= 2 && !ft_strcmp(token->command[2], "~")) //-n 옵션이 유효한 경우
-		{
-			result2 = ft_strjoin(result, home);
-			free(result);
-			result = result2;
-			result2 = NULL;
-		}
+		if (idx == 1 && !ft_strcmp(token->command[1], "~"))
+			result2 = ft_strjoin(result, ft_getenv(token->envp, "HOME"));
+		else if (idx >= 2 && !ft_strcmp(token->command[2], "~"))
+			result2 = ft_strjoin(result, ft_getenv(token->envp, "HOME"));
 		else
-		{
 			result2 = ft_strjoin(result, token->command[idx]);
-			free(result);
-			result = result2;
-			result2 = NULL;
-		}
+		result = swapfree_strs(result, result2);
 		if (token->command[idx + 1])
 		{
 			result2 = ft_strjoin(result, " ");
-			free(result);
-			result = result2;
-			result2 = NULL;
+			result = swapfree_strs(result, result2);
 		}
 		idx++;
 	}
 	return (result);
 }
 
-// echo 명령어에서 출력을 시작할 행의 인덱스를 반환
 int	check_option(char **arguments)
 {
 	int	idx1;

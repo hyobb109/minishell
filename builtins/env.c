@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 20:42:23 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/05 16:38:24 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/05/08 21:38:47 by yunjcho          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,7 @@ int	exec_env(t_token *token)
 		if (flag)
 		{
 			if (flag == 1)
-				exec_pwd(token);
+				exec_pwd();
 			else if (flag == 5)
 				return (-1);
 			else if (flag == 2)

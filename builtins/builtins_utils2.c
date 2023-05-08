@@ -1,25 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtins_utils.c                                   :+:      :+:    :+:   */
+/*   builtins_utils2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/26 15:36:38 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/03 22:10:25 by hyunwoju         ###   ########.fr       */
+/*   Created: 2023/05/08 22:28:24 by yunjcho           #+#    #+#             */
+/*   Updated: 2023/05/08 22:28:55 by yunjcho          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	exist_args(t_token *token)
-{
-	if (!token->command[1])
-		return (0);
-	return (1);
-}
-
-/* cd, export에서 사용 */
 t_env	*find_value(t_edeque *envp, char *key)
 {
 	t_env	*tmp;
@@ -34,7 +26,26 @@ t_env	*find_value(t_edeque *envp, char *key)
 	return (NULL);
 }
 
-/* cd, execuve */
+t_env	*init_envelem(char *key, char *value)
+{
+	t_env	*new;
+
+	new = malloc(sizeof(t_env));
+	if (!new)
+		return (NULL);
+	if (key)
+		new->key = ft_strdup(key);
+	else
+		new->key = ft_strdup("");
+	if (value)
+		new->val = ft_strdup(value);
+	else
+		new->val = NULL;
+	new->prev = NULL;
+	new->next = NULL;
+	return (new);
+}
+
 char	*ft_getenv(t_edeque *envp, char *key)
 {
 	t_env	*tmp;

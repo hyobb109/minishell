@@ -169,7 +169,7 @@ int		exist_args(t_token *token);
 t_env	*find_value(t_edeque *envp, char *key);
 char	*ft_getenv(t_edeque *envp, char *key);
 void	change_env(t_token *token, char *cwd_name);
-int		exec_pwd(t_token *token);
+int		exec_pwd(void);
 void	exec_exit(t_token *token);
 int		chdir_home(void);
 char	*make_dirstr(char *str, char *cwd_name, char *parent_dir, char *home_dir);
@@ -189,6 +189,8 @@ void	print_envlist(t_token *token);
 int		exec_env(t_token *token);
 int		exec_builtins(t_token *token);
 int		is_builtin(char *cmd);
+int		exec_unset(t_token *token);
+char	*swapfree_strs(char *result, char *result2);
 
 // pipe
 void	parents_process(t_deque *cmd_deque);
