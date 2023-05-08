@@ -6,7 +6,7 @@
 /*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 17:51:49 by hyunwoju          #+#    #+#             */
-/*   Updated: 2023/05/08 18:06:27 by hyunwoju         ###   ########.fr       */
+/*   Updated: 2023/05/08 18:21:42 by hyunwoju         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,10 @@ void	execute_line(t_token *line, char **env)
 				{
 					if (S_ISREG(filestat.st_mode))
 					{
-						printf("minishell: %s: Permission denied\n", line->command[0]);
+						if (access(line->command[0], X_OK) == -1)
+							printf("minishell: %s: Permission denied\n", line->command[0]);
+						else if (access(line->command[0], X_OK) == 0)
+							execve(line->command[0], line->command, env);
 						exit (126);
 					}
 					printf("minishell: %s: No such file or directory\n", line->command[0]);
