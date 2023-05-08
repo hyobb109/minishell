@@ -6,7 +6,7 @@
 /*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 16:33:30 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/08 18:14:33 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/05/08 18:21:08 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,10 +111,8 @@ void	unlink_here_doc(t_deque *cmd_deque)
 char	*check_env_var(char *line, t_edeque *envp)
 {
 	t_vars	v;
-	int		idx;
 	char	buf[ARG_MAX];
-	int		len;
-	
+
 	ft_memset(buf, 0, ARG_MAX);
 	v.i = 0;
 	v.len = 0;
