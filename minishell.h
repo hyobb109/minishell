@@ -210,7 +210,8 @@ void	manage_pipe(int count, int total, int (*fd)[2]);
 int		manage_file(t_token *line);
 
 int		open_infile(char *filename, int *infile_fd, int func);
-int		open_outfile(char *filename, int *outfile_fd, int append_flag, int func);
+// int		open_outfile(char *filename, int *outfile_fd, int append_flag, int func);
+int		open_outfile(t_fdata *cur_file, int *outfile_fd, int func);
 
 void	assign_argument(char **str, char *av);
 void	get_size(char **arguments, char *av);

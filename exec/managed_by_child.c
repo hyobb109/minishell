@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   managed_by_child.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 17:46:11 by hyunwoju          #+#    #+#             */
-/*   Updated: 2023/05/08 18:38:29 by hyunwoju         ###   ########.fr       */
+/*   Updated: 2023/05/09 00:11:52 by yunjcho          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,22 +17,22 @@ int	manage_file(t_token *line)
 	t_fdata	*cur_file;
 	int		infile_fd;
 	int		outfile_fd;
-	int		apd_flag;
 
 	cur_file = line->files;
 	infile_fd = 0;
 	outfile_fd = 0;
 	while (cur_file != NULL)
 	{
-		apd_flag = 0;
 		if (cur_file->type == INFILE || cur_file->type == LIMITER || \
 			cur_file->type == Q_LIMITER)
-			open_infile(cur_file->filename, &infile_fd, line->func);
+		{
+			if (open_infile(cur_file->filename, &infile_fd, line->func) < 0)
+				return (-1);
+		}
 		else if (cur_file->type == OUTFILE || cur_file->type == APPEND)
 		{
-			if (cur_file->type == APPEND)
-				apd_flag = 1;
-			open_outfile(cur_file->filename, &outfile_fd, apd_flag, line->func);
+			if (open_outfile(cur_file, &outfile_fd, line->func) < 0)
+				return (-1);
 		}
 		cur_file = cur_file->next;
 	}
@@ -50,24 +50,31 @@ int	open_infile(char *filename, int *infile_fd, int func)
 		if (func != P_BUILTIN)
 			exit (1);
 		else
-			return (0);
+			return (-1);
 	}
 	return (1);
 }
 
-int	open_outfile(char *filename, int *outfile_fd, int append_flag, int func)
+int	open_outfile(t_fdata *cur_file, int *outfile_fd, int func)
 {
-	if (append_flag)
-		*outfile_fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0777);
+	int	apd_flag;
+
+	apd_flag = 0;
+	if (cur_file->type == APPEND)
+		apd_flag = 1;
+	if (apd_flag)
+		*outfile_fd = open(cur_file->filename, \
+			O_WRONLY | O_CREAT | O_APPEND, 0777);
 	else
-		*outfile_fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0777);
+		*outfile_fd = open(cur_file->filename, \
+			O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	if (*outfile_fd == -1)
 	{
-		printf("minishell: %s: %s\n", filename, strerror(errno));
+		printf("minishell: %s: %s\n", cur_file->filename, strerror(errno));
 		if (func != P_BUILTIN)
 			exit (1);
 		else
-			return (0);
+			return (-1);
 	}
 	return (1);
 }
