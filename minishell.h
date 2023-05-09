@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                     :+:      :+:    :+:   */
+/*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 14:16:48 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/04/15 14:17:30 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/05/09 18:04:11 by hyunwoju         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ typedef struct s_fdata
 {
 	char			filename[PATH_MAX];
 	int				type;
-	struct	s_fdata	*next;
+	struct s_fdata	*next;
 }	t_fdata;
 
 typedef struct s_syntax
@@ -97,8 +97,8 @@ typedef struct s_token
 	int				new_fds[2];
 	struct s_token	*prev;
 	struct s_token	*next;
-	int				func; // builtin?
-	int				status; // exit code
+	int				func;
+	int				status;
 	int				infile_fd;
 	int				outfile_fd;
 	t_fdata			*files;
@@ -112,11 +112,10 @@ typedef struct s_deque
 	int		cnt;
 }	t_deque;
 
-
 typedef struct s_matrix
 {
-	int row;
-	int column;
+	int	row;
+	int	column;
 }	t_matrix;
 
 extern int	g_exit_status;
@@ -124,12 +123,10 @@ extern int	g_exit_status;
 // deque
 void	init_deque(t_deque *deque);
 void	init_element(t_token *element, char **parsed);
-// void	append_front(t_deque *deque, char *command);
 void	append_back(t_deque *deque, t_token *token);
 t_token	*pop_front(t_deque *deque);
 t_token	*pop_back(t_deque *deque);
 void	free_deque(t_deque *deque);
-void	print_deque(t_deque *deque); //delete
 
 //edeque
 void	init_edeque(t_edeque *deque);
@@ -139,7 +136,6 @@ void	append_back_env(t_edeque *deque, t_env *env);
 t_env	*pop_front_env(t_edeque *deque);
 t_env	*pop_back_env(t_edeque *deque);
 t_env	*pop_select_env(t_edeque *deque, char *key);
-void	print_edeque(t_edeque *deque); // delete
 
 // signal
 void	signal_handler(int sig);
@@ -151,7 +147,7 @@ void	check_redir(char **str, t_token *token);
 void	append_file(t_fdata **head, t_fdata *new);
 void	free_files(t_fdata **lst);
 int		is_heredoc(t_fdata *file);
-void	print_filelst(t_deque *cmd_lst); // delete
+
 // parsing
 void	init_vars(t_vars *v, char *buf, int file);
 char	**ft_pipe_split(char *str);
@@ -162,7 +158,6 @@ int		empty_error(char *str);
 void	make_cmdlst(char *str, t_deque *cmd_deque, t_edeque *envp);
 int		is_blank(char c);
 int		is_environ(char quote, char c);
-
 
 // environ
 int		env_trans(char *str, t_edeque *envp, char *buf, t_vars v);
@@ -176,7 +171,8 @@ int		change_env(t_token *token, char *cwd_name);
 int		exec_pwd(void);
 void	exec_exit(t_token *token);
 int		chdir_home(void);
-char	*make_dirstr(char *str, char *cwd_name, char *parent_dir, char *home_dir);
+char	*make_dirstr(char *str, char *cwd_name, \
+		char *parent_dir, char *home_dir);
 int		exec_cd(t_token *token);
 char	**make_strmatrix(t_edeque *envp);
 char	**sorting_strsarr(t_edeque *envp);
@@ -213,7 +209,6 @@ void	manage_pipe(int count, int total, int (*fd)[2]);
 int		manage_file(t_token *line);
 
 int		open_infile(char *filename, int *infile_fd, int func);
-// int		open_outfile(char *filename, int *outfile_fd, int append_flag, int func);
 int		open_outfile(t_fdata *cur_file, int *outfile_fd, int func);
 
 void	assign_argument(char **str, char *av);
@@ -225,6 +220,7 @@ char	**strs_trim(char **before, int row);
 
 char	**make_envstrs(t_token *token);
 void	execute_line(t_token *line, char **env);
+void	print_error(t_token *line, char *err_msg, int exit_code);
 void	manage_io(t_token *line, int count, int total, int (*fd)[2]);
 
 pid_t	ft_fork(void);
@@ -236,8 +232,10 @@ int		ft_pipe(int fd[2]);
 int		find_here_doc(t_deque *cmd_deque);
 int		open_here_doc(t_token *cur_token, t_fdata *cur_file, int count);
 char	*here_doc_make_name(int count);
-void	exec_here_doc(t_token *cur_token, t_fdata *cur_file, char *here_doc_name);
-void	here_doc_write(t_token *cur_token, t_fdata *cur_file, char *line, int here_doc_fd);
+void	exec_here_doc(t_token *cur_token, t_fdata *cur_file, \
+		char *here_doc_name);
+void	here_doc_write(t_token *cur_token, t_fdata *cur_file, \
+		char *line, int here_doc_fd);
 void	unlink_here_doc(t_deque *cmd_deque);
 char	*check_env_var(char *line, t_edeque *envp);
 char	*get_next_line(int fd);
