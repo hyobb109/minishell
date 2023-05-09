@@ -156,7 +156,7 @@ void	print_filelst(t_deque *cmd_lst); // delete
 // parsing
 void	init_vars(t_vars *v, char *buf, int file);
 char	**ft_pipe_split(char *str);
-char	**parse_command(char *str, t_token *token);
+char	**parse_command(char *str, t_token *token, t_vars *v, char *buffer);
 int		syntax_error(char *str);
 int		quote_error(char *str);
 int		empty_error(char *str);
