@@ -6,72 +6,24 @@
 /*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 15:08:06 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/05/09 15:33:43 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/05/09 15:54:48 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	free_files(t_fdata **lst)
-{
-	t_fdata	*tmp;
-
-	while (*lst)
-	{
-		tmp = (*lst)->next;
-		free(*lst);
-		*lst = tmp;
-	}
-}
-
-void	append_file(t_fdata **head, t_fdata *new)
-{
-	t_fdata	*last;
-
-	if (!(*head))
-	{
-		*head = new;
-		return ;
-	}
-	last = *head;
-	while (last->next)
-		last = last->next;
-	last->next = new;
-}
-
-void	init_vars(t_vars *v, char *buf, int file)
-{
-	if (file)
-		ft_memset(buf, 0, PATH_MAX);
-	else
-		ft_memset(buf, 0, ARG_MAX);
-	v->flag = file;
-	v->i = 0;
-	v->len = 0;
-	v->quote = CLOSED;
-}
-
-int	is_heredoc(int type)
+static int	is_heredoc(int type)
 {
 	if (type == LIMITER || type == Q_LIMITER)
 		return (TRUE);
 	return (FALSE);
 }
 
-int	is_environ(char quote, char c)
-{
-	if (c == '$' && quote == CLOSED)
-		return (TRUE);
-	if (c == '$' && quote == '\"')
-		return (TRUE);
-	return (FALSE);
-}
-
-char	*check_file_environ(t_vars *v, t_token *token, char **str, char *filename)
+static char	*check_file_env(t_vars *v, t_token *token, char **str, char *file)
 {
 	if (ft_isalpha(*(*str + 1)) || *(*str + 1) == '_')
 	{
-		v->len += search_env(str, filename, token->envp, *v);
+		v->len += search_env(str, file, token->envp, *v);
 	}
 	else
 	{
@@ -83,7 +35,7 @@ char	*check_file_environ(t_vars *v, t_token *token, char **str, char *filename)
 	return (*str);
 }
 
-void	get_filename(char **str, t_fdata *new, t_token *token)
+static void	get_filename(char **str, t_fdata *new, t_token *token)
 {
 	t_vars	v;
 
@@ -103,7 +55,7 @@ void	get_filename(char **str, t_fdata *new, t_token *token)
 		else if (v.quote && **str == v.quote)
 			v.quote = CLOSED;
 		else if (!is_heredoc(new->type) && is_environ(v.quote, **str))
-			*str = check_file_environ(&v, token, str, &new->filename[v.len]);
+			*str = check_file_env(&v, token, str, &new->filename[v.len]);
 		else
 			new->filename[v.len++] = **str;
 		*str += 1;

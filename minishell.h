@@ -148,7 +148,6 @@ void	ft_signal_set(void);
 
 // file list
 void	check_redir(char **str, t_token *token);
-void	get_filename(char **str, t_fdata *new, t_token *token);
 void	append_file(t_fdata **head, t_fdata *new);
 void	free_files(t_fdata **lst);
 void	print_filelst(t_deque *cmd_lst); // delete
@@ -193,7 +192,6 @@ void	print_invalidargserror(t_token *token);
 void	print_envlist(t_token *token);
 int		exec_env(t_token *token);
 int		exec_builtins(t_token *token);
-int		is_builtin(char *cmd);
 int		exec_unset(t_token *token);
 char	*swapfree_strs(char *result, char *result2);
 t_env	*init_envelem(char *key, char *value);
