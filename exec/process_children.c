@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_children.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 19:37:29 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/09 19:35:25 by hyunwoju         ###   ########.fr       */
+/*   Updated: 2023/05/09 20:21:35 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	child_process(t_token *line, int count, int total, int (*fd)[2])
 	else
 	{
 		env = make_envstrs(line);
-		if (line->command != NULL)
+		if (line->command && line->command[0])
 			execute_line(line, env);
 	}
 	exit (0);
