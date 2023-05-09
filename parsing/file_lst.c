@@ -3,19 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   file_lst.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 15:08:06 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/05/09 15:54:48 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/05/09 16:24:07 by hyunwoju         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static int	is_heredoc(int type)
+int	is_heredoc(t_fdata *file)
 {
-	if (type == LIMITER || type == Q_LIMITER)
-		return (TRUE);
+	if (file)
+	{
+		if (file->type == LIMITER || file->type == Q_LIMITER)
+			return (TRUE);
+	}
 	return (FALSE);
 }
 
@@ -54,7 +57,7 @@ static void	get_filename(char **str, t_fdata *new, t_token *token)
 		}
 		else if (v.quote && **str == v.quote)
 			v.quote = CLOSED;
-		else if (!is_heredoc(new->type) && is_environ(v.quote, **str))
+		else if (!is_heredoc(new) && is_environ(v.quote, **str))
 			*str = check_file_env(&v, token, str, &new->filename[v.len]);
 		else
 			new->filename[v.len++] = **str;

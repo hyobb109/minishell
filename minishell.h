@@ -150,8 +150,8 @@ void	ft_signal_set(void);
 void	check_redir(char **str, t_token *token);
 void	append_file(t_fdata **head, t_fdata *new);
 void	free_files(t_fdata **lst);
+int		is_heredoc(t_fdata *file);
 void	print_filelst(t_deque *cmd_lst); // delete
-
 // parsing
 void	init_vars(t_vars *v, char *buf, int file);
 char	**ft_pipe_split(char *str);

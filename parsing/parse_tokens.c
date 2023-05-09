@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_tokens.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:15:26 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/09 15:52:16 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/05/09 16:14:11 by hyunwoju         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ void	make_cmdlst(char *str, t_deque *cmd_deque, t_edeque *envp)
 		append_back(cmd_deque, token);
 		i++;
 	}
-	// print_filelst(cmd_deque);
+	 print_filelst(cmd_deque);
 	free_strs(strs);
 	print_deque(cmd_deque);
 }

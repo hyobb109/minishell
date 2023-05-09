@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 12:30:29 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/04/27 21:41:00 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/05/09 16:43:33 by hyunwoju         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,17 @@ char	*ft_strjoin(char *s1, char *s2)
 		ft_error();
 	i = 0;
 	j = 0;
-	while (s1[j])
-		res[i++] = s1[j++];
+	if (s1)
+	{
+		while (s1[j])
+			res[i++] = s1[j++];
+	}
 	j = 0;
-	while (s2[j])
-		res[i++] = s2[j++];
+	if (s2)
+	{
+		while (s2[j])
+			res[i++] = s2[j++];
+	}
 	res[i] = '\0';
-	s1 = 0;
 	return (res);
 }
