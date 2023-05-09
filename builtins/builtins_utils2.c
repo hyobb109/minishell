@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_utils2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 22:28:24 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/08 22:28:55 by yunjcho          ###   ########seoul.kr  */
+/*   Updated: 2023/05/09 19:34:52 by hyunwoju         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ t_env	*init_envelem(char *key, char *value)
 
 	new = malloc(sizeof(t_env));
 	if (!new)
-		return (NULL);
+		ft_error();
 	if (key)
 		new->key = ft_strdup(key);
 	else

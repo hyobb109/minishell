@@ -6,7 +6,7 @@
 /*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 15:08:06 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/05/09 16:24:07 by hyunwoju         ###   ########.fr       */
+/*   Updated: 2023/05/09 19:30:27 by hyunwoju         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,21 +91,4 @@ void	check_redir(char **str, t_token *token)
 		newfile->type = OUTFILE;
 	*str += 1;
 	get_filename(str, newfile, token);
-}
-
-// delete!
-void	print_filelst(t_deque *cmd_lst)
-{
-	t_token *tmp = cmd_lst->head;
-
-	for (int i = 0; i < cmd_lst->cnt; i++)
-	{
-		t_fdata *files = tmp->files;
-		while (files)
-		{
-			printf("filename: %s, type: %d\n", files->filename, files->type);
-			files = files->next;
-		}
-		tmp = tmp->next;
-	}
 }

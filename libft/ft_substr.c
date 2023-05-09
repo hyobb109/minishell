@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_substr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 17:03:55 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/05/08 22:18:18 by yunjcho          ###   ########seoul.kr  */
+/*   Updated: 2023/05/09 19:36:17 by hyunwoju         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 		size = s_len - idx;
 	sub = (char *)malloc(sizeof(char) * (size + 1));
 	if (sub == NULL)
-		return (NULL);
+		ft_error();
 	idx = 0;
 	while (idx < size)
 		sub[idx++] = s[start++];

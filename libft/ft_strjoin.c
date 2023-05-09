@@ -6,7 +6,7 @@
 /*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 12:30:29 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/05/09 16:43:33 by hyunwoju         ###   ########.fr       */
+/*   Updated: 2023/05/09 19:34:33 by hyunwoju         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char	*ft_strjoin(char *s1, char *s2)
 
 	len = ft_strlen(s1) + ft_strlen(s2);
 	res = (char *)malloc(sizeof(char) * (len + 1));
-	if (res == NULL)
+	if (!res)
 		ft_error();
 	i = 0;
 	j = 0;

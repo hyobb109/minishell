@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_sorting.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 15:40:01 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/08 22:54:57 by yunjcho          ###   ########seoul.kr  */
+/*   Updated: 2023/05/09 19:35:00 by hyunwoju         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char	**make_strmatrix(t_edeque *envp)
 		return (NULL);
 	string_arr = malloc(sizeof(char *) * (envp->cnt + 1));
 	if (!string_arr)
-		return (NULL);
+		ft_error();
 	tmp = envp->head;
 	while (tmp && idx < envp->cnt)
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 15:21:35 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/04/27 20:37:51 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/05/09 19:35:42 by hyunwoju         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	*ft_calloc(size_t count, size_t size)
 	if (count != 0 && total / count != size)
 		return (0);
 	res = (unsigned char *)malloc(total);
-	if (res == NULL)
+	if (!res)
 		ft_error();
 	return (ft_memset(res, 0, total));
 }

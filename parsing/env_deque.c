@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_deque.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 14:45:34 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/04 17:46:11 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/05/09 19:36:33 by hyunwoju         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,28 +27,6 @@ void	append_back_env(t_edeque *deque, t_env *env)
 	}
 	deque->cnt++;
 }
-
-// void	append_front_env(t_edeque *deque, char *command)
-// {
-// 	t_env	*new_element;
-
-// 	new_element = (t_env *)malloc(sizeof(t_env));
-// 	if (!new_element)
-// 		return ;
-// 	init_element(new_element, command);
-// 	if (!deque->head)
-// 	{
-// 		deque->head = new_element;
-// 		deque->tail = new_element;
-// 	}
-// 	else
-// 	{
-// 		deque->head->prev = new_element;
-// 		new_element->next = deque->head;
-// 		deque->head = new_element;
-// 	}
-// 	deque->cnt++;
-// }
 
 t_env	*pop_front_env(t_edeque *deque)
 {

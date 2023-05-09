@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 21:51:14 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/04/17 16:44:11 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/05/09 19:35:48 by hyunwoju         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ char	*ft_itoa(int n)
 
 	size = cnt_digit((long long)n);
 	res = (char *)malloc(sizeof(char) * size + 1);
-	if (res == NULL)
+	if (!res)
 		ft_error();
 	return (putnum(res, size, (long long)n, 1));
 }

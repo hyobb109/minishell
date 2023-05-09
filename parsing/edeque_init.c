@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   edeque_init.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 16:44:41 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/05/08 13:36:53 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/05/09 19:30:39 by hyunwoju         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,21 +56,5 @@ void	make_envlst(t_edeque *envp, char **env)
 		free_strs(tmp);
 		append_back_env(envp, env_node);
 		i++;
-	}
-}
-
-// delete!!
-void	print_edeque(t_edeque *deque)
-{
-	int		i;
-	t_env	*tmp;
-
-	i = 0;
-	tmp = deque->head;
-	while (tmp)
-	{
-		printf("env[%d] %p key: %s, value: %s, prev : %p, next : %p\n", i, tmp, tmp->key, tmp->val, tmp->prev, tmp->next);
-		i++;
-		tmp = tmp->next;
 	}
 }

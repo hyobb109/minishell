@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   deque_init.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 14:32:42 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/08 17:13:54 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/05/09 19:30:16 by hyunwoju         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,27 +30,5 @@ void	free_deque(t_deque *deque)
 		free_strs(popped->command);
 		free_files(&popped->files);
 		free(popped);
-	}
-}
-
-void	print_deque(t_deque *deque)
-{
-	int		i;
-	t_token	*tmp;
-
-	i = 0;
-	tmp = deque->head;
-	// printf("token cnt: %d\n", deque->cnt);
-	while (tmp)
-	{
-		if (!tmp->command)
-			return;
-		// printf("token[%d] %p prev : %p, next : %p\n", i, tmp, tmp->prev, tmp->next);
-		for (int n = 0; tmp->command[n]; n++)
-		{
-			printf("token[%d]'s command[%d] : %s\n", i, n, tmp->command[n]);
-		}
-		i++;
-		tmp = tmp->next;
 	}
 }

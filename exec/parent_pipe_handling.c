@@ -6,29 +6,27 @@
 /*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 17:40:43 by hyunwoju          #+#    #+#             */
-/*   Updated: 2023/05/08 18:36:07 by hyunwoju         ###   ########.fr       */
+/*   Updated: 2023/05/09 19:29:43 by hyunwoju         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	(*create_pipe(t_deque *cmd_deque))[2]
+void	create_pipe(int (**fd)[2], t_deque *cmd_deque)
 {
-	int	(*fd)[2];
 	int	idx;
 
 	if (cmd_deque->cnt == 1)
-		return (NULL);
-	fd = malloc(sizeof(int *) * (cmd_deque->cnt - 1));
-	if (!fd)
+		return ;
+	(*fd) = malloc(sizeof(int *) * (cmd_deque->cnt - 1));
+	if (!(*fd))
 		ft_error();
 	idx = 0;
 	while (idx < cmd_deque->cnt - 1)
 	{
-		pipe(fd[idx]);
+		pipe((*fd)[idx]);
 		++idx;
 	}
-	return (fd);
 }
 
 void	close_pipe(int (*fd)[2], int count)

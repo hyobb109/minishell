@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   managed_by_child.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 17:46:11 by hyunwoju          #+#    #+#             */
-/*   Updated: 2023/05/09 00:11:52 by yunjcho          ###   ########seoul.kr  */
+/*   Updated: 2023/05/09 19:28:47 by hyunwoju         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,6 @@ void	manage_pipe(int count, int total, int (*fd)[2])
 
 void	manage_io(t_token *line, int count, int total, int (*fd)[2])
 {
-	printf("infile :%d, outfile:%d\n", line->infile_fd, line->outfile_fd);
 	if (line->infile_fd)
 	{
 		ft_dup2(line->infile_fd, STDIN_FILENO, line->func);

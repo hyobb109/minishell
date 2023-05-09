@@ -6,7 +6,7 @@
 /*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 19:37:29 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/09 16:06:00 by hyunwoju         ###   ########.fr       */
+/*   Updated: 2023/05/09 19:35:25 by hyunwoju         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ char	**make_envstrs(t_token *token)
 
 	strs = malloc(sizeof(char *) * (token->envp->cnt + 1));
 	if (!strs)
-		exit(1);
+		ft_error();
 	idx = 0;
 	tmp = token->envp->head;
 	while (tmp)

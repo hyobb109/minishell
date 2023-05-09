@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 14:16:48 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/05/09 18:04:11 by hyunwoju         ###   ########.fr       */
+/*   Updated: 2023/05/09 19:37:38 by hyunwoju         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,8 +93,6 @@ typedef struct s_token
 {
 	char			**command;
 	pid_t			pid;
-	int				pre_fds[2];
-	int				new_fds[2];
 	struct s_token	*prev;
 	struct s_token	*next;
 	int				func;
@@ -111,12 +109,6 @@ typedef struct s_deque
 	t_token	*tail;
 	int		cnt;
 }	t_deque;
-
-typedef struct s_matrix
-{
-	int	row;
-	int	column;
-}	t_matrix;
 
 extern int	g_exit_status;
 
@@ -203,7 +195,7 @@ void	wait_child(int count, t_deque *cmd_deque);
 void	find_child(t_deque *cmd_deque, int status, pid_t pid);
 void	close_pipe(int (*fd)[2], int count);
 void	create_child(t_deque *cmd_deque, int (*fd)[2]);
-int		(*create_pipe(t_deque *cmd_deque))[2];
+void	create_pipe(int (**fd)[2], t_deque *cmd_deque);
 void	child_process(t_token *line, int count, int total, int (*fd)[2]);
 void	manage_pipe(int count, int total, int (*fd)[2]);
 int		manage_file(t_token *line);

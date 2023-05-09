@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_parents.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 16:33:30 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/08 23:25:56 by yunjcho          ###   ########seoul.kr  */
+/*   Updated: 2023/05/09 19:26:27 by hyunwoju         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	parents_process(t_deque *cmd_deque)
 
 	current_token = cmd_deque->head;
 	count = cmd_deque->cnt - 1;
+	fd = NULL;
 	if (find_here_doc(cmd_deque))
 		return ;
 	while (current_token != NULL)
@@ -27,7 +28,7 @@ void	parents_process(t_deque *cmd_deque)
 		check_file(current_token);
 		current_token = current_token->next;
 	}
-	fd = create_pipe(cmd_deque);
+	create_pipe(&fd, cmd_deque);
 	if (cmd_deque->cnt == 1 && cmd_deque->head->func == BUILTIN)
 	{
 		cmd_deque->head->func = P_BUILTIN;
@@ -112,10 +113,7 @@ char	*check_env_var(char *line, t_edeque *envp)
 	t_vars	v;
 	char	buf[ARG_MAX];
 
-	ft_memset(buf, 0, ARG_MAX);
-	v.i = 0;
-	v.len = 0;
-	v.flag = 0;
+	init_vars(&v, buf, 0);
 	while (line[v.i])
 	{
 		if (line[v.i] == '$')

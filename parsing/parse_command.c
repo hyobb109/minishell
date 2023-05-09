@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_command.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 15:37:28 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/05/09 15:55:05 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/05/09 19:29:05 by hyunwoju         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ static char	*check_cmd_env(t_vars *v, t_token *token, char *str, char *buf)
 		v->len += search_env(&str, buf, token->envp, *v);
 	else if (*(str + 1) == '?')
 	{
-		printf("exit: %d\n", g_exit_status);
 		status = ft_itoa(WEXITSTATUS(g_exit_status));
 		num_len = ft_strlen(status);
 		ft_memcpy(buf, status, num_len);
