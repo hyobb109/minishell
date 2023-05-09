@@ -162,6 +162,8 @@ int		quote_error(char *str);
 int		empty_error(char *str);
 void	make_cmdlst(char *str, t_deque *cmd_deque, t_edeque *envp);
 int		is_blank(char c);
+int		is_environ(char quote, char c);
+
 
 // environ
 int		env_trans(char *str, t_edeque *envp, char *buf, t_vars v);
