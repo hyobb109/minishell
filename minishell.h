@@ -157,6 +157,8 @@ void	print_filelst(t_deque *cmd_lst); // delete
 char	**ft_pipe_split(char *str);
 char	**parse_command(char *str, t_token *token);
 int		syntax_error(char *str);
+int		quote_error(char *str);
+int		empty_error(char *str);
 void	make_cmdlst(char *str, t_deque *cmd_deque, t_edeque *envp);
 int		is_blank(char c);
 

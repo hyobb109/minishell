@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_main.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 16:55:06 by hyunwoju          #+#    #+#             */
-/*   Updated: 2023/05/08 22:38:33 by yunjcho          ###   ########seoul.kr  */
+/*   Updated: 2023/05/09 13:55:38 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	main(int ac, char **av, char **env)
 			exit(g_exit_status);
 		}
 		tmp = ft_strdup(str);
-		if (syntax_error(str) == FALSE)
+		if (syntax_error(tmp) == FALSE)
 		{
 			init_deque(&cmd_deque);
 			// print_edeque(&envp);
