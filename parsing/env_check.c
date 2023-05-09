@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_check.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 05:41:25 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/05/08 21:07:42 by yunjcho          ###   ########seoul.kr  */
+/*   Updated: 2023/05/09 15:04:45 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int	env_trans(char *str, t_edeque *envp, char *buf, t_vars v)
 int	search_env(char **str, char *buf, t_edeque *envp, t_vars v)
 {
 	int	i;
-	// int	key_len;
+	int	key_len;
 
 	if (!v.quote)
 		*str += env_trans(*str + 1, envp, &buf[0], v);
@@ -92,9 +92,9 @@ int	search_env(char **str, char *buf, t_edeque *envp, t_vars v)
 		{
 			if (**str == '$')
 			{
-				// key_len = env_trans(*str + 1, envp, &buf[i], v);
-				env_trans(*str + 1, envp, &buf[i], v);
+				key_len = env_trans(*str + 1, envp, &buf[i], v);
 				i = ft_strlen(buf);
+				*str += key_len;
 			}
 			else
 				buf[i++] = **str;

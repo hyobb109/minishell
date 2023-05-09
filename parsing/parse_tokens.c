@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_tokens.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:15:26 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/08 22:42:29 by yunjcho          ###   ########seoul.kr  */
+/*   Updated: 2023/05/09 15:34:32 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ void	check_empty_str(char **cmds)
 	int		i;
 
 	i = 0;
+	if (!cmds)
+		return ;
 	while (cmds[i])
 	{
 		if (ft_strchr(cmds[i], EMPTY))
@@ -62,58 +64,59 @@ void	check_empty_str(char **cmds)
 	}
 }
 
-char	**parse_command(char *str, t_token *token)
+char	*check_cmd_environ(t_vars *v, t_token *token, char *str, char *buffer)
 {
-	t_vars	v;
-	char	buffer[ARG_MAX];
+	char	*status;
+	int		num_len;
 
-	v.quote = CLOSED;
-	v.len = 0;
-	v.flag = 0;
-	ft_memset(buffer, 0, ARG_MAX);
-	while (is_blank(*str))
+	if (ft_isalpha(*(str + 1)) || *(str + 1) == '_')
+		v->len += search_env(&str, buffer, token->envp, *v);
+	else if (*(str + 1) == '?')
+	{
+		printf("exit: %d\n", g_exit_status);
+		status = ft_itoa(WEXITSTATUS(g_exit_status));
+		num_len = ft_strlen(status);
+		ft_memcpy(buffer, status, num_len);
+		v->len += num_len;
 		str++;
+		if (v->quote)
+			str++;
+	}
+	else
+		str++;
+	if (v->quote)
+		v->quote = CLOSED;
+	return (str);
+}
+
+void	is_empty_str(t_vars *v, char *str, char *buffer)
+{
+	if (*(str - 1) == v->quote)
+		buffer[v->len++] = EMPTY;
+	v->quote = CLOSED;
+}
+
+char	**parse_command(char *str, t_token *token, t_vars *v, char *buffer)
+{
 	while (*str)
 	{
-		if (!v.quote && (*str == '\'' || *str == '\"'))
-			v.quote = *str;
-		else if (v.quote && *str == v.quote)
-		{
-			if (*(str - 1) == v.quote)
-				buffer[v.len++] = EMPTY;
-			v.quote = CLOSED;
-		}
-		else if (!v.quote && (*str == '<' || *str == '>'))
+		if (!v->quote && (*str == '\'' || *str == '\"'))
+			v->quote = *str;
+		else if (v->quote && *str == v->quote)
+			is_empty_str(v, str, buffer);
+		else if (!v->quote && (*str == '<' || *str == '>'))
 			check_redir(&str, token);
-		else if ((!v.quote && *str == '$') || (v.quote == '\"' && *str == '$'))
-		{
-			if (ft_isalpha(*(str + 1)) || *(str + 1) == '_')
-				v.len += search_env(&str, &buffer[v.len], token->envp, v);
-			else if (*(str + 1) == '?')
-			{
-				printf("exit: %d\n", g_exit_status);
-				char *status = ft_itoa(WEXITSTATUS(g_exit_status));
-				int num_len = ft_strlen(status);
-				ft_memcpy(&buffer[v.len], status, num_len);
-				v.len += num_len;
-				str++;
-				if (v.quote)
-					str++;
-			}
-			else
-				str++;
-			if (v.quote)
-				v.quote = CLOSED;
-		}
-		else if (!v.quote && is_blank(*str))
-			buffer[v.len++] = BLANK;
+		else if (is_environ(v->quote, *str))
+			str = check_cmd_environ(v, token, str, &buffer[v->len]);
+		else if (!v->quote && is_blank(*str))
+			buffer[v->len++] = BLANK;
 		else
-			buffer[v.len++] = *str;
+			buffer[v->len++] = *str;
 		if (*str == '\0')
 			break ;
 		str++;
 	}
-	buffer[v.len] = '\0';
+	buffer[v->len] = '\0';
 	if (!buffer[0])
 		return (NULL);
 	return (ft_split(buffer, BLANK));
@@ -121,10 +124,16 @@ char	**parse_command(char *str, t_token *token)
 
 static void	init_token(char *str, t_token *token, t_edeque *envp)
 {
+	t_vars	v;
+	char	buffer[ARG_MAX];
+
+	init_vars(&v, buffer, FALSE);
+	while (is_blank(*str))
+		str++;
 	token->envp = envp;
 	token->func = GENERAL;
 	token->files = NULL;
-	token->command = parse_command(str, token);
+	token->command = parse_command(str, token, &v, buffer);
 	check_empty_str(token->command);
 	if (token->command && is_builtin(token->command[0]))
 		token->func = BUILTIN;
@@ -139,6 +148,7 @@ void	make_cmdlst(char *str, t_deque *cmd_deque, t_edeque *envp)
 	char		**strs;
 	int			i;
 
+	// printf("tmp: %s\n", str);
 	i = 0;
 	strs = ft_pipe_split(str);
 	while (strs[i])

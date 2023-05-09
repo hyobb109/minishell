@@ -6,7 +6,7 @@
 /*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 15:08:06 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/05/08 17:55:19 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/05/09 15:33:43 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,15 +39,57 @@ void	append_file(t_fdata **head, t_fdata *new)
 	last->next = new;
 }
 
+void	init_vars(t_vars *v, char *buf, int file)
+{
+	if (file)
+		ft_memset(buf, 0, PATH_MAX);
+	else
+		ft_memset(buf, 0, ARG_MAX);
+	v->flag = file;
+	v->i = 0;
+	v->len = 0;
+	v->quote = CLOSED;
+}
+
+int	is_heredoc(int type)
+{
+	if (type == LIMITER || type == Q_LIMITER)
+		return (TRUE);
+	return (FALSE);
+}
+
+int	is_environ(char quote, char c)
+{
+	if (c == '$' && quote == CLOSED)
+		return (TRUE);
+	if (c == '$' && quote == '\"')
+		return (TRUE);
+	return (FALSE);
+}
+
+char	*check_file_environ(t_vars *v, t_token *token, char **str, char *filename)
+{
+	if (ft_isalpha(*(*str + 1)) || *(*str + 1) == '_')
+	{
+		v->len += search_env(str, filename, token->envp, *v);
+	}
+	else
+	{
+		*str += 1;
+	}
+	printf("*str: %s\n", *str);
+	if (v->quote)
+		v->quote = CLOSED;
+	return (*str);
+}
+
 void	get_filename(char **str, t_fdata *new, t_token *token)
 {
 	t_vars	v;
 
+	init_vars(&v, new->filename, TRUE);
 	while (is_blank(**str))
 		*str += 1;
-	v.len = 0;
-	v.quote = 0;
-	v.flag = 1;
 	while (**str)
 	{
 		if (!v.quote && (is_blank(**str) || **str == '<' || **str == '>'))
@@ -60,16 +102,8 @@ void	get_filename(char **str, t_fdata *new, t_token *token)
 		}
 		else if (v.quote && **str == v.quote)
 			v.quote = CLOSED;
-		else if ((new->type != LIMITER && new->type != Q_LIMITER) && \
-				((!v.quote && **str == '$') || (v.quote == '\"' && **str == '$')))
-		{
-			if (ft_isalpha(*(*str + 1)) || *(*str + 1) == '_')
-				v.len += search_env(str, &new->filename[v.len], token->envp, v);
-			else
-				*str += 1;
-			if (v.quote)
-				v.quote = CLOSED;
-		}
+		else if (!is_heredoc(new->type) && is_environ(v.quote, **str))
+			*str = check_file_environ(&v, token, str, &new->filename[v.len]);
 		else
 			new->filename[v.len++] = **str;
 		*str += 1;
@@ -85,7 +119,6 @@ void	check_redir(char **str, t_token *token)
 	newfile = malloc(sizeof(t_fdata));
 	if (!newfile)
 		ft_error();
-	ft_memset(newfile->filename, 0, PATH_MAX);
 	newfile->next = NULL;
 	if (**str == '<' && *(*str + 1) == '<')
 	{
