@@ -6,7 +6,7 @@
 /*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 17:37:37 by hyunwoju          #+#    #+#             */
-/*   Updated: 2023/05/08 18:36:48 by hyunwoju         ###   ########.fr       */
+/*   Updated: 2023/05/09 20:56:06 by hyunwoju         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void	wait_child(int count, t_deque *cmd_deque)
 		find_child(cmd_deque, status, pid);
 		++idx;
 	}
+	ft_signal_set();
 	g_exit_status = cmd_deque->tail->status;
 }
 

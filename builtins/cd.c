@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 16:28:59 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/08 21:09:18 by yunjcho          ###   ########seoul.kr  */
+/*   Updated: 2023/05/09 20:14:18 by hyunwoju         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,8 @@ int	change_env(t_token *token, char *cwd_name)
 		append_back_env(token->envp, old_pwd);
 	}
 	cur_pwd = find_value(token->envp, "PWD");
+	if (cur_pwd == NULL)
+		return (-1);
 	old_pwd->val = ft_strdup(cur_pwd->val);
 	if (cur_pwd->val)
 		free(cur_pwd->val);

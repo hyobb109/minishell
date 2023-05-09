@@ -6,7 +6,7 @@
 /*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 17:51:49 by hyunwoju          #+#    #+#             */
-/*   Updated: 2023/05/09 17:54:40 by hyunwoju         ###   ########.fr       */
+/*   Updated: 2023/05/09 20:12:37 by hyunwoju         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,8 @@ void	execute_line(t_token *line, char **env)
 
 	path_env = ft_getenv(line->envp, "PATH");
 	target_idx = ft_strchr_idx(line->command[0], '/');
+	if (path_env == NULL)
+		print_error(line, "No such file or directory", 127);
 	if (!target_idx)
 		no_slash(line, env);
 	else

@@ -6,7 +6,7 @@
 /*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 14:16:48 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/05/09 19:37:38 by hyunwoju         ###   ########.fr       */
+/*   Updated: 2023/05/09 20:47:49 by hyunwoju         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,6 +131,7 @@ t_env	*pop_select_env(t_edeque *deque, char *key);
 
 // signal
 void	signal_handler(int sig);
+void	signal_handler_child(int sig);
 void	signal_handler_heredoc(int sig);
 void	ft_signal_set(void);
 

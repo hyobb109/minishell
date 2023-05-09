@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+         #
+#    By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/18 19:16:02 by yunjcho           #+#    #+#              #
-#    Updated: 2023/05/08 22:40:07 by yunjcho          ###   ########seoul.kr   #
+#    Updated: 2023/05/09 20:22:33 by hyunwoju         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ SRCS		=	$(SRCS_FILES)
 M_OBJ		=	$(SRCS:.c=.o)
 
 ifdef SANITIZE
-	CFLAGS += -fsanitize=address
+	CFLAGS += -fsanitize=address -g
 endif
 
 all: $(NAME)

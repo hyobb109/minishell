@@ -6,7 +6,7 @@
 /*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 16:33:30 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/09 19:26:27 by hyunwoju         ###   ########.fr       */
+/*   Updated: 2023/05/09 20:58:00 by hyunwoju         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void	parents_process(t_deque *cmd_deque)
 	create_child(cmd_deque, fd);
 	close_pipe(fd, count);
 	free(fd);
+	
 	wait_child(count, cmd_deque);
 }
 
@@ -81,7 +82,10 @@ void	create_child(t_deque *cmd_deque, int (*fd)[2])
 		if (cur_token->pid == -1)
 			exit (1);
 		else if (!cur_token->pid)
+		{
+			signal(SIGQUIT, signal_handler_child);
 			child_process(cur_token, count, total, fd);
+		}
 		++count;
 		cur_token = cur_token->next;
 	}

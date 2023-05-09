@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal_func.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 18:06:46 by seulee2           #+#    #+#             */
-/*   Updated: 2023/05/05 20:48:08 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/05/09 20:53:26 by hyunwoju         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,16 @@ void	signal_handler(int sig)
 		printf("\n");
 		rl_on_new_line();
 		rl_redisplay();
+	}
+}
+
+void	signal_handler_child(int sig)
+{
+	if (sig == SIGQUIT)
+	{
+		g_exit_status = 999;
+		//rl_replace_line("", 0);
+		printf("Quit : 3\n");
 	}
 }
 
