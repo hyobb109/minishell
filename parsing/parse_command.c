@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_command.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 15:37:28 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/05/09 19:29:05 by hyunwoju         ###   ########.fr       */
+/*   Updated: 2023/05/09 20:29:04 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ static char	*check_cmd_env(t_vars *v, t_token *token, char *str, char *buf)
 		status = ft_itoa(WEXITSTATUS(g_exit_status));
 		num_len = ft_strlen(status);
 		ft_memcpy(buf, status, num_len);
+		free(status);
 		v->len += num_len;
 		str++;
 		if (v->quote)
@@ -52,7 +53,10 @@ char	**parse_command(char *str, t_token *token, t_vars *v, char *buffer)
 		else if (v->quote && *str == v->quote)
 			is_empty_str(v, str, buffer);
 		else if (!v->quote && (*str == '<' || *str == '>'))
+		{
 			check_redir(&str, token);
+			continue ;
+		}
 		else if (is_environ(v->quote, *str))
 			str = check_cmd_env(v, token, str, &buffer[v->len]);
 		else if (!v->quote && is_blank(*str))

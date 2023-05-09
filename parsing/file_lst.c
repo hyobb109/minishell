@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   file_lst.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 15:08:06 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/05/09 19:30:27 by hyunwoju         ###   ########.fr       */
+/*   Updated: 2023/05/09 20:28:50 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ static char	*check_file_env(t_vars *v, t_token *token, char **str, char *file)
 	{
 		*str += 1;
 	}
-	printf("*str: %s\n", *str);
 	if (v->quote)
 		v->quote = CLOSED;
 	return (*str);
