@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parent_wait_child.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 17:37:37 by hyunwoju          #+#    #+#             */
-/*   Updated: 2023/05/10 16:11:18 by hyunwoju         ###   ########.fr       */
+/*   Updated: 2023/05/10 16:15:20 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,9 @@ void	find_child(t_deque *cmd_deque, int status, pid_t pid)
 			{
 				if (status == SIGQUIT)
 					printf("Quit\n");
-				cur_point->status = WTERMSIG(status);
+				else
+					printf("\n");
+				cur_point->status = (128 + status) * 256;
 			}
 			else
 				cur_point->status = status;
