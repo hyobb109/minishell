@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   managed_by_child.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 17:46:11 by hyunwoju          #+#    #+#             */
-/*   Updated: 2023/05/09 19:28:47 by hyunwoju         ###   ########.fr       */
+/*   Updated: 2023/05/10 19:10:41 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,7 @@ int	manage_file(t_token *line)
 	outfile_fd = 0;
 	while (cur_file != NULL)
 	{
-		if (cur_file->type == INFILE || cur_file->type == LIMITER || \
-			cur_file->type == Q_LIMITER)
+		if (cur_file->type == INFILE || is_heredoc(cur_file))
 		{
 			if (open_infile(cur_file->filename, &infile_fd, line->func) < 0)
 				return (-1);

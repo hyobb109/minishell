@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 17:26:40 by hyunwoju          #+#    #+#             */
-/*   Updated: 2023/05/09 20:32:15 by hyunwoju         ###   ########.fr       */
+/*   Updated: 2023/05/10 19:19:57 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	find_here_doc(t_deque *cmd_deque)
 		cur_file = cur_token->files;
 		while (cur_file != NULL)
 		{
-			if (cur_file->type == LIMITER || cur_file->type == Q_LIMITER)
+			if (is_heredoc(cur_file))
 			{
 				if (open_here_doc(cur_token, cur_file, count))
 					return (1);
@@ -54,7 +54,10 @@ int	open_here_doc(t_token *cur_token, t_fdata *cur_file, int count)
 	waitpid(-1, &g_exit_status, 0);
 	ft_signal_set();
 	if (WIFSIGNALED(g_exit_status))
+	{
+		g_exit_status = 256;
 		return (1);
+	}
 	ft_memset(cur_file->filename, 0, sizeof(char) * strlen(cur_file->filename));
 	ft_memcpy(cur_file->filename, here_doc_name, ft_strlen(here_doc_name));
 	free(here_doc_name);
