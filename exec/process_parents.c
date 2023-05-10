@@ -74,6 +74,7 @@ void	create_child(t_deque *cmd_deque, int (*fd)[2])
 	count = 0;
 	total = cmd_deque->cnt;
 	cur_token = cmd_deque->head;
+	signal(SIGINT, signal_handler);
 	while (count < total)
 	{
 		cur_token->pid = ft_fork();
@@ -87,7 +88,7 @@ void	create_child(t_deque *cmd_deque, int (*fd)[2])
 		++count;
 		cur_token = cur_token->next;
 	}
-	signal(SIGINT, signal_handler);
+	signal(SIGINT, signal_handler_parent);
 }
 
 void	unlink_here_doc(t_deque *cmd_deque)
