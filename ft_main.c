@@ -6,7 +6,7 @@
 /*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 16:55:06 by hyunwoju          #+#    #+#             */
-/*   Updated: 2023/05/09 20:37:37 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/05/10 14:59:48 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	g_exit_status = 0;
 
-void	minishell_action(t_deque *cmd_deque, t_edeque *envp)
+static void	minishell_action(t_deque *cmd_deque, t_edeque *envp)
 {
 	char	*str;
 	char	*tmp;

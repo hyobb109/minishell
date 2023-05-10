@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal_func.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 18:06:46 by seulee2           #+#    #+#             */
-/*   Updated: 2023/05/09 20:53:26 by hyunwoju         ###   ########.fr       */
+/*   Updated: 2023/05/10 14:56:20 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ void	signal_handler_heredoc(int sig)
 {
 	if (sig == SIGINT)
 	{
-		printf("Quit7\n");
 		rl_replace_line("", 0);
 		printf("\n");
 	}
