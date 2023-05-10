@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_main.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 16:55:06 by hyunwoju          #+#    #+#             */
-/*   Updated: 2023/05/09 20:37:37 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/05/09 21:28:27 by hyunwoju         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ void	minishell_action(t_deque *cmd_deque, t_edeque *envp)
 		init_deque(cmd_deque);
 		make_cmdlst(tmp, cmd_deque, envp);
 		parents_process(cmd_deque);
+		rl_catch_signals = 0;
 		unlink_here_doc(cmd_deque);
 		free_deque(cmd_deque);
 	}

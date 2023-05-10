@@ -6,7 +6,7 @@
 /*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 18:06:46 by seulee2           #+#    #+#             */
-/*   Updated: 2023/05/09 20:53:26 by hyunwoju         ###   ########.fr       */
+/*   Updated: 2023/05/10 15:24:16 by hyunwoju         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,28 @@ void	signal_handler(int sig)
 		rl_on_new_line();
 		rl_redisplay();
 	}
+	if (sig == SIGQUIT)
+	{
+		printf("Quit : 3\n");
+		g_exit_status = 131;
+	}
+}
+
+void	signal_handler_parent(int sig)
+{
+	if (sig == SIGQUIT)
+	{
+		printf("Quit : 3\n");
+		g_exit_status = 131;
+	}
 }
 
 void	signal_handler_child(int sig)
 {
 	if (sig == SIGQUIT)
 	{
-		g_exit_status = 999;
-		//rl_replace_line("", 0);
-		printf("Quit : 3\n");
+		g_exit_status = 131 * 256;
+		exit(g_exit_status);
 	}
 }
 
