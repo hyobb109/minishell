@@ -6,7 +6,7 @@
 /*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 17:37:37 by hyunwoju          #+#    #+#             */
-/*   Updated: 2023/05/09 22:37:52 by hyunwoju         ###   ########.fr       */
+/*   Updated: 2023/05/10 16:11:18 by hyunwoju         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,11 @@ void	find_child(t_deque *cmd_deque, int status, pid_t pid)
 		if (cur_point->pid == pid)
 		{
 			if (WIFSIGNALED(status))
+			{
+				if (status == SIGQUIT)
+					printf("Quit\n");
 				cur_point->status = WTERMSIG(status);
+			}
 			else
 				cur_point->status = status;
 		}

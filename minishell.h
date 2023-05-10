@@ -6,7 +6,7 @@
 /*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 14:16:48 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/05/09 21:43:25 by hyunwoju         ###   ########.fr       */
+/*   Updated: 2023/05/10 16:11:41 by hyunwoju         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,6 +136,7 @@ void	signal_handler_child(int sig);
 void	ft_signal(int sig);
 void	signal_handler_heredoc(int sig);
 void	ft_signal_set(void);
+void	ft_signal_child(void);
 
 // file list
 void	check_redir(char **str, t_token *token);

@@ -6,7 +6,7 @@
 /*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 16:55:06 by hyunwoju          #+#    #+#             */
-/*   Updated: 2023/05/09 21:28:27 by hyunwoju         ###   ########.fr       */
+/*   Updated: 2023/05/10 16:11:44 by hyunwoju         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	g_exit_status = 0;
 
-void	minishell_action(t_deque *cmd_deque, t_edeque *envp)
+static void	minishell_action(t_deque *cmd_deque, t_edeque *envp)
 {
 	char	*str;
 	char	*tmp;
@@ -49,6 +49,7 @@ int	main(int ac, char **av, char **env)
 	(void) ac;
 	(void) av;
 	make_envlst(&envp, env);
+	rl_catch_signals = 0;
 	ft_signal_set();
 	while (1)
 	{

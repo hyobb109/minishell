@@ -6,7 +6,7 @@
 /*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 16:33:30 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/10 16:07:04 by hyunwoju         ###   ########.fr       */
+/*   Updated: 2023/05/10 16:10:32 by hyunwoju         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,17 +74,18 @@ void	create_child(t_deque *cmd_deque, int (*fd)[2])
 	count = 0;
 	total = cmd_deque->cnt;
 	cur_token = cmd_deque->head;
-	signal(SIGINT, signal_handler);
 	while (count < total)
 	{
 		cur_token->pid = ft_fork();
 		if (!cur_token->pid)
 		{
+			ft_signal_child();
 			child_process(cur_token, count, total, fd);
 		}
 		++count;
 		cur_token = cur_token->next;
 	}
+	signal(SIGINT, signal_handler_parent);
 }
 
 void	unlink_here_doc(t_deque *cmd_deque)
