@@ -41,7 +41,11 @@ void	find_child(t_deque *cmd_deque, int status, pid_t pid)
 		if (cur_point->pid == pid)
 		{
 			if (WIFSIGNALED(status))
+			{
+				if (status == 3)
+					printf("Quit\n");
 				cur_point->status = WTERMSIG(status);
+			}
 			else
 				cur_point->status = status;
 		}

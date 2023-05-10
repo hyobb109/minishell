@@ -48,6 +48,7 @@ int	main(int ac, char **av, char **env)
 	(void) ac;
 	(void) av;
 	make_envlst(&envp, env);
+	rl_catch_signals = 0;
 	ft_signal_set();
 	while (1)
 	{

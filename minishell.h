@@ -131,9 +131,10 @@ t_env	*pop_select_env(t_edeque *deque, char *key);
 
 // signal
 void	signal_handler(int sig);
-void	signal_handler_child(int sig);
+void	signal_handler_parent(int sig);
 void	signal_handler_heredoc(int sig);
 void	ft_signal_set(void);
+void	ft_signal_child(void);
 
 // file list
 void	check_redir(char **str, t_token *token);

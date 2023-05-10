@@ -21,15 +21,20 @@ void	signal_handler(int sig)
 		rl_on_new_line();
 		rl_redisplay();
 	}
-}
-
-void	signal_handler_child(int sig)
-{
 	if (sig == SIGQUIT)
 	{
-		g_exit_status = 999;
-		//rl_replace_line("", 0);
-		printf("Quit : 3\n");
+		printf("Quit\n");
+		exit(1);
+	}
+}
+
+void	signal_handler_parent(int sig)
+{
+	if (sig == SIGINT)
+	{
+		g_exit_status = 1;
+		rl_replace_line("", 0);
+		rl_redisplay();
 	}
 }
 
@@ -37,6 +42,7 @@ void	signal_handler_heredoc(int sig)
 {
 	if (sig == SIGINT)
 	{
+		printf("Quit7\n");
 		rl_replace_line("", 0);
 		printf("\n");
 	}
@@ -46,4 +52,10 @@ void	ft_signal_set(void)
 {
 	signal(SIGINT, signal_handler);
 	signal(SIGQUIT, SIG_IGN);
+}
+
+void	ft_signal_child(void)
+{
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, signal_handler);
 }

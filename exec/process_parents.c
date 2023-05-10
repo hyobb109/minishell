@@ -38,7 +38,6 @@ void	parents_process(t_deque *cmd_deque)
 	create_child(cmd_deque, fd);
 	close_pipe(fd, count);
 	free(fd);
-	
 	wait_child(count, cmd_deque);
 }
 
@@ -75,7 +74,6 @@ void	create_child(t_deque *cmd_deque, int (*fd)[2])
 	count = 0;
 	total = cmd_deque->cnt;
 	cur_token = cmd_deque->head;
-	signal(SIGINT, signal_handler);
 	while (count < total)
 	{
 		cur_token->pid = ft_fork();
@@ -83,12 +81,13 @@ void	create_child(t_deque *cmd_deque, int (*fd)[2])
 			exit (1);
 		else if (!cur_token->pid)
 		{
-			signal(SIGQUIT, signal_handler_child);
+			ft_signal_child();
 			child_process(cur_token, count, total, fd);
 		}
 		++count;
 		cur_token = cur_token->next;
 	}
+	signal(SIGINT, signal_handler);
 }
 
 void	unlink_here_doc(t_deque *cmd_deque)
