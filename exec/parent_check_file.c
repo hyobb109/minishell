@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parent_check_file.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 17:28:41 by hyunwoju          #+#    #+#             */
-/*   Updated: 2023/05/08 18:34:11 by hyunwoju         ###   ########.fr       */
+/*   Updated: 2023/05/11 13:51:47 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	check_outfile(char *filename, t_token *line)
 {
 	int	fd;
 
-	fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0777);
+	fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd == -1)
 		return (TRUE);
 	ft_close(fd, line->func);

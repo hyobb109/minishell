@@ -6,7 +6,7 @@
 /*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 17:46:11 by hyunwoju          #+#    #+#             */
-/*   Updated: 2023/05/10 19:10:41 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/05/11 13:52:03 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,10 +63,10 @@ int	open_outfile(t_fdata *cur_file, int *outfile_fd, int func)
 		apd_flag = 1;
 	if (apd_flag)
 		*outfile_fd = open(cur_file->filename, \
-			O_WRONLY | O_CREAT | O_APPEND, 0777);
+			O_WRONLY | O_CREAT | O_APPEND, 0644);
 	else
 		*outfile_fd = open(cur_file->filename, \
-			O_WRONLY | O_CREAT | O_TRUNC, 0777);
+			O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (*outfile_fd == -1)
 	{
 		printf("minishell: %s: %s\n", cur_file->filename, strerror(errno));
