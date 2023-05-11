@@ -6,7 +6,7 @@
 /*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 17:51:49 by hyunwoju          #+#    #+#             */
-/*   Updated: 2023/05/10 19:12:20 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/05/11 14:31:59 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	is_slash(t_token *line, char **env)
 	print_error(line, strerror(errno), 1);
 }
 
-void	is_dot(t_token *line, char **env)
+void	is_dot(t_token *line, char *path_env, char **env)
 {
 	struct stat	filestat;
 
@@ -41,7 +41,8 @@ void	is_dot(t_token *line, char **env)
 	else if (ft_strchr_idx(line->command[0], '/') < 0)
 	{
 		execve(line->command[0], line->command, env);
-		print_error(line, "command not found", 127);
+		if (path_env)
+			print_error(line, "command not found", 127);
 	}
 	execve(line->command[0], line->command, env);
 	stat(line->command[0], &filestat);
@@ -52,9 +53,7 @@ void	is_dot(t_token *line, char **env)
 		if (access(line->command[0], X_OK) != 0)
 			print_error(line, strerror(errno), 127);
 		if (access(line->command[0], F_OK) == 0)
-		{
 			exit(0);
-		}
 	}
 }
 
@@ -81,7 +80,7 @@ void	find_command_path(t_token *line, char *path_env, char **env)
 	}
 }
 
-void	no_directory(t_token *line, char **env)
+void	no_directory(t_token *line, char *path_env, char **env)
 {
 	if (ft_strchr_idx(line->command[0], '/') >= 0)
 	{
@@ -91,7 +90,7 @@ void	no_directory(t_token *line, char **env)
 		}
 	}
 	execve(line->command[0], line->command, env);
-	if (!is_heredoc(line->files))
+	if (!is_heredoc(line->files) && path_env)
 	{
 		print_error(line, "command not found", 127);
 	}
@@ -105,23 +104,23 @@ void	execute_line(t_token *line, char **env)
 
 	path_env = ft_getenv(line->envp, "PATH");
 	target_idx = ft_strchr_idx(line->command[0], '/');
-	if (path_env == NULL)
-		print_error(line, "No such file or directory", 127);
 	if (!target_idx)
 		is_slash(line, env);
 	else
 	{
 		target_idx = ft_strchr_idx(line->command[0], '.');
 		if (!target_idx)
-			is_dot(line, env);
-		else
+			is_dot(line, path_env, env);
+		else if (path_env)
 			find_command_path(line, path_env, env);
 	}
 	stat(line->command[0], &filestat);
 	if (S_ISDIR(filestat.st_mode) && ft_strchr(line->command[0], '/'))
 		print_error(line, "is a directory", 126);
 	else
-		no_directory(line, env);
+		no_directory(line, path_env, env);
+	if (!path_env)
+		print_error(line, "No such file or directory", 127);
 	print_error(line, "command not found", 127);
 	exit(EXIT_FAILURE);
 }
