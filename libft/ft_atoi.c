@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 04:50:31 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/05/04 17:32:15 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/05/12 17:22:49 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ static int	nonnumeric(int status, int *str_flag, const char *str)
 {
 	if (*str_flag || status == 255)
 	{
+		if (dup2(STDERR_FILENO, STDOUT_FILENO) < 0)
+			ft_error();
 		printf("minishell: exit: %s: numeric argument required\n", str);
 		*str_flag = 1;
 	}

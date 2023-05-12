@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_children.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 19:37:29 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/09 22:23:10 by hyunwoju         ###   ########.fr       */
+/*   Updated: 2023/05/12 17:01:39 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	child_process(t_token *line, int count, int total, int (*fd)[2])
 	if (line->func == BUILTIN)
 	{
 		exec_builtins(line);
-		exit(0);
+		exit(line->status);
 	}
 	else
 	{
@@ -31,7 +31,7 @@ void	child_process(t_token *line, int count, int total, int (*fd)[2])
 		if (line->command && line->command[0])
 			execute_line(line, env);
 	}
-	exit (0);
+	exit (line->status);
 }
 
 char	**make_envstrs(t_token *token)

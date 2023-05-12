@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 13:38:07 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/08 23:10:58 by yunjcho          ###   ########seoul.kr  */
+/*   Updated: 2023/05/12 16:56:26 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ void	make_keyvalue(t_token *token, int target_idx, int idx)
 		ft_dup2(STDERR_FILENO, STDOUT_FILENO, token->func);
 		printf("export: '%s': not a valid identifier\n", key);
 		g_exit_status = 256;
+		token->status = 1;
 	}
 	else
 	{

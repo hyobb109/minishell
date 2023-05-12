@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parent_wait_child.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 17:37:37 by hyunwoju          #+#    #+#             */
-/*   Updated: 2023/05/10 16:15:20 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/05/12 17:00:02 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,11 @@ void	find_child(t_deque *cmd_deque, int status, pid_t pid)
 	{
 		if (cur_point->pid == pid)
 		{
-			if (WIFSIGNALED(status))
+			if (status == SIGQUIT || status == SIGINT)
 			{
 				if (status == SIGQUIT)
 					printf("Quit\n");
-				else
+				else if (status == SIGINT)
 					printf("\n");
 				cur_point->status = (128 + status) * 256;
 			}

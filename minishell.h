@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 14:16:48 by hyobicho          #+#    #+#             */
-/*   Updated: 2023/05/10 16:11:41 by hyunwoju         ###   ########.fr       */
+/*   Updated: 2023/05/12 17:13:50 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,7 +183,7 @@ int		exist_validkey(t_token *token);
 void	print_invalidargserror(t_token *token);
 void	print_envlist(t_token *token);
 int		exec_env(t_token *token);
-int		exec_builtins(t_token *token);
+void	exec_builtins(t_token *token);
 int		exec_unset(t_token *token);
 char	*swapfree_strs(char *result, char *result2);
 t_env	*init_envelem(char *key, char *value);

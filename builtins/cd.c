@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 16:28:59 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/09 20:14:18 by hyunwoju         ###   ########.fr       */
+/*   Updated: 2023/05/12 16:55:18 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ int	exec_cd(t_token *token)
 		printf("minishell: %s: %s: %s\n", token->command[0], \
 			dest, strerror(errno));
 		free(dest);
+		token->status = 1;
 		g_exit_status = 256;
 		return (-1);
 	}

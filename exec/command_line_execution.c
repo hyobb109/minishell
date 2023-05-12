@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   command_line_execution.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 17:51:49 by hyunwoju          #+#    #+#             */
-/*   Updated: 2023/05/11 14:31:59 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/05/12 17:14:17 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	is_slash(t_token *line, char **env)
+static void	is_slash(t_token *line, char **env)
 {
 	struct stat	filestat;
 
@@ -32,7 +32,7 @@ void	is_slash(t_token *line, char **env)
 	print_error(line, strerror(errno), 1);
 }
 
-void	is_dot(t_token *line, char *path_env, char **env)
+static void	is_dot(t_token *line, char *path_env, char **env)
 {
 	struct stat	filestat;
 
@@ -57,7 +57,7 @@ void	is_dot(t_token *line, char *path_env, char **env)
 	}
 }
 
-void	find_command_path(t_token *line, char *path_env, char **env)
+static void	find_command_path(t_token *line, char *path_env, char **env)
 {
 	char	**path;
 	char	*current_path;
@@ -80,7 +80,7 @@ void	find_command_path(t_token *line, char *path_env, char **env)
 	}
 }
 
-void	no_directory(t_token *line, char *path_env, char **env)
+static void	no_directory(t_token *line, char *path_env, char **env)
 {
 	if (ft_strchr_idx(line->command[0], '/') >= 0)
 	{

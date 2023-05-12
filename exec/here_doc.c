@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 17:26:40 by hyunwoju          #+#    #+#             */
-/*   Updated: 2023/05/10 19:19:57 by hyobicho         ###   ########.fr       */
+/*   Updated: 2023/05/12 16:12:52 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ int	open_here_doc(t_token *cur_token, t_fdata *cur_file, int count)
 	if (WIFSIGNALED(g_exit_status))
 	{
 		g_exit_status = 256;
+		free(here_doc_name);
 		return (1);
 	}
 	ft_memset(cur_file->filename, 0, sizeof(char) * strlen(cur_file->filename));

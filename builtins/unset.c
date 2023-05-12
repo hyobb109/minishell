@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 16:47:19 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/08 22:29:17 by yunjcho          ###   ########seoul.kr  */
+/*   Updated: 2023/05/12 16:56:42 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ int	exec_unset(t_token *token)
 			printf("minishell: %s: '%s': not a valid identifier\n", \
 				token->command[0], token->command[idx]);
 			g_exit_status = 256;
+			token->status = 1;
 		}
 		else
 			free_env(token, idx);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_main.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 16:55:06 by hyunwoju          #+#    #+#             */
-/*   Updated: 2023/05/10 16:11:44 by hyunwoju         ###   ########.fr       */
+/*   Updated: 2023/05/12 17:11:44 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static void	minishell_action(t_deque *cmd_deque, t_edeque *envp)
 	if (!str)
 	{
 		printf("exit\n");
-		exit(g_exit_status);
+		exit(WEXITSTATUS(g_exit_status));
 	}
 	tmp = ft_strdup(str);
 	if (syntax_error(tmp) == FALSE)

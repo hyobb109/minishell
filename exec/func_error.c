@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   func_error.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 22:16:57 by hyunwoju          #+#    #+#             */
-/*   Updated: 2023/05/09 17:54:52 by hyunwoju         ###   ########.fr       */
+/*   Updated: 2023/05/12 17:17:40 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,5 +56,8 @@ void	print_error(t_token *line, char *err_msg, int exit_code)
 {
 	ft_dup2(STDERR_FILENO, STDOUT_FILENO, line->func);
 	printf("minishell: %s: %s\n", line->command[0], err_msg);
-	exit(exit_code);
+	if (line->func != P_BUILTIN)
+		exit(exit_code);
+	else
+		return ;
 }
