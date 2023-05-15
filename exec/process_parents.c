@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_parents.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyunwoju <hyunwoju@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyobicho <hyobicho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 16:33:30 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/10 16:10:32 by hyunwoju         ###   ########.fr       */
+/*   Updated: 2023/05/15 14:14:27 by hyobicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ void	unlink_here_doc(t_deque *cmd_deque)
 		cur_file = cur_token->files;
 		while (cur_file != NULL)
 		{
-			if (cur_file->type == LIMITER || cur_file->type == Q_LIMITER)
+			if (is_heredoc(cur_file))
 			{
 				unlink(cur_file->filename);
 			}
