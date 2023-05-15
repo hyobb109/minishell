@@ -14,24 +14,7 @@
 
 static char	*check_cmd_env(t_vars *v, t_token *token, char *str, char *buf)
 {
-	char	*status;
-	int		num_len;
-
-	if (ft_isalpha(*(str + 1)) || *(str + 1) == '_')
-		v->len += search_env(&str, buf, token->envp, *v);
-	else if (*(str + 1) == '?')
-	{
-		status = ft_itoa(WEXITSTATUS(g_exit_status));
-		num_len = ft_strlen(status);
-		ft_memcpy(buf, status, num_len);
-		free(status);
-		v->len += num_len;
-		str++;
-		if (v->quote)
-			str++;
-	}
-	else
-		str++;
+	v->len += search_env(&str, buf, token->envp, *v);
 	if (v->quote)
 		v->quote = CLOSED;
 	return (str);
@@ -57,7 +40,7 @@ char	**parse_command(char *str, t_token *token, t_vars *v, char *buffer)
 			check_redir(&str, token);
 			continue ;
 		}
-		else if (is_environ(v->quote, *str))
+		else if (is_environ(v->quote, *str) && (ft_isalpha(*(str + 1)) || *(str + 1) == '_' || *(str + 1) == '?'))
 			str = check_cmd_env(v, token, str, &buffer[v->len]);
 		else if (!v->quote && is_blank(*str))
 			buffer[v->len++] = BLANK;

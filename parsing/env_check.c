@@ -61,8 +61,16 @@ int	env_trans(char *str, t_edeque *envp, char *buf, t_vars v)
 {
 	t_env	*tmp;
 	int		key_len;
+	char	*status;
 
 	key_len = 0;
+	if (*str == '?')
+	{
+		status = ft_itoa(WEXITSTATUS(g_exit_status));
+		ft_memcpy(buf, status, ft_strlen(status));
+		free(status);
+		return (1);
+	}
 	tmp = envp->head;
 	while (tmp)
 	{
